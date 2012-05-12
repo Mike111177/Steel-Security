@@ -1,6 +1,7 @@
 package net.othercraft.steelsecurity.listeners;
 
 import net.othercraft.steelsecurity.proccesses.censoredWordProccess;
+
 import org.bukkit.event.player.PlayerChatEvent;
 
 public class PlayerChatListener {

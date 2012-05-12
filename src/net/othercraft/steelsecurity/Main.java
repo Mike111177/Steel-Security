@@ -18,6 +18,7 @@ public class Main extends JavaPlugin {
 	private Commands myExecutor;
 	
 	public void onEnable() {
+		Config.load();
 		myExecutor = new Commands(this);
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(eve, this);

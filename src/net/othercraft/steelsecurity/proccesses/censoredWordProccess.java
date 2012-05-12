@@ -5,7 +5,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 public class censoredWordProccess {
 
 	public static void onSpeak(PlayerChatEvent event) {
-		// TODO Auto-generated method stub
+		// TODO use the event and the config to cencore words
 		
 	}
 

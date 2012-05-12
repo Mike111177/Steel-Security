@@ -14,7 +14,7 @@ public class stshelp {
 			}
 		}
 		else {
-			
+			sender.sendMessage("Too many arguments!");
 		}
 	}
 

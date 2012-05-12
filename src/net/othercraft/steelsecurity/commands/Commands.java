@@ -13,10 +13,10 @@ public class Commands implements CommandExecutor{
 	}
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String arg2, String[] arg3) {
+	public boolean onCommand(CommandSender sender, Command cmd, String arg2, String[] split) {
 		if (cmd.getName() == "sts"){
 			sts s = new sts();
-			s.command(sender);
+			s.command(sender, split);
 		}
 		return false;
 	}

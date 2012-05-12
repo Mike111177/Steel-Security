@@ -9,7 +9,7 @@ public class stshelp {
 			p1(sender);
 		}
 		else if (split.length==2){
-			if (split[1]=="1"){
+			if (split[1].equalsIgnoreCase("1")){
 				p1(sender);
 			}
 		}

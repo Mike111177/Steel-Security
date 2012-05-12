@@ -19,9 +19,10 @@ public class Commands implements CommandExecutor{
 		if (sender instanceof Player) {
 			player = (Player) sender;
 		}
-		if (cmd.getName() == "sts"){
+		if (cmd.getName().equalsIgnoreCase("sts")){
 			sts s = new sts();
 			s.command(sender, split);
+			return true;
 		}
 		return false;
 	}

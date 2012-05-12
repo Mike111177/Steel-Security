@@ -12,7 +12,7 @@ public class sts {
 			}
 		}
 		else {
-			if (split[0]=="help"){
+			if (split[0].equalsIgnoreCase("help")){
 				stshelp sh = new stshelp();
 				sh.sts(sender, split);
 			}

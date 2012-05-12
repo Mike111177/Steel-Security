@@ -21,6 +21,7 @@ public class Main extends JavaPlugin {
 		myExecutor = new Commands(this);
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(eve, this);
+		getCommand("sts").setExecutor(myExecutor);
 		this.logMessage("Enabled.");
 	}
 	

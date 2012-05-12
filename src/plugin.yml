@@ -1,5 +1,5 @@
 name: Steel Security
-version: 0.5a
+version: 0.3a
 main: net.othercraft.steelsecurity.Main
 commands:
   sts:

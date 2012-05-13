@@ -19,8 +19,11 @@ public class stshelp {
 	}
 
 	private void p1(CommandSender sender) {
+		if (sender.hasPermission("steelsecurity.commands.sts")){
 		sender.sendMessage("/sts: Base Command");
-		
-	}
-
+		}
+		if (sender.hasPermission("steelsecurity.commands.help")){
+			sender.sendMessage("/sts help: Displays this help screen.");
+		}
+	}	
 }

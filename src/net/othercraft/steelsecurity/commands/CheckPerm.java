@@ -1,5 +1,6 @@
 package net.othercraft.steelsecurity.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -15,8 +16,21 @@ public class CheckPerm {
 			sender.sendMessage("Usage: /sts checkperm <player> <permission>");
 		}
 		else {
-			//TODO i have an idea to check if another player has a certain permission but im having a hard time getting the variables to be compatible
+			String targetname = split[1];
+	        Player target = Bukkit.getPlayer(targetname);
+	        String perm = split[2];
+	        if(target.isOnline()) {
+			if (target.hasPermission(perm)) {
+				sender.sendMessage(target + " has the permission " + perm);
+			}
+			else {
+				sender.sendMessage(target + " does not have the permission " + perm);
+			
+			}
+	        }
+	        else {
+	        	sender.sendMessage("Offline permission checking not supported yet!");
+	        }
 		}
 	}
-
 }

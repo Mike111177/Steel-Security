@@ -3,8 +3,8 @@ version: 0.3a
 description: The most EPIC protection plugin on the market :)featuring fully automated hack/grief/spam protection!
 main: net.othercraft.steelsecurity.Main
 load: POSTWORLD
-authors: [Mike111177, coldguy101] #add the other authors, as I only know us two :D 
-website: http://google.com #I dont know your website :)
+authors: [Mike111177, coldguy101, MCForger, Darksonn] 
+website: http://othercraft.net
 database: false #I assume we will need one later
 commands:
   sts:

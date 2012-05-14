@@ -25,5 +25,8 @@ public class stshelp {
 		if (sender.hasPermission("steelsecurity.commands.help")){
 			sender.sendMessage("/sts help: Displays this help screen.");
 		}
+		if (sender.hasPermission("steelsecurity.commands.checkperm")){
+			sender.sendMessage("/sts checkperm: Checks to see if another player has a certain permission.");
+		}
 	}	
 }

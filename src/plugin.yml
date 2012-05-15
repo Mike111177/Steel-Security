@@ -12,4 +12,3 @@ commands:
      usage: /sts
   freezeall:
      description: Freezes all players.
-     usage:/freezeall

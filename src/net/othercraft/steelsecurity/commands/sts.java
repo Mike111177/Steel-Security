@@ -35,6 +35,14 @@ public class sts {
 					sender.sendMessage(noperm);
 				}
 			}
+			if (split[0].equalsIgnoreCase("listgm")){
+				if (sender.hasPermission("steelsecurity.commands.listgm")) {
+					ListGameMode.listgm(sender);
+				}
+				else {
+					sender.sendMessage(noperm);
 		}
+	}
+}
 	}
 }

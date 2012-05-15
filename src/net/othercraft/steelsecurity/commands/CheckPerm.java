@@ -34,3 +34,4 @@ public class CheckPerm {
 		}
 	}
 }
+//TODO There is a stack error when checking for a player that is not online.

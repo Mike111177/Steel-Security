@@ -24,6 +24,9 @@ public class Commands implements CommandExecutor{
 			s.command(sender, split);
 			return true;
 		}
+		if (cmd.getName().equalsIgnoreCase("freezeall")){
+			FreezeAll.command(sender);
+		}
 		return false;
 	}
 

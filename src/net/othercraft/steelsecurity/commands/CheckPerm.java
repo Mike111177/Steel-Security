@@ -19,19 +19,14 @@ public class CheckPerm {
 			String targetname = split[1];
 	        Player target = Bukkit.getPlayer(targetname);
 	        String perm = split[2];
-	        if(target.isOnline()) {
 			if (target.hasPermission(perm)) {
 				sender.sendMessage(target + " has the permission " + perm);
 			}
 			else {
 				sender.sendMessage(target + " does not have the permission " + perm);
 			
-			}
-	        }
-	        else {
-	        	sender.sendMessage("Offline permission checking not supported yet!");
-	        }
+			}    
 		}
-	}
+	}	
 }
 //TODO There is a stack error when checking for a player that is not online.

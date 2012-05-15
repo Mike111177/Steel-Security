@@ -17,6 +17,7 @@ public class Main extends JavaPlugin {
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvents(eve, this);
 		getCommand("sts").setExecutor(myExecutor);
+		getCommand("freezeall").setExecutor(myExecutor);
 	}
 	
 	public void onDisable() {

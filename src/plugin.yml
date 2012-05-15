@@ -10,3 +10,6 @@ commands:
   sts:
      description: Base command for Steel Security.
      usage: /sts
+  freezeall:
+     description: Freezes all players.
+     usage:/freezeall

@@ -1,8 +1,13 @@
 package net.othercraft.steelsecurity.commands;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 public class stshelp {
+	
+	ChatColor r = ChatColor.RED;
+	ChatColor g = ChatColor.GREEN;
+	ChatColor y = ChatColor.YELLOW;
 
 	public void sts(CommandSender sender, String[] split) {
 		if (split.length==1){
@@ -14,19 +19,19 @@ public class stshelp {
 			}
 		}
 		else {
-			sender.sendMessage("Too many arguments!");
+			sender.sendMessage(r + "Too many arguments!");
 		}
 	}
 
 	private void p1(CommandSender sender) {
 		if (sender.hasPermission("steelsecurity.commands.sts")){
-		sender.sendMessage("/sts: Base Command");
+		sender.sendMessage(g + "/sts:" + y + " Base Command");
 		}
 		if (sender.hasPermission("steelsecurity.commands.help")){
-			sender.sendMessage("/sts help: Displays this help screen.");
+			sender.sendMessage(g + "/sts help:" + y + " Displays this help screen.");
 		}
 		if (sender.hasPermission("steelsecurity.commands.checkperm")){
-			sender.sendMessage("/sts checkperm: Checks to see if another player has a certain permission.");
+			sender.sendMessage(g + "/sts checkperm:" + y + " Checks a permmision for another player.");
 		}
 	}	
 }

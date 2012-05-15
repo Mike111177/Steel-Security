@@ -33,5 +33,11 @@ public class stshelp {
 		if (sender.hasPermission("steelsecurity.commands.checkperm")){
 			sender.sendMessage(g + "/sts checkperm:" + y + " Checks a permmision for another player.");
 		}
-	}	
+		if (sender.hasPermission("steelsecurity.commands.listgm")){
+			sender.sendMessage(g + "/sts listgm:" + y + " List online players with their gamemode.");
+		}
+		if (sender.hasPermission("steelsecurity.commands.listop")){
+			sender.sendMessage(g + "/sts listop:" + y + " List online ops.");
+		}	
+	}
 }

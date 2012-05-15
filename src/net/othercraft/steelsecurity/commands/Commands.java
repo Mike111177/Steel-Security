@@ -21,7 +21,7 @@ public class Commands implements CommandExecutor{
 		}
 		if (cmd.getName().equalsIgnoreCase("sts")){
 			sts s = new sts();
-			s.command(sender, split);
+			s.command(sender, split, player);
 			return true;
 		}
 		if (cmd.getName().equalsIgnoreCase("freezeall")){

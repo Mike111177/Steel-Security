@@ -2,12 +2,13 @@ package net.othercraft.steelsecurity.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class sts {
 	
 	String noperm = (ChatColor.RED + "You don't have permission to do this!");
 
-	public void command(CommandSender sender, String[] split) {
+	public void command(CommandSender sender, String[] split, Player player) {
 		if (split.length==0) {
 			if (sender.hasPermission("steelsecurity.commands.sts")){
 				sender.sendMessage("This server is running Steel Security");
@@ -43,6 +44,14 @@ public class sts {
 					sender.sendMessage(noperm);
 		}
 	}
-}
-	}
+			if (split[0].equalsIgnoreCase("listop")){
+				if (sender.hasPermission("steelsecurity.commands.listop")) {
+					ListOp.listOP(sender);
+				}
+				else {
+					sender.sendMessage(noperm);
+				}
+			}
+		}
+	}	
 }

@@ -8,7 +8,7 @@ public class sts {
 		if (split.length==0) {
 			if (sender.hasPermission("steelsecurity.commands.sts")){
 				sender.sendMessage("This server is running Steel Security");
-				sender.sendMessage("For a list of commands type /sts help");
+				sender.sendMessage("For a list of commands please type /sts help");
 			}
 		}
 		else if (split.length>0) {

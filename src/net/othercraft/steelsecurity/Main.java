@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.othercraft.steelsecurity.commands.Commands;
-import net.othercraft.steelsecurity.listeners.Events;
+import net.othercraft.steelsecurity.listeners.PlayerChatListener;
 import net.othercraft.steelsecurity.listeners.PlayerChatListener;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,7 +20,7 @@ public class Main extends JavaPlugin {
 	public void onEnable() {
 		myExecutor = new Commands(this);
 		PluginManager pm = this.getServer().getPluginManager();
-        pm.registerEvents(new Events(this, cl), this);
+        pm.registerEvents(new PlayerChatListener(this, cl), this);
 		getCommand("sts").setExecutor(myExecutor);
 		getCommand("freezeall").setExecutor(myExecutor);
 		loadConfiguration();

@@ -1,18 +1,17 @@
 package net.othercraft.steelsecurity.listeners;
  
-import net.othercraft.steelsecurity.antispam.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.*;
  
-import org.bukkit.event.player.PlayerChatEvent;
+import net.othercraft.steelsecurity.Main;
  
-public class PlayerChatListener {
-private CensoredWordProccess listener;
-public PlayerChatListener(CensoredWordProccess listener) {
-this.listener = listener;
-}
- 
-public void onChat(PlayerChatEvent event) {
-listener.onSpeak(event);
- 
-}
- 
+public class PlayerChatListener implements Listener {
+    Main plugin;
+    private PlayerChatListener chatListener;
+   
+    public PlayerChatListener(Main instance, PlayerChatListener chatListener) {
+        plugin=instance;
+        this.chatListener = chatListener;
+    }
 }

@@ -12,33 +12,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 	
-	FileConfiguration config = this.getConfig();
-    private PlayerChatListener cl;
+    private final PlayerChatListener pcl = new PlayerChatListener();
     private Commands myExecutor;
 	
 	public void onEnable() {
 		myExecutor = new Commands(this);
 		PluginManager pm = this.getServer().getPluginManager();
-        pm.registerEvents(new PlayerChatListener(this, cl), this);
+        pm.registerEvents(pcl, this);
 		getCommand("sts").setExecutor(myExecutor);
 		getCommand("freezeall").setExecutor(myExecutor);
-		loadConfiguration();
+		new Config().loadConfiguration();
 	}
 	     
 	public void onDisable() {
-		
-	}
-	public void loadConfiguration(){
-		 config.addDefault("Anti_Spam.censoring.enabled", false );
-		 config.addDefault("Anti_Spam.censoring.blocked_words", Arrays.asList("Avo","ICHG","Nodus"));
-	     getConfig().options().copyDefaults(true);
-	     saveConfig();
-	}
-	public void configReload(){
-		reloadConfig();
-	}
-	public List<String> findConfigValueList(String request) {
-		List cvalue = getConfig().getList(request);
-		return cvalue;
 	}
 }

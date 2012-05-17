@@ -43,7 +43,7 @@ public class sts {
 					sender.sendMessage(noperm);
 				}
 			}
-			if (split[0].equalsIgnoreCase("checkperm")){
+			if (split[0].equalsIgnoreCase("checkperm")){//TODO stack error on check for an offline player.
 				if (sender.hasPermission("steelsecurity.commands.checkperm")) {
 					if (split.length<3) {
 						sender.sendMessage("Not enough arguments!");
@@ -69,7 +69,7 @@ public class sts {
 					sender.sendMessage(noperm);
 				}
 			}
-			if (split[0].equalsIgnoreCase("listgm")){
+			if (split[0].equalsIgnoreCase("listgm")){//TODO add a way to include offline players
 				if (sender.hasPermission("steelsecurity.commands.listgm")) {
 					Player[] p = Bukkit.getOnlinePlayers();
 					 int count = p.length;
@@ -93,7 +93,7 @@ public class sts {
 		}
 	}
 			if (split[0].equalsIgnoreCase("listop")){
-				if (sender.hasPermission("steelsecurity.commands.listop")) {
+				if (sender.hasPermission("steelsecurity.commands.listop")) {//TODO add a way to include offline players
 					Player[] p = Bukkit.getOnlinePlayers();
 					 int count = p.length;
 					 int counter = 0;
@@ -129,3 +129,4 @@ public class sts {
 		}	
 	}
 }
+//TODO add a way to change the gamemode of someone that is offline.

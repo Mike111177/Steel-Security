@@ -14,14 +14,12 @@ public class Main extends JavaPlugin {
 	
 	 FileConfiguration config = this.getConfig();
 	
-	public final Events eve = new Events(this);
-	
 	private Commands myExecutor;
 	
 	public void onEnable() {
 		myExecutor = new Commands(this);
 		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvents(eve, this);
+        pm.registerEvents(new Events(this, PlayerChatListener), this);
 		getCommand("sts").setExecutor(myExecutor);
 		getCommand("freezeall").setExecutor(myExecutor);
 		loadConfiguration();

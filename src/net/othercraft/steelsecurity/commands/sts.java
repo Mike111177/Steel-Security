@@ -38,7 +38,7 @@ public class sts {
 			}
 			if (split[0].equalsIgnoreCase("listgm")){
 				if (sender.hasPermission("steelsecurity.commands.listgm")) {
-					ListGameMode.listgm(sender);
+					ListGameMode.listgm(sender, split);
 				}
 				else {
 					sender.sendMessage(noperm);

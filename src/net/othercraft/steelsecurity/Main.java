@@ -1,12 +1,18 @@
 package net.othercraft.steelsecurity;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.othercraft.steelsecurity.commands.Commands;
 import net.othercraft.steelsecurity.listeners.Events;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
+	
+	 FileConfiguration config = this.getConfig();
 	
 	public final Events eve = new Events(this);
 	
@@ -18,10 +24,23 @@ public class Main extends JavaPlugin {
 		pm.registerEvents(eve, this);
 		getCommand("sts").setExecutor(myExecutor);
 		getCommand("freezeall").setExecutor(myExecutor);
+		loadConfiguration();
 	}
-	
+	     
 	public void onDisable() {
 		
 	}
-
+	public void loadConfiguration(){
+		 config.addDefault("Anti_Spam.censoring.enabled", false );
+		 config.addDefault("Anti_Spam.censoring.blocked_words", Arrays.asList("Avo","ICHG","Nodus"));
+	     getConfig().options().copyDefaults(true);
+	     saveConfig();
+	}
+	public void configReload(){
+		reloadConfig();
+	}
+	public List<String> findConfigValueList(String request) {
+		List cvalue = getConfig().getList(request);
+		return cvalue;
+	}
 }

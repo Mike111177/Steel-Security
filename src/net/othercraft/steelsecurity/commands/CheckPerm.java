@@ -1,6 +1,7 @@
 package net.othercraft.steelsecurity.commands;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,10 +21,10 @@ public class CheckPerm {
 	        Player target = Bukkit.getPlayer(targetname);
 	        String perm = split[2];
 			if (target.hasPermission(perm)) {
-				sender.sendMessage(target + " has the permission " + perm);
+				sender.sendMessage(ChatColor.GREEN + target.getName() + " has the permission " + perm);
 			}
 			else {
-				sender.sendMessage(target + " does not have the permission " + perm);
+				sender.sendMessage(ChatColor.RED + target.getName() + " does not have the permission " + perm);
 			
 			}    
 		}

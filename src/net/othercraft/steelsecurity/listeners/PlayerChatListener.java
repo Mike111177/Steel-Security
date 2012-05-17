@@ -6,9 +6,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 public class PlayerChatListener {
 
-	public static void onChat(PlayerChatEvent event) {
-		AntiFlood.onSpeak(event);
-		AntiCaps.onSpeak(event);
+	public void onChat(PlayerChatEvent event) {
 		CensoredWordProccess.onSpeak(event);
 		
 	}

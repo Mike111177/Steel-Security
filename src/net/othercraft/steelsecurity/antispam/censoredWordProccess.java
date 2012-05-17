@@ -10,7 +10,6 @@ import org.bukkit.event.player.PlayerChatEvent;
 public class CensoredWordProccess{
 	
 	private Main plugin;
-	// the line below makes me add void
 	public CensoredWordProccess(Main plugin) {
 	this.plugin = plugin;
 	}

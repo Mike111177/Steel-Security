@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.othercraft.steelsecurity.commands.Commands;
 import net.othercraft.steelsecurity.listeners.PlayerChatListener;
-import net.othercraft.steelsecurity.listeners.PlayerChatListener;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.PluginManager;

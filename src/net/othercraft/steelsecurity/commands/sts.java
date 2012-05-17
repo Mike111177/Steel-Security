@@ -7,13 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class sts {
-	
+	//Defines Chat Colors
 	ChatColor r = ChatColor.RED;
 	ChatColor g = ChatColor.GREEN;
 	ChatColor y = ChatColor.YELLOW;
-	
-	String noperm = (ChatColor.RED + "You don't have permission to do this!");
-
+	//Defines No Permmission String
+	String noperm = (r + "You don't have permission to do this!");
+//Recieves command and takes actions.
 	public void command(CommandSender sender, String[] split, Player player) {
 		if (split.length==0) {
 			if (sender.hasPermission("steelsecurity.commands.sts")){

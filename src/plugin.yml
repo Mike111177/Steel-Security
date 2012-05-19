@@ -1,5 +1,5 @@
 name: Steel Security
-version: 0.3a
+version: 0.1a
 description: The most EPIC protection plugin on the market :)featuring fully automated hack/grief/spam protection!
 main: net.othercraft.steelsecurity.Main
 load: POSTWORLD

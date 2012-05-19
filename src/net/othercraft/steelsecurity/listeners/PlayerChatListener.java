@@ -7,7 +7,7 @@ import org.bukkit.event.player.*;
 public class PlayerChatListener implements Listener {
 
 	@EventHandler
-    public void normalLogin(PlayerLoginEvent event) {
+    public void onPlayerchat(PlayerChatEvent event) {
         // Some code here
     }
 }

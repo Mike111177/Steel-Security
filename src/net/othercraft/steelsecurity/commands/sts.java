@@ -13,7 +13,7 @@ public class sts {
 	ChatColor y = ChatColor.YELLOW;
 	//Defines No Permmission String
 	String noperm = (r + "You don't have permission to do this!");
-//Recieves command and takes actions.
+    //Recieves command and takes actions.
 	public void command(CommandSender sender, String[] split, Player player) {
 		if (split.length==0) {
 			if (sender.hasPermission("steelsecurity.commands.sts")){
@@ -58,10 +58,10 @@ public class sts {
 				        Player target = Bukkit.getPlayer(targetname);
 				        String perm = split[2];
 						if (target.hasPermission(perm)) {
-							sender.sendMessage(ChatColor.GREEN + target.getName() + " has the permission " + perm);
+							sender.sendMessage(g + target.getName() + " has the permission " + perm);
 						}
 						else {
-							sender.sendMessage(ChatColor.RED + target.getName() + " does not have the permission " + perm);
+							sender.sendMessage(r + target.getName() + " does not have the permission " + perm);
 						}    
 					}
 				}

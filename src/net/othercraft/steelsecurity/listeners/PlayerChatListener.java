@@ -20,13 +20,12 @@ public Main plugin;
 
 	@EventHandler
     public void onPlayerchat(PlayerChatEvent event) {
-		String Booleanpath = "AntiSpam.Censoring.Enabled";
+		if (new Config(plugin).getConfigurationBoolean("AntiSpam.Censoring.Enabled")) {
 		String Listpath = "AntiSpam.Censoring.Block_Words";
 		 List<String> list = new Config(plugin).getConfigurationList(Listpath);
 		 String message = event.getMessage();
 		 int wordcount = list.size();
 		 int wordcounter = 0;
-		 Pattern replaced;
 		 while (wordcounter<wordcount) {
 			 int lettercount = list.get(wordcounter).toCharArray().length;
 			 int lettercounter = 0;
@@ -40,5 +39,6 @@ public Main plugin;
 			 wordcounter = wordcounter + 1; 
 		 }
 		 event.setMessage(message);
-	}	
+		}
+	}
 }

@@ -21,14 +21,13 @@ public class Config {
 		plugin.saveConfig();
 	}	
 	public List<String> getConfigurationList(String Listpath) {
-		List<String> list = (List<String>) plugin.getConfig().getList(Listpath);
-		return list;
+		return (List<String>) plugin.getConfig().getList(Listpath);
 	}
 	public void getConfigurationString(String Stringpath){
 		plugin.getConfig().getString(Stringpath);
 	}
-	public void getConfigurationBoolean(String Booleanpath) {
-		plugin.getConfig().getBoolean(Booleanpath);
+	public Boolean getConfigurationBoolean(String Booleanpath) {
+		return plugin.getConfig().getBoolean(Booleanpath);
 	}
 	public void getConfigurationInt(String Intpath) {
 		plugin.getConfig().getInt(Intpath);

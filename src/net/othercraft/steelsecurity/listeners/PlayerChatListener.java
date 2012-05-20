@@ -20,7 +20,7 @@ public Main plugin;
 
 	@EventHandler
     public void onPlayerchat(PlayerChatEvent event) {
-		if (new Config(plugin).getConfigurationBoolean("AntiSpam.Censoring.Enabled")) {
+		if (new Config(plugin).getConfigurationBoolean("AntiSpam.Censoring.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypasscensor") == false) {
 		String Listpath = "AntiSpam.Censoring.Block_Words";
 		 List<String> list = new Config(plugin).getConfigurationList(Listpath);
 		 String message = event.getMessage();

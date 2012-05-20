@@ -33,7 +33,7 @@ public Main plugin;
 				 newword = (newword + "*");
 				 lettercounter = lettercounter + 1; 
 			 }
-			 message = message.replaceAll(badword, newword);
+			 message = message.replaceAll("(?i)" + badword, newword);
 			 wordcounter = wordcounter + 1; 
 		 }
 		 event.setMessage(message);

@@ -1,8 +1,6 @@
 package net.othercraft.steelsecurity.listeners;
  
 import java.util.List;
-import java.util.regex.Pattern;
-
 import net.othercraft.steelsecurity.Config;
 import net.othercraft.steelsecurity.Main;
 

@@ -1,10 +1,7 @@
 package net.othercraft.steelsecurity;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
 	
@@ -20,6 +17,7 @@ public class Config {
 		plugin.getConfig().options().copyDefaults(true);
 		plugin.saveConfig();
 	}	
+	@SuppressWarnings("unchecked")
 	public List<String> getConfigurationList(String Listpath) {
 		return (List<String>) plugin.getConfig().getList(Listpath);
 	}

@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 	
-    private final PlayerChatListener pcl = new PlayerChatListener();
+    private final PlayerChatListener pcl = new PlayerChatListener(this);
     private Commands myExecutor;
 	
 	public void onEnable() {

@@ -1,7 +1,10 @@
 package net.othercraft.steelsecurity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
 	
@@ -14,11 +17,11 @@ public class Config {
 	public void loadConfiguration() {
 		plugin.getConfig().addDefault("AntiSpam.Censoring.Enabled", false );
 		plugin.getConfig().addDefault("AntiSpam.Censoring.Block_Words", Arrays.asList("Nodus", "Avo", "ICHG"));
-		plugin.getConfig().options().copyDefaults(true); // NOTE: You do not have to use "plugin." if the class extends the java plugin
+		plugin.getConfig().options().copyDefaults(true);
 		plugin.saveConfig();
 	}	
-	public List<?> getConfigurationList(String Listpath) {
-		List<?> list = plugin.getConfig().getList(Listpath);
+	public List<String> getConfigurationList(String Listpath) {
+		List<String> list = (List<String>) plugin.getConfig().getList(Listpath);
 		return list;
 	}
 	public void getConfigurationString(String Stringpath){

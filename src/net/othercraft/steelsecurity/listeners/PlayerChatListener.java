@@ -1,13 +1,44 @@
 package net.othercraft.steelsecurity.listeners;
  
+import java.util.List;
+import java.util.regex.Pattern;
+
+import net.othercraft.steelsecurity.Config;
+import net.othercraft.steelsecurity.Main;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
  
 public class PlayerChatListener implements Listener {
+	
+public Main plugin;
+	
+	public PlayerChatListener(Main instance) {	
+		plugin = instance;
+	}	
 
 	@EventHandler
     public void onPlayerchat(PlayerChatEvent event) {
-        // Some code here
-    }
+		String Booleanpath = "AntiSpam.Censoring.Enabled";
+		String Listpath = "AntiSpam.Censoring.Block_Words";
+		 List<String> list = new Config(plugin).getConfigurationList(Listpath);
+		 String message = event.getMessage();
+		 int wordcount = list.size();
+		 int wordcounter = 0;
+		 Pattern replaced;
+		 while (wordcounter<wordcount) {
+			 int lettercount = list.get(wordcounter).toCharArray().length;
+			 int lettercounter = 0;
+			 String newword = "";
+			 String badword = list.get(wordcounter).toString();	 	 
+			 while (lettercounter<lettercount) {
+				 newword = (newword + "*");
+				 lettercounter = lettercounter + 1; 
+			 }
+			 message = message.replaceAll(badword, newword);
+			 wordcounter = wordcounter + 1; 
+		 }
+		 event.setMessage(message);
+	}	
 }

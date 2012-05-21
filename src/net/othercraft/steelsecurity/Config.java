@@ -14,6 +14,9 @@ public class Config {
 	public void loadConfiguration() {
 		plugin.getConfig().addDefault("AntiSpam.Censoring.Enabled", false );
 		plugin.getConfig().addDefault("AntiSpam.Censoring.Block_Words", Arrays.asList("Nodus", "Avo", "ICHG"));
+		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Enabled", true);
+		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Minimum_Length", 4);
+		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Percent", 70);
 		plugin.getConfig().options().copyDefaults(true);
 		plugin.saveConfig();
 	}	
@@ -21,13 +24,13 @@ public class Config {
 	public List<String> getConfigurationList(String Listpath) {
 		return (List<String>) plugin.getConfig().getList(Listpath);
 	}
-	public void getConfigurationString(String Stringpath){
-		plugin.getConfig().getString(Stringpath);
+	public String getConfigurationString(String Stringpath){
+		return plugin.getConfig().getString(Stringpath);
 	}
 	public Boolean getConfigurationBoolean(String Booleanpath) {
 		return plugin.getConfig().getBoolean(Booleanpath);
 	}
-	public void getConfigurationInt(String Intpath) {
-		plugin.getConfig().getInt(Intpath);
+	public int getConfigurationInt(String Intpath) {
+		return plugin.getConfig().getInt(Intpath);
 	}
 }

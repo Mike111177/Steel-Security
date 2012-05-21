@@ -6,14 +6,14 @@ import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class sts {
+public class Sts {
 	//Defines Chat Colors
 	ChatColor r = ChatColor.RED;
 	ChatColor g = ChatColor.GREEN;
 	ChatColor y = ChatColor.YELLOW;
-	//Defines No Permmission String
+	//Defines No Permission String
 	String noperm = (r + "You don't have permission to do this!");
-    //Recieves command and takes actions.
+    //Receives command and takes actions.
 	public void command(CommandSender sender, String[] split, Player player) {
 		if (split.length==0) {
 			if (sender.hasPermission("steelsecurity.commands.sts")){
@@ -129,4 +129,4 @@ public class sts {
 		}	
 	}
 }
-//TODO add a way to change the gamemode of someone that is offline.
+//TODO add a way to change the game mode of someone that is offline.

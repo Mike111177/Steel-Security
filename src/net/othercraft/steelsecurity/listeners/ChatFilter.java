@@ -8,11 +8,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
  
-public class PlayerChatListener implements Listener {
+public class ChatFilter implements Listener {
 	
 public Main plugin;
 	
-	public PlayerChatListener(Main instance) {	
+	public ChatFilter(Main instance) {	
 		plugin = instance;
 	}	
 

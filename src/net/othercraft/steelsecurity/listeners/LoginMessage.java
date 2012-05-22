@@ -8,11 +8,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import net.othercraft.steelsecurity.Config;
 import net.othercraft.steelsecurity.Main;
 
-public class PlayerJoinListener implements Listener {
+public class LoginMessage implements Listener {
 
 	public Main plugin;
 	
-	public PlayerJoinListener(Main instance) {	
+	public LoginMessage(Main instance) {	
 		plugin = instance;
 	}
 	@EventHandler

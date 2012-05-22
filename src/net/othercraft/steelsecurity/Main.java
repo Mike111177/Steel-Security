@@ -1,16 +1,16 @@
 package net.othercraft.steelsecurity;
 
 import net.othercraft.steelsecurity.commands.Commands;
-import net.othercraft.steelsecurity.listeners.PlayerChatListener;
-import net.othercraft.steelsecurity.listeners.PlayerJoinListener;
+import net.othercraft.steelsecurity.listeners.ChatFilter;
+import net.othercraft.steelsecurity.listeners.LoginMessage;
 
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 	
-    private final PlayerChatListener pcl = new PlayerChatListener(this);
-    private final PlayerJoinListener pll = new PlayerJoinListener(this);
+    private final ChatFilter pcl = new ChatFilter(this);
+    private final LoginMessage pll = new LoginMessage(this);
     private Commands myExecutor;
 	
 	public void onEnable() {

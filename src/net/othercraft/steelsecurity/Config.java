@@ -40,4 +40,7 @@ public class Config {
 	public int getConfigurationInt(String Intpath) {//gets an int
 		return plugin.getConfig().getInt(Intpath);
 	}
+	public void reloadConfiguration() {
+		plugin.reloadConfig();
+	}
 }

@@ -11,17 +11,23 @@ public class Main extends JavaPlugin {
 	
     private final ChatFilter pcl = new ChatFilter(this);
     private final LoginMessage pll = new LoginMessage(this);
+    private final Config cfg = new Config(this);
     private Commands myExecutor;
 	
 	public void onEnable() {
+		commandExecutors();
+        registerEvents();
+		cfg.loadConfiguration();
+	}   
+	private void commandExecutors() {
 		myExecutor = new Commands(this);
-		PluginManager pm = this.getServer().getPluginManager();
-        pm.registerEvents(pcl, this);
-        pm.registerEvents(pll, this);
 		getCommand("sts").setExecutor(myExecutor);
-		new Config(this).loadConfiguration();
 	}
-	     
+	private void registerEvents() {
+		PluginManager pm = this.getServer().getPluginManager();
+		pm.registerEvents(pcl, this);
+        pm.registerEvents(pll, this);	
+	}
 	public void onDisable() {
 	}
 }

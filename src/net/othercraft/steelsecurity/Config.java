@@ -9,5 +9,13 @@ package net.othercraft.steelsecurity;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Config extends JavaPlugin{
+	
+	public void loadConfiguration(){
+		defaults();
+		//TODO load configuration
+	}
+	public void defaults(){
+		
+	}
 
 }

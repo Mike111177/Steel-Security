@@ -5,8 +5,6 @@
  * @Usage: none. Extend any command executor as this, and youre good to go.
  * @Implements: CommandExecutor: utilizes the command executor for onCommand.
  * @onCommand: onCommand will be the super method for handling events. It will have a try/catch block surrounding the subclass method "handleCommand()"
- * @Events: each event will be declared and ran in its own subclass. It is up to us as the developers to remember to run our try/catch blocks.
- * @Catching: exceptions will be caught in events by calling and passing the exception into the "catchListenerException(Exception)" method.
  */
 
 package net.othercraft.steelsecurity.utils;
@@ -19,24 +17,42 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
-public abstract class SSCmdExe implements CommandExecutor, Listener{
+public abstract class SSCmdExe implements CommandExecutor, Listener, SSCmdExeInterface{
+	
+	public final String name;
 	
 	/**
 	 * @Constructor
+	 * @param name This is the name of the class. whenever exceptions are logged, it will be in a folder named after the class.
 	 * @param listener If the subclass requires it to be registered as a listener, this needs to be true, or else your events wont be utilized.
 	 */
-	public SSCmdExe(Boolean listener){
+	public SSCmdExe(String name, Boolean listener){
+		this.name = name;
 		if(listener){
 			Bukkit.getPluginManager().registerEvents(this,Main.instance);
 		}
 	}
-	@Override
+	
+	@Override //This is our supermethod for dealing with commands. We dont touch this.
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-		//TODO surround with try/catch logger block
-		boolean command = handleCommand(sender,cmd,label,args);
-		return command;
-		//TODO surround with try/catch logger block
+		try {
+			boolean command = handleCommand(sender, cmd, label, args);
+			return command;
+		} catch (Exception e) {
+			sender.sendMessage("[SteelSecurity]: There was an unhandled internal exception caught when trying to perform this command. Please contact an administrator and notify them at the earliest convenience.");
+			//TODO log
+			return false;
+		}
 	}
+	/**
+	 * Handles commands in the cmd executor subclasses. Please use @Override
+	 * 
+	 * @param sender sender of the command
+	 * @param cmd the command
+	 * @param label the commandLabel
+	 * @param args the arguments
+	 * @return return true if the command was successful, false if there was an error.
+	 */
 	public boolean handleCommand(CommandSender sender, Command cmd, String label, String[] args){
 		return true;
 	}

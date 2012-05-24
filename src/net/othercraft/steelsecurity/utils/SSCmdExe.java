@@ -1,5 +1,6 @@
 /**
  * @Class: SSCmdExe
+ * @Author: CorrieKay
  * @Purpose: This is an abstract class used as a superclass to all command executors.
  * @Usage: none. Extend any command executor as this, and youre good to go.
  * @Implements: CommandExecutor: utilizes the command executor for onCommand.

@@ -19,6 +19,7 @@ public class Config extends JavaPlugin {
 			saveConfig();
 		}	
 		private void defaults() { //Defaults
+			//TODO chat and player join listeners.
 			getConfig().addDefault("General.Prefix", "[STS]");
 			getConfig().addDefault("General.Logon_Message_Enabled", true);
 			getConfig().addDefault("General.Logon_Message", "Steel Security is running on this server.");

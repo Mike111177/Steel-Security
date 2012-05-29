@@ -7,7 +7,6 @@
 package net.othercraft.steelsecurity;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -28,18 +27,5 @@ public class Config extends JavaPlugin {
 			getConfig().addDefault("AntiSpam.AntiCaps.Enabled", true);
 			getConfig().addDefault("AntiSpam.AntiCaps.Minimum_Length", 4);
 			getConfig().addDefault("AntiSpam.AntiCaps.Percent", 70);
-		}
-		@SuppressWarnings("unchecked")
-		public List<String> getConfigurationList(String Listpath) {//Gets a list
-			return (List<String>) getConfig().getList(Listpath);
-		}
-		public String getConfigurationString(String Stringpath){//Gets a string
-			return getConfig().getString(Stringpath);
-		}
-		public Boolean getConfigurationBoolean(String Booleanpath) {//gets a boolean
-			return getConfig().getBoolean(Booleanpath);
-		}
-		public int getConfigurationInt(String Intpath) {//gets an int
-			return getConfig().getInt(Intpath);
 		}
 	}

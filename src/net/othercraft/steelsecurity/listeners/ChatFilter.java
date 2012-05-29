@@ -1,26 +1,19 @@
 package net.othercraft.steelsecurity.listeners;
 
-import java.util.List;
-
-import net.othercraft.steelsecurity.Config;
 import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class ChatFilter extends SSCmdExe implements Listener {
 	
+	public ChatFilter(String name) {
+		super(name, true);//true only if its a listener, false if it isnt
+		}
+
 	public Main plugin;
-	
-	public SSCmdExe scme;
-	
-	public ChatFilter(Main instance) {	
-		plugin = instance;
-	}
-	
 	
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent event){

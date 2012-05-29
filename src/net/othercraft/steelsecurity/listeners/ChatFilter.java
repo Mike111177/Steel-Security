@@ -3,21 +3,31 @@ package net.othercraft.steelsecurity.listeners;
 import java.util.List;
 
 import net.othercraft.steelsecurity.Config;
+import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ChatFilter extends JavaPlugin implements Listener {
+public class ChatFilter extends SSCmdExe implements Listener {
+	
+	public Main plugin;
+	
+	public SSCmdExe scme;
+	
+	public ChatFilter(Main instance) {	
+		plugin = instance;
+	}
 	
 	
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent event){
 	try{
 		String message = event.getMessage();
-		if (getConfig().getBoolean("AntiSpam.Censoring.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypasscensor") == false) {
-		 String[] list = (String[]) getConfig().getList("AntiSpam.Censoring.Block_Words").toArray();
+		if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypasscensor") == false) {
+		 String[] list = (String[]) plugin.getConfig().getList("AntiSpam.Censoring.Block_Words").toArray();
 		 int wordcount = list.length;
 		 int wordcounter = 0;
 		 while (wordcounter<wordcount) {
@@ -33,9 +43,9 @@ public class ChatFilter extends JavaPlugin implements Listener {
 			 wordcounter = wordcounter + 1;  
 		 } 
 		}
-		if (event.getMessage().length()>getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")){
-			if (getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypassanticaps") == false) {
-				int percent = getConfig().getInt("AntiSpam.AntiCaps.Percent");
+		if (event.getMessage().length()>plugin.getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")){
+			if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypassanticaps") == false) {
+				int percent = plugin.getConfig().getInt("AntiSpam.AntiCaps.Percent");
 				int capcount = message.length();
 				int capcounter = 0;
 				Double uppercase = 0.0;

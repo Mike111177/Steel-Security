@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 public class ChatFilter extends SSCmdExe implements Listener {
 	
-	public ChatFilter(String name) {
+	public ChatFilter(String name, Main instance) {
 		super(name, true);//true only if its a listener, false if it isnt
 		}
 

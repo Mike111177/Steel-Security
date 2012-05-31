@@ -2,6 +2,7 @@ package net.othercraft.steelsecurity;
 
 import net.othercraft.steelsecurity.listeners.ChatFilter;
 
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin{

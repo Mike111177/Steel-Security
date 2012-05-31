@@ -18,9 +18,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
 public abstract class SSCmdExe implements CommandExecutor, Listener, SSCmdExeInterface{
-	
+
 	public final String name;
-	
+
 	/**
 	 * @Constructor
 	 * @param name This is the name of the class. whenever exceptions are logged, it will be in a folder named after the class.
@@ -32,7 +32,7 @@ public abstract class SSCmdExe implements CommandExecutor, Listener, SSCmdExeInt
 			Bukkit.getPluginManager().registerEvents(this,Main.instance);
 		}
 	}
-	
+
 	@Override //This is our supermethod for dealing with commands. We dont touch this.
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		try {

@@ -22,6 +22,6 @@ public abstract class ExceptionLogger {
 		}
 	}
 	public static void listenerException(){
-		
+
 	}
 }

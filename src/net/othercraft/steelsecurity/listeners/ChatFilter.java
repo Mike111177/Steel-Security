@@ -1,5 +1,7 @@
 package net.othercraft.steelsecurity.listeners;
 
+import java.util.List;
+
 import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
@@ -9,34 +11,37 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 public class ChatFilter extends SSCmdExe implements Listener {
 
+	public Main plugin;
+
 	public ChatFilter(String name, Main instance) {
 		super(name, true);//true only if its a listener, false if it isnt
+		this.plugin = instance;
 	}
-
-	public Main plugin;
 
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent event){
 		try {
 			String message = event.getMessage();
-			System.out.println(plugin.getConfig().getBoolean("AntiSpam.Censoring.Enabled"));
 			if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypasscensor") == false) {
-				String[] list = (String[]) plugin.getConfig().getList("AntiSpam.Censoring.Block_Words").toArray();
-				int wordcount = list.length;
+				@SuppressWarnings("unchecked")
+				List<String> list =  (List<String>) plugin.getConfig().getList("AntiSpam.Censoring.Block_Words");
+				int wordcount = list.size();
 				int wordcounter = 0;
 				while (wordcounter<wordcount) {
-					int lettercount = list[wordcounter].toCharArray().length;
+					String newword;
+					String badword = list.get(wordcounter);	 	
+					int lettercount = list.get(wordcounter).toCharArray().length;
 					int lettercounter = 0;
-					String newword = "";
-					String badword = list[wordcounter].toString();	 	 
-					while (lettercounter<lettercount) {
+					newword = "";
+					while (lettercounter < lettercount) {
 						newword = (newword + "*");
-						lettercounter = lettercounter + 1; 
+						lettercounter = lettercounter + 1;
 					}
 					message = message.replaceAll("(?i)" + badword, newword);
 					wordcounter = wordcounter + 1;  
-				} 
-			}
+				}	
+			} 
+
 			if (event.getMessage().length()>plugin.getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")){
 				if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypassanticaps") == false) {
 					int percent = plugin.getConfig().getInt("AntiSpam.AntiCaps.Percent");
@@ -62,7 +67,8 @@ public class ChatFilter extends SSCmdExe implements Listener {
 				}
 			}
 			event.setMessage(message);
-		} catch(Exception e){//note, catch GENERIC exception
+		}
+		catch (Exception e){
 			catchListenerException(e);
 		}
 	}

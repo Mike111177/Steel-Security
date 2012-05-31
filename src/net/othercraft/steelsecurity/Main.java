@@ -2,7 +2,6 @@ package net.othercraft.steelsecurity;
 
 import net.othercraft.steelsecurity.listeners.ChatFilter;
 
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin{
@@ -12,6 +11,7 @@ public class Main extends JavaPlugin{
 	private ChatFilter cf;
 	
 	public void onEnable(){
+		new Config(this).loadConfiguration();
 		instance = this;
 		cf = new ChatFilter(null, this);
 	}

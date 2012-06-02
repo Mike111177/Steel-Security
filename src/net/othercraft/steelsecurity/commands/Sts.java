@@ -13,7 +13,7 @@ public class Sts {
 	ChatColor y = ChatColor.YELLOW;
 	//Defines No Permission String
 	String noperm = (r + "You don't have permission to do this!");
-    //Receives command and takes actions.
+	//Receives command and takes actions.
 	public void command(CommandSender sender, String[] args) {
 		if (args.length==0) {
 			if (sender.hasPermission("steelsecurity.commands.sts")){
@@ -21,7 +21,7 @@ public class Sts {
 				sender.sendMessage("For a list of commands please type /sts help");
 			}
 			else {
-			sender.sendMessage(noperm);				
+				sender.sendMessage(noperm);				
 			}
 		}
 		else if (args.length>0) {
@@ -55,8 +55,8 @@ public class Sts {
 					}
 					else {
 						String targetname = args[1];
-				        Player target = Bukkit.getPlayer(targetname);
-				        String perm = args[2];
+						Player target = Bukkit.getPlayer(targetname);
+						String perm = args[2];
 						if (target.hasPermission(perm)) {
 							sender.sendMessage(g + target.getName() + " has the permission " + perm);
 						}
@@ -72,38 +72,38 @@ public class Sts {
 			if (args[0].equalsIgnoreCase("listgm")){//TODO add a way to include offline players
 				if (sender.hasPermission("steelsecurity.commands.listgm")) {
 					Player[] p = Bukkit.getOnlinePlayers();
-					 int count = p.length;
-					 int counter = 0;
-					 while (counter<count) {
+					int count = p.length;
+					int counter = 0;
+					while (counter<count) {
 						Player r = p[counter];
 						GameMode g = r.getGameMode();
 						if (args.length==2) {
 							if (args[1].equalsIgnoreCase(g.toString())){
-						sender.sendMessage(r.getName() + ": " + g);
+								sender.sendMessage(r.getName() + ": " + g);
 							}
 						}
 						else {
 							sender.sendMessage(r.getName() + ": " + g);
 						}
 						counter = counter + 1;	 
-					 }
+					}
 				}
 				else {
 					sender.sendMessage(noperm);
-		}
-	}
+				}
+			}
 			if (args[0].equalsIgnoreCase("listop")){
 				if (sender.hasPermission("steelsecurity.commands.listop")) {//TODO add a way to include offline players
 					Player[] p = Bukkit.getOnlinePlayers();
-					 int count = p.length;
-					 int counter = 0;
-					 while (counter<count) {
+					int count = p.length;
+					int counter = 0;
+					while (counter<count) {
 						Player r = p[counter];
 						if (r.isOp()) {
-						sender.sendMessage(r.getName());
-						counter = counter + 1;	 
+							sender.sendMessage(r.getName());
+							counter = counter + 1;	 
 						}
-					 }
+					}
 				}
 				else {
 					sender.sendMessage(noperm);
@@ -113,7 +113,7 @@ public class Sts {
 	}	
 	private void p1(CommandSender sender) {
 		if (sender.hasPermission("steelsecurity.commands.sts")){
-		sender.sendMessage(g + "/sts:" + y + " Base Command");
+			sender.sendMessage(g + "/sts:" + y + " Base Command");
 		}
 		if (sender.hasPermission("steelsecurity.commands.help")){
 			sender.sendMessage(g + "/sts help:" + y + " Displays this help screen.");

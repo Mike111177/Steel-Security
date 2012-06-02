@@ -20,6 +20,7 @@ public class Main extends JavaPlugin{
 		cf = new ChatFilter(null, this);
 		jm = new JoinMessage(null, this);
 	}
+	
 
 	public void onDisable(){
 

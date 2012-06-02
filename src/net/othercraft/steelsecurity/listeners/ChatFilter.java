@@ -44,7 +44,7 @@ public class ChatFilter extends SSCmdExe implements Listener {
 
 			if (event.getMessage().length()>plugin.getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")){
 				if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypassanticaps") == false) {
-					int percent = plugin.getConfig().getInt("AntiSpam.AntiCaps.Percent");
+					double percent = plugin.getConfig().getInt("AntiSpam.AntiCaps.Percent");
 					int capcount = message.length();
 					int capcounter = 0;
 					Double uppercase = 0.0;
@@ -57,6 +57,7 @@ public class ChatFilter extends SSCmdExe implements Listener {
 							uppercase = uppercase + 1.0;
 						}
 						capcounter = capcounter + 1;
+						System.out.println(lowercase + ":" + uppercase);
 					}
 					double total = uppercase + lowercase;
 					double result = uppercase/total;

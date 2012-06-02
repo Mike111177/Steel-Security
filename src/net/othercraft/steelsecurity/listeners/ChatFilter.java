@@ -57,7 +57,6 @@ public class ChatFilter extends SSCmdExe implements Listener {
 							uppercase = uppercase + 1.0;
 						}
 						capcounter = capcounter + 1;
-						System.out.println(lowercase + ":" + uppercase);
 					}
 					double total = uppercase + lowercase;
 					double result = uppercase/total;

@@ -6,11 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Sts extends SSCmdExe implements CommandExecutor {
+public class Sts extends SSCmdExe {
 	public Sts(String name, Boolean listener) {
 		super(name, listener);
 		// TODO Auto-generated constructor stub
@@ -135,12 +134,6 @@ public class Sts extends SSCmdExe implements CommandExecutor {
 		if (sender.hasPermission("steelsecurity.commands.listop")){
 			sender.sendMessage(g + "/sts listop:" + y + " List online ops.");
 		}	
-	}
-	@Override
-	public boolean onCommand(CommandSender arg0, Command arg1, String arg2,
-			String[] arg3) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 	@Override
 	public boolean handleCommand(CommandSender sender, Command cmd, String label, String[] args) {

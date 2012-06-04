@@ -22,6 +22,7 @@ public class Main extends JavaPlugin{
 		instance = this;
 		cf = new ChatFilter(null, this);
 		jm = new JoinMessage(null, this);
+		base = new Sts("base");
 		getCommand("sts").setExecutor(base);
 	}
 	

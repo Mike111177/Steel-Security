@@ -10,10 +10,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Sts extends SSCmdExe {
-	public Sts(String name, Boolean listener) {
-		super(name, listener);
+	public Sts(String name) {
+		super(name, false);
 		// TODO Auto-generated constructor stub
-	}
+		}
 	//Defines Chat Colors
 	ChatColor r = ChatColor.RED;
 	ChatColor g = ChatColor.GREEN;

@@ -29,7 +29,7 @@ public class ChatFilter extends SSCmdExe implements Listener {
 				int wordcounter = 0;
 				while (wordcounter<wordcount) {
 					String newword;
-					String badword = list.get(wordcounter);	 	
+					String badword = list.get(wordcounter);
 					int lettercount = list.get(wordcounter).toCharArray().length;
 					int lettercounter = 0;
 					newword = "";
@@ -38,9 +38,9 @@ public class ChatFilter extends SSCmdExe implements Listener {
 						lettercounter = lettercounter + 1;
 					}
 					message = message.replaceAll("(?i)" + badword, newword);
-					wordcounter = wordcounter + 1;  
-				}	
-			} 
+					wordcounter = wordcounter + 1;
+				}
+			}
 
 			if (event.getMessage().length()>plugin.getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")){
 				if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypassanticaps") == false) {

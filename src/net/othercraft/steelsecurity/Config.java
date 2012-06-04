@@ -19,9 +19,8 @@ public class Config {
 		defaults();
 		plugin.getConfig().options().copyDefaults(true);
 		plugin.saveConfig();
-	}	
+	}
 	private void defaults() { //Defaults
-		//TODO chat and player join listeners.
 		plugin.getConfig().addDefault("General.Prefix", "[STS]");
 		plugin.getConfig().addDefault("General.Logon_Message_Enabled", true);
 		plugin.getConfig().addDefault("General.Logon_Message", "Steel Security is running on this server.");

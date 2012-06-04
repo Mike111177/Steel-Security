@@ -1,12 +1,12 @@
 package net.othercraft.steelsecurity.listeners;
 
+import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.utils.SSCmdExe;
+
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-
-import net.othercraft.steelsecurity.Main;
-import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 public class JoinMessage extends SSCmdExe implements Listener {
 

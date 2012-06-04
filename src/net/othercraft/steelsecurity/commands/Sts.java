@@ -12,8 +12,7 @@ import org.bukkit.entity.Player;
 public class Sts extends SSCmdExe {
 	public Sts(String name) {
 		super(name, false);
-		// TODO Auto-generated constructor stub
-		}
+	}
 	//Defines Chat Colors
 	ChatColor r = ChatColor.RED;
 	ChatColor g = ChatColor.GREEN;
@@ -28,7 +27,7 @@ public class Sts extends SSCmdExe {
 				sender.sendMessage("For a list of commands please type /sts help");
 			}
 			else {
-				sender.sendMessage(noperm);				
+				sender.sendMessage(noperm);
 			}
 		}
 		else if (args.length>0) {
@@ -69,14 +68,14 @@ public class Sts extends SSCmdExe {
 						}
 						else {
 							sender.sendMessage(r + target.getName() + " does not have the permission " + perm);
-						}    
+						}
 					}
 				}
 				else {
 					sender.sendMessage(noperm);
 				}
 			}
-			if (args[0].equalsIgnoreCase("listgm")){//TODO add a way to include offline players
+			if (args[0].equalsIgnoreCase("listgm")){//FIXME add a way to include offline players
 				if (sender.hasPermission("steelsecurity.commands.listgm")) {
 					Player[] p = Bukkit.getOnlinePlayers();
 					int count = p.length;
@@ -92,7 +91,7 @@ public class Sts extends SSCmdExe {
 						else {
 							sender.sendMessage(r.getName() + ": " + g);
 						}
-						counter = counter + 1;	 
+						counter = counter + 1;
 					}
 				}
 				else {
@@ -100,7 +99,7 @@ public class Sts extends SSCmdExe {
 				}
 			}
 			if (args[0].equalsIgnoreCase("listop")){
-				if (sender.hasPermission("steelsecurity.commands.listop")) {//TODO add a way to include offline players
+				if (sender.hasPermission("steelsecurity.commands.listop")) {//FIXME add a way to include offline players
 					Player[] p = Bukkit.getOnlinePlayers();
 					int count = p.length;
 					int counter = 0;
@@ -108,7 +107,7 @@ public class Sts extends SSCmdExe {
 						Player r = p[counter];
 						if (r.isOp()) {
 							sender.sendMessage(r.getName());
-							counter = counter + 1;	 
+							counter = counter + 1;
 						}
 					}
 				}
@@ -117,7 +116,7 @@ public class Sts extends SSCmdExe {
 				}
 			}
 		}
-	}	
+	}
 	private void p1(CommandSender sender) {
 		if (sender.hasPermission("steelsecurity.commands.sts")){
 			sender.sendMessage(g + "/sts:" + y + " Base Command");
@@ -133,7 +132,7 @@ public class Sts extends SSCmdExe {
 		}
 		if (sender.hasPermission("steelsecurity.commands.listop")){
 			sender.sendMessage(g + "/sts listop:" + y + " List online ops.");
-		}	
+		}
 	}
 	@Override
 	public boolean handleCommand(CommandSender sender, Command cmd, String label, String[] args) {

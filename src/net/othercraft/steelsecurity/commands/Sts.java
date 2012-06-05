@@ -5,6 +5,7 @@ import net.othercraft.steelsecurity.utils.SSCmdExe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,6 +18,8 @@ public class Sts extends SSCmdExe {
 	ChatColor r = ChatColor.RED;
 	ChatColor g = ChatColor.GREEN;
 	ChatColor y = ChatColor.YELLOW;
+	ChatColor w = ChatColor.WHITE;
+	ChatColor b = ChatColor.BLUE;
 	//Defines No Permission String
 	String noperm = (r + "You don't have permission to do this!");
 	//Receives command and takes actions.
@@ -99,16 +102,38 @@ public class Sts extends SSCmdExe {
 				}
 			}
 			if (args[0].equalsIgnoreCase("listop")){
-				if (sender.hasPermission("steelsecurity.commands.listop")) {//FIXME add a way to include offline players
-					Player[] p = Bukkit.getOnlinePlayers();
-					int count = p.length;
-					int counter = 0;
-					while (counter<count) {
-						Player r = p[counter];
-						if (r.isOp()) {
-							sender.sendMessage(r.getName());
-							counter = counter + 1;
+				if (sender.hasPermission("steelsecurity.commands.listop")) {
+					String list = "";
+					int total = 0;
+					int online = 0;
+					for(OfflinePlayer player : Bukkit.getServer().getOfflinePlayers()){
+						if(player.isOp()){
+							total = total + 1;
+							if(player.isOnline()){
+								online = online + 1;
+								if (list.equals("")) {
+									list = (list + g + player.getName());
+								}
+								else {
+									list = (list + w + ", " + g + player.getName());
+								}
+							}
+							else {
+								if (list.equals("")) {
+									list = (list + r + player.getName());
+								}
+								else {
+									list = (list + w + ", " + r + player.getName());
+								}
+							}
 						}
+					}
+					if (list.equals("")){
+						sender.sendMessage(r + "Sorry, there appears to be no ops on this server!");
+					}
+					else {
+						sender.sendMessage( w + "There are " + b + online + w + " out of " + b + total + w + " ops online.");
+						sender.sendMessage(list);
 					}
 				}
 				else {
@@ -131,7 +156,7 @@ public class Sts extends SSCmdExe {
 			sender.sendMessage(g + "/sts listgm:" + y + " List online players with their gamemode.");
 		}
 		if (sender.hasPermission("steelsecurity.commands.listop")){
-			sender.sendMessage(g + "/sts listop:" + y + " List online ops.");
+			sender.sendMessage(g + "/sts listop:" + y + " List ops.");
 		}
 	}
 	@Override

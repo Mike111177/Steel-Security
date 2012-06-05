@@ -26,8 +26,8 @@ public class Sts extends SSCmdExe {
 	public void command(CommandSender sender, String[] args) {
 		if (args.length==0) {
 			if (sender.hasPermission("steelsecurity.commands.sts")){
-				sender.sendMessage("This server is running Steel Security");
-				sender.sendMessage("For a list of commands please type /sts help");
+				sender.sendMessage(g + "This server is running Steel Security");
+				sender.sendMessage(g + "For a list of commands please type /sts help");
 			}
 			else {
 				sender.sendMessage(noperm);
@@ -52,7 +52,7 @@ public class Sts extends SSCmdExe {
 					sender.sendMessage(noperm);
 				}
 			}
-			if (args[0].equalsIgnoreCase("checkperm")){//TODO stack error on check for an offline player.
+			if (args[0].equalsIgnoreCase("checkperm")){//FIXME stack error on check for an offline player.
 				if (sender.hasPermission("steelsecurity.commands.checkperm")) {
 					if (args.length<3) {
 						sender.sendMessage("Not enough arguments!");

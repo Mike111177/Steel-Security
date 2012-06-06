@@ -35,10 +35,10 @@ public class ChatFilter extends SSCmdExe implements Listener {
 					newword = "";
 					while (lettercounter < lettercount) {
 						newword = (newword + "*");
-						lettercounter = lettercounter + 1;
+						++lettercounter;
 					}
 					message = message.replaceAll("(?i)" + badword, newword);
-					wordcounter = wordcounter + 1;
+					++wordcounter;
 				}
 			}
 
@@ -51,12 +51,12 @@ public class ChatFilter extends SSCmdExe implements Listener {
 					Double lowercase = 0.0;
 					while (capcounter<capcount) {
 						if (message.toCharArray()[capcounter] == message.toLowerCase().toCharArray()[capcounter]) {
-							lowercase = lowercase + 1.0;
+							++lowercase;
 						}
 						else {
-							uppercase = uppercase + 1.0;
+							++uppercase;
 						}
-						capcounter = capcounter + 1;
+						++capcounter;
 					}
 					double total = uppercase + lowercase;
 					double result = uppercase/total;

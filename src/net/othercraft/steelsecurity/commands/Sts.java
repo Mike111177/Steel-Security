@@ -94,7 +94,7 @@ public class Sts extends SSCmdExe {
 						else {
 							sender.sendMessage(rt.getName() + ": " + gm);
 						}
-						counter = counter + 1;
+						++counter;
 					}
 				}
 				else {

@@ -84,15 +84,15 @@ public class Sts extends SSCmdExe {
 					int count = p.length;
 					int counter = 0;
 					while (counter<count) {
-						Player r = p[counter];
-						GameMode g = r.getGameMode();
+						Player rt = p[counter];
+						GameMode gm = rt.getGameMode();
 						if (args.length==2) {
 							if (args[1].equalsIgnoreCase(g.toString())){
-								sender.sendMessage(r.getName() + ": " + g);
+								sender.sendMessage(rt.getName() + ": " + gm);
 							}
 						}
 						else {
-							sender.sendMessage(r.getName() + ": " + g);
+							sender.sendMessage(rt.getName() + ": " + gm);
 						}
 						counter = counter + 1;
 					}
@@ -139,6 +139,10 @@ public class Sts extends SSCmdExe {
 				else {
 					sender.sendMessage(noperm);
 				}
+			}
+			if (args[0].equalsIgnoreCase("checkgm")) {
+				OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
+				System.out.println(player.getPlayer().getGameMode());
 			}
 		}
 	}

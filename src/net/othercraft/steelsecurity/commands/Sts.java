@@ -141,8 +141,6 @@ public class Sts extends SSCmdExe {
 				}
 			}
 			if (args[0].equalsIgnoreCase("checkgm")) {
-				OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-				System.out.println(player.getPlayer().getGameMode());
 			}
 		}
 	}

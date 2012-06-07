@@ -14,6 +14,8 @@ import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 public class PlayerConfigManager extends SSCmdExe {
 	
+	protected String stringPathToDir = "players";
+	
 	public Main plugin;
 	
 	public PlayerConfigManager(String name, Main instance) {
@@ -26,6 +28,9 @@ public class PlayerConfigManager extends SSCmdExe {
 	}
 	@EventHandler
 	public void onLogOff(PlayerQuitEvent event) {
+		
+	}
+	public void loadPlayerConfig(String playername) {
 		
 	}
 	public FileConfiguration getConfig(String playername){

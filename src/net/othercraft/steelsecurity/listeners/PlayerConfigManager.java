@@ -1,6 +1,7 @@
 package net.othercraft.steelsecurity.listeners;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -53,15 +54,30 @@ public class PlayerConfigManager extends SSCmdExe {
 		  if(file.exists()){
 		    return false;//return false to indicate that the file already exists
 		  }
-		  file.createNewFile();
+		  try {
+			file.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		  return true; //config file successfully created
 		}
 	public void saveConfig(FileConfiguration config, String playername){
 		  File file = new File(stringPathToDir, playername+".yml");
 		  if(!file.exists()){
-		    file.createNewFile();
+		    try {
+				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		  }
-		  config.save(file);
+		  try {
+			config.save(file);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		}
 
 }

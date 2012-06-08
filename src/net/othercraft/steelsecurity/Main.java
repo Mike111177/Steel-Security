@@ -14,7 +14,7 @@ public class Main extends JavaPlugin{
 	
 	@SuppressWarnings("unused")
 	private ChatFilter cf;
-	@SuppressWarnings("unused")
+	@SuppressWarnings("unused") 
 	private JoinMessage jm;
 
 	public void onEnable(){

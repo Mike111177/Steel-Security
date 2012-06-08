@@ -69,7 +69,7 @@ public class ChatFilter extends SSCmdExe implements Listener {
 			event.setMessage(message);
 		}
 		catch (Exception e){
-			catchListenerException(e);
+			catchListenerException(e, event.getEventName());
 		}
 	}
 

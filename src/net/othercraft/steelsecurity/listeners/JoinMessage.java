@@ -24,7 +24,7 @@ public class JoinMessage extends SSCmdExe implements Listener {
 			}
 		}
 		catch (Exception e) {
-			catchListenerException(e);
+			catchListenerException(e, event.getEventName());
 		}
 	}
 }

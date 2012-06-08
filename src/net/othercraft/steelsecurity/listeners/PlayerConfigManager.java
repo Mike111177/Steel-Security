@@ -45,7 +45,7 @@ public class PlayerConfigManager extends SSCmdExe {
 		  FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		  return config;
 		}
-	public boolean createConfig(String playername){
+	public boolean createConfig(String playername) throws IOException{
 		  File directory = new File(stringPathToDir);
 		  if(!directory.isDirectory()){
 		    directory.mkdirs();
@@ -54,30 +54,15 @@ public class PlayerConfigManager extends SSCmdExe {
 		  if(file.exists()){
 		    return false;//return false to indicate that the file already exists
 		  }
-		  try {
-			file.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		  file.createNewFile();
 		  return true; //config file successfully created
 		}
-	public void saveConfig(FileConfiguration config, String playername){
+	public void saveConfig(FileConfiguration config, String playername) throws IOException{
 		  File file = new File(stringPathToDir, playername+".yml");
 		  if(!file.exists()){
-		    try {
-				file.createNewFile();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		    file.createNewFile();
 		  }
-		  try {
-			config.save(file);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		  config.save(file);
 		}
 
 }

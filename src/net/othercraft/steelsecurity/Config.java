@@ -8,6 +8,8 @@ package net.othercraft.steelsecurity;
 
 import java.util.Arrays;
 
+import org.bukkit.plugin.PluginManager;
+
 public class Config {
 
 	private Main plugin;
@@ -20,6 +22,7 @@ public class Config {
 		plugin.getConfig().options().copyDefaults(true);
 		plugin.saveConfig();
 	}
+	
 	private void defaults() { //Defaults
 		plugin.getConfig().addDefault("General.Prefix", "[STS]");
 		plugin.getConfig().addDefault("General.Logon_Message_Enabled", true);

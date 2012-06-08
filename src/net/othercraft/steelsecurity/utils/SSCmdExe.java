@@ -17,7 +17,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
-public abstract class SSCmdExe implements CommandExecutor, Listener, SSCmdExeInterface{
+public abstract class SSCmdExe extends ExceptionLogger implements CommandExecutor, Listener, SSCmdExeInterface{
 
 	public final String name;
 
@@ -40,8 +40,9 @@ public abstract class SSCmdExe implements CommandExecutor, Listener, SSCmdExeInt
 			return command;
 		} catch (Exception e) {
 			sender.sendMessage("[SteelSecurity]: There was an unhandled internal exception caught when trying to perform this command. Please contact an administrator and notify them at the earliest convenience.");
-			//TODO log
-			return false;
+			//TODO needs a directory path.
+			commandException(e, "plugins/SteelSecurity/Exceptions.log", sender, cmd, args);
+			return true;
 		}
 	}
 	/**
@@ -56,7 +57,8 @@ public abstract class SSCmdExe implements CommandExecutor, Listener, SSCmdExeInt
 	public boolean handleCommand(CommandSender sender, Command cmd, String label, String[] args){
 		return true;
 	}
-	public void catchListenerException(Exception e){
-		//TODO log exceptions and create logger.
+	
+	public void catchListenerException(Exception e, String l){
+		listenerException(e, l, "plugins/SteelSecurity/Exceptions.log");
 	}
 }

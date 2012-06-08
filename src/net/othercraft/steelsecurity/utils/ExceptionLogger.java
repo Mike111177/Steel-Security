@@ -9,7 +9,6 @@
 package net.othercraft.steelsecurity.utils;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;

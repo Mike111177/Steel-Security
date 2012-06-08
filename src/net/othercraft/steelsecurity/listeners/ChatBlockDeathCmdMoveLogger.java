@@ -2,7 +2,6 @@ package net.othercraft.steelsecurity.listeners;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockEvent;
-import org.bukkit.event.block.BlockFormEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;

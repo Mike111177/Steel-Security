@@ -28,7 +28,7 @@ public class ChatFilter extends SSCmdExe implements Listener {
 			Boolean spam = true;
 			System.out.println(spam);
 			String name = event.getPlayer().getName();
-			long time = System.currentTimeMillis();
+			Long time = System.currentTimeMillis();
 			Long lasttime = chattimes.get(name);
 			if(lasttime == null)lasttime = Long.valueOf(time - 1000);
 			long check = (time - lasttime);
@@ -40,7 +40,7 @@ public class ChatFilter extends SSCmdExe implements Listener {
 			}
 			System.out.println(spam);
 			String message = event.getMessage();
-			if (!spam) {
+			if ((spam == false)) {
 				System.out.println(spam);
 				if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypasscensor") == false) {
 					@SuppressWarnings("unchecked")

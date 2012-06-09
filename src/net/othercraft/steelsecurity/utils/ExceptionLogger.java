@@ -26,7 +26,8 @@ public abstract class ExceptionLogger {
 		}
         Logger logger = Logger.getLogger(directoryString);
 		String date = Calendar.getInstance().getTime().toString();
-		logger.log(Level.SEVERE, date + " Command " + cmdToString(c, args) + " used by " + s.getName() + " generated an exception." , e);
+		logger.log(Level.SEVERE, date + " Command " + cmdToString(c, args) + " used by " + s.getName()+ " generated an exception." , e);
+		//TODO new file, check if exists, open a bufferedwriter, output log, close, return;
 	}
 	
 	public void listenerException(Exception e, String name, String path){
@@ -37,6 +38,7 @@ public abstract class ExceptionLogger {
 		Logger logger = Logger.getLogger(path);
 		String date = Calendar.getInstance().getTime().toString();
 		logger.log(Level.SEVERE, date + " Event " + name + " generated an exception.", e);
+		//TODO new file, check if exists, open a bufferedwriter, output log, close, return;
 	}
 	
 	public String cmdToString(Command c, String[] args) {

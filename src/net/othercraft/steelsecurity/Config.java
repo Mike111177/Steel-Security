@@ -8,8 +8,6 @@ package net.othercraft.steelsecurity;
 
 import java.util.Arrays;
 
-import org.bukkit.plugin.PluginManager;
-
 public class Config {
 
 	private Main plugin;
@@ -27,7 +25,9 @@ public class Config {
 		plugin.getConfig().addDefault("General.Prefix", "[STS]");
 		plugin.getConfig().addDefault("General.Logon_Message_Enabled", true);
 		plugin.getConfig().addDefault("General.Logon_Message", "Steel Security is running on this server.");
-		plugin.getConfig().addDefault("AntiSpam.Censoring.Enabled", false );
+		plugin.getConfig().addDefault("AntiSpam.AntiFlood.Enabled", true);
+		plugin.getConfig().addDefault("AntiSpam.AntiFlood.Speed", 250);
+		plugin.getConfig().addDefault("AntiSpam.Censoring.Enabled", false);
 		plugin.getConfig().addDefault("AntiSpam.Censoring.Block_Words", Arrays.asList("Nodus", "Avo", "ICHG"));
 		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Enabled", true);
 		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Minimum_Length", 4);

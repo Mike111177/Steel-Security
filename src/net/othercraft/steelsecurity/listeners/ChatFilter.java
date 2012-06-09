@@ -1,6 +1,9 @@
 package net.othercraft.steelsecurity.listeners;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
@@ -21,6 +24,12 @@ public class ChatFilter extends SSCmdExe implements Listener {
 	@EventHandler
 	public void onPlayerChat(PlayerChatEvent event){
 		try {
+			String name = event.getPlayer().getName();
+			Map<String, Long> chattimes = new HashMap<String, Long>();
+			long time = new Date().getTime();
+			long lasttime = chattimes.get(name);
+			chattimes.put(name, time);
+			if (time - lasttime > plugin.getConfig().getInt("AntiSpam.AntiFlood.Speed") || plugin.getConfig().getBoolean("AntiSpam.AntiFlood.Enabled") == false) {
 			String message = event.getMessage();
 			if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypasscensor") == false) {
 				@SuppressWarnings("unchecked")
@@ -67,6 +76,10 @@ public class ChatFilter extends SSCmdExe implements Listener {
 				}
 			}
 			event.setMessage(message);
+			}
+			else {
+				event.setCancelled(true);
+			}
 		}
 		catch (Exception e){
 			catchListenerException(e, event.getEventName());

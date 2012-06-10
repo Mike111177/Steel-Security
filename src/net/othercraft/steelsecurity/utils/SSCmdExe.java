@@ -9,6 +9,8 @@
 
 package net.othercraft.steelsecurity.utils;
 
+import java.io.IOException;
+
 import net.othercraft.steelsecurity.Main;
 
 import org.bukkit.Bukkit;
@@ -40,8 +42,11 @@ public abstract class SSCmdExe extends ExceptionLogger implements CommandExecuto
 			return command;
 		} catch (Exception e) {
 			sender.sendMessage("[SteelSecurity]: There was an unhandled internal exception caught when trying to perform this command. Please contact an administrator and notify them at the earliest convenience.");
-			//TODO needs a directory path.
-			commandException(e, "plugins/SteelSecurity/Exceptions.log", sender, cmd, args);
+			try {
+				commandException(e, "plugins/SteelSecurity", sender, cmd, args);
+			} catch (IOException e1) {
+				System.out.println("[SteelSecurity] There was an error during exception logging.");
+			}
 			return true;
 		}
 	}
@@ -58,7 +63,7 @@ public abstract class SSCmdExe extends ExceptionLogger implements CommandExecuto
 		return true;
 	}
 	
-	public void catchListenerException(Exception e, String l){
-		listenerException(e, l, "plugins/SteelSecurity/Exceptions.log");
+	public void catchListenerException(Exception e, String l) throws IOException{
+		listenerException(e, l, "plugins/SteelSecurity");
 	}
 }

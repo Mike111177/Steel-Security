@@ -24,7 +24,7 @@ public class Sts extends SSCmdExe {
 	String noperm = (r + "You don't have permission to do this!");
 	//Receives command and takes actions.
 	public void command(CommandSender sender, String[] args) {
-		try {if (args.length==0) {
+		if (args.length==0) {
 			if (sender.hasPermission("steelsecurity.commands.sts")){
 				sender.sendMessage(g + "This server is running Steel Security");
 				sender.sendMessage(g + "For a list of commands please type /sts help");
@@ -142,10 +142,6 @@ public class Sts extends SSCmdExe {
 			}
 			if (args[0].equalsIgnoreCase("checkgm")) {
 			}
-		}
-		} 
-		catch (Exception e){
-			catchListenerException(e, "Sts");
 		}
 	}
 	private void p1(CommandSender sender) {

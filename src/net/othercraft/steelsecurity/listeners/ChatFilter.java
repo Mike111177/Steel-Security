@@ -31,8 +31,10 @@ public class ChatFilter extends SSCmdExe implements Listener {
 			Long time = System.currentTimeMillis();//current time
 			Long lasttime = chattimes.get(name);//last time the player has chatted
 			if(lasttime == null)lasttime = Long.valueOf(time - 1000);// default if the player hasnt chatted yet
-			long check = (time - lasttime);//used to compare to the configured speed
+			int check = (time.intValue() - lasttime.intValue());//used to compare to the configured speed
+			int debug = check;
 			System.out.println(check);//debug
+			System.out.println(debug);//debug
 			chattimes.put(name, time);//overwrites the old time with the new one
 			if (check > plugin.getConfig().getInt("AntiSpam.AntiFlood.Speed") || plugin.getConfig().getBoolean("AntiSpam.AntiFlood.Enabled") == false) {//checks if the speed of chat is faster than what is configured
 				spam = false;//sets spam to false

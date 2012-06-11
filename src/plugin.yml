@@ -1,9 +1,32 @@
 name: Steel Security
-version: 0.2.1a
+version: 0.4a
 main: net.othercraft.steelsecurity.Main
-authors: [Mike111177, CorrieKay]
+authors: [Mike111177, CorrieKay, r0306]
 website: http://othercraft.net
 commands:
   sts:
      description: Base command for Steel Security.
      usage: /sts
+permissions:
+  steelsecurity.*:
+     description: Gives all benificial Steel Security permissions.
+     children: 
+        steelsecurity.commands.*: true
+        steelsecurity.bypass.*: true
+  steelsecurity.bypass.*: 
+     description: Gives permission to bypass all of Steel securitys checks.
+     default: op
+     children: 
+        steelsecurity.bypass.anticaps: true
+        steelsecurity.bypass.antiflood: true
+        steelsecurity.bypass.loginlimiter: true
+        steelsecurity.bypass.censor: true
+  steelsecurity.commands.*: 
+     description: Gives access to all Steel Security commands.
+     default: op
+     children: 
+        steelsecurity.commands.sts: true
+        steelsecurity.commands.help: true
+        steelsecurity.commands.checkperm: true
+        steelsecurity.commands.listgm: true
+        steelsecurity.commands.listop: true

@@ -33,7 +33,7 @@ public class ChatFilter extends SSCmdExe {
 			if(lasttime == null)lasttime = Long.valueOf(time - (speed + 1));// default if the player hasnt chatted yet
 			int check = (time.intValue() - lasttime.intValue());//used to compare to the configured speed
 			chattimes.put(name, time);//overwrites the old time with the new one
-			if (check > speed || plugin.getConfig().getBoolean("AntiSpam.AntiFlood.Enabled") == false) {//checks if the speed of chat is faster than what is configured
+			if (check > speed || plugin.getConfig().getBoolean("AntiSpam.AntiFlood.Enabled") == false || event.getPlayer().hasPermission("steelsecurity.bypass.antiflood") == false) {//checks if the speed of chat is faster than what is configured
 				spam = false;//sets spam to false
 			}
 			String message = event.getMessage();//prepairs message for editing

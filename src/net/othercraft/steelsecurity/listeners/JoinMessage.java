@@ -1,5 +1,7 @@
 package net.othercraft.steelsecurity.listeners;
 
+import java.io.IOException;
+
 import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
@@ -13,7 +15,7 @@ public class JoinMessage extends SSCmdExe implements Listener {
 	public Main plugin;
 
 	public JoinMessage(String name, Main instance) {
-		super(name, true);//true only if its a listener, false if it isnt
+		super("JoinMessage", true);//true only if its a listener, false if it isnt
 		this.plugin = instance;
 	}
 	@EventHandler
@@ -24,7 +26,12 @@ public class JoinMessage extends SSCmdExe implements Listener {
 			}
 		}
 		catch (Exception e) {
-			catchListenerException(e, event.getEventName());
+			try {
+				catchListenerException(e, event.getEventName());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 }

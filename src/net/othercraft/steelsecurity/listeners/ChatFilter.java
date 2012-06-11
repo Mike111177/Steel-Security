@@ -1,5 +1,6 @@
 package net.othercraft.steelsecurity.listeners;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class ChatFilter extends SSCmdExe implements Listener {
 	Map<String, Long> chattimes = new HashMap<String, Long>();// for tracking the speed of chat
 
 	public ChatFilter(String name, Main instance) {
-		super(name, true);//true only if its a listener, false if it isnt
+		super("ChatFilter", true);//true only if its a listener, false if it isnt
 		this.plugin = instance;
 	}
 
@@ -95,7 +96,12 @@ public class ChatFilter extends SSCmdExe implements Listener {
 			event.setCancelled(spam);//cancel if it spam from the beginning
 		}
 		catch (Exception e){
-			catchListenerException(e, event.getEventName());
+			try {
+				catchListenerException(e, event.getEventName());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 

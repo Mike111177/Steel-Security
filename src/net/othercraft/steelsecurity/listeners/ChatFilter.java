@@ -9,10 +9,9 @@ import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 
-public class ChatFilter extends SSCmdExe implements Listener {
+public class ChatFilter extends SSCmdExe {
 
 	public Main plugin;
 

@@ -3,6 +3,7 @@ package net.othercraft.steelsecurity;
 import net.othercraft.steelsecurity.commands.Sts;
 import net.othercraft.steelsecurity.listeners.ChatFilter;
 import net.othercraft.steelsecurity.listeners.JoinMessage;
+import net.othercraft.steelsecurity.listeners.LoginLimiter;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +17,8 @@ public class Main extends JavaPlugin{
 	private ChatFilter cf;
 	@SuppressWarnings("unused")
 	private JoinMessage jm;
+	@SuppressWarnings("unused")
+	private LoginLimiter ll;
 
 	public void onEnable(){
 		new Config(this).loadConfiguration();
@@ -30,6 +33,7 @@ public class Main extends JavaPlugin{
 	private void registerListeners() {//register listeners here
 		cf = new ChatFilter(null, this);
 		jm = new JoinMessage(null, this);
+		ll = new LoginLimiter(null, this);
 	}
 	
 	public void onDisable(){

@@ -32,5 +32,7 @@ public class Config {
 		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Enabled", true);
 		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Minimum_Length", 4);
 		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Percent", 70);
+		plugin.getConfig().addDefault("Login_Limiter.Enabled", false);
+		plugin.getConfig().addDefault("Login_Limiter.Time", 4);
 	}
 }

@@ -23,7 +23,7 @@ public class LoginLimiter extends SSCmdExe {
 
 	@EventHandler
 	public void onPlayerlogon(PlayerLoginEvent event){
-		if (plugin.getConfig().getBoolean("Login_Limiter.Enabled")) {
+		if (plugin.getConfig().getBoolean("Login_Limiter.Enabled") && event.getPlayer().hasPermission("steelsecurity.bypass.loginlimiter") == false) {
 			int seconds = plugin.getConfig().getInt("Login_Limiter.Time");
 			int speed = seconds * 1000;
 			String name = event.getPlayer().getName();//name of the player for use in the hashmap

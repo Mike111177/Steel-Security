@@ -38,7 +38,7 @@ public class ChatFilter extends SSCmdExe {
 			}
 			String message = event.getMessage();//prepairs message for editing
 			if ((spam == false)) {//only bothers with the anticaps and the censoring if it isnt spam.
-				if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypasscensor") == false) {//checks if it so scan for configured word
+				if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Enabled") && event.getPlayer().hasPermission("steelsecurity.bypass.censor") == false) {//checks if it so scan for configured word
 					@SuppressWarnings("unchecked")
 					List<String> list =  (List<String>) plugin.getConfig().getList("AntiSpam.Censoring.Block_Words");//retreives the list of blocked words
 					int wordcount = list.size();//the length of the list of blocked words
@@ -59,7 +59,7 @@ public class ChatFilter extends SSCmdExe {
 				}
 
 				if (event.getMessage().length()>plugin.getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")){//
-					if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && event.getPlayer().hasPermission("steelsecurity.antispam.bypassanticaps") == false) {//checks for if it should do the anticaps check
+					if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && event.getPlayer().hasPermission("steelsecurity.bypass.anticaps") == false) {//checks for if it should do the anticaps check
 						double percent = plugin.getConfig().getInt("AntiSpam.AntiCaps.Percent");//gets the configured percent
 						int capcount = message.length();
 						int capcounter = 0;

@@ -1,5 +1,6 @@
 package net.othercraft.steelsecurity.commands;
 
+import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.Bukkit;
@@ -11,6 +12,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class Sts extends SSCmdExe {
+	Main plugin;
+
 	public Sts(String name) {
 		super(name, false);
 	}
@@ -142,6 +145,14 @@ public class Sts extends SSCmdExe {
 			}
 			if (args[0].equalsIgnoreCase("checkgm")) {
 			}
+			if (args[0].equalsIgnoreCase("reload")) {
+				if (sender.hasPermission("steelsecurity.commands.reload")) {
+					plugin.reloadConfig();
+				}
+				else {
+					sender.sendMessage(noperm);
+				}
+			}
 		}
 	}
 	private void p1(CommandSender sender) {
@@ -159,6 +170,9 @@ public class Sts extends SSCmdExe {
 		}
 		if (sender.hasPermission("steelsecurity.commands.listop")){
 			sender.sendMessage(g + "/sts listop:" + y + " List ops.");
+		}
+		if (sender.hasPermission("steelsecurity.commands.reload")){
+			sender.sendMessage(g + "/sts reload:" + y + " Reloads config.");
 		}
 	}
 	@Override

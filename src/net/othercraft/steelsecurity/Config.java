@@ -20,7 +20,7 @@ public class Config {
 		plugin.getConfig().options().copyDefaults(true);
 		plugin.saveConfig();
 	}
-	
+
 	private void defaults() { //Defaults
 		plugin.getConfig().addDefault("General.Prefix", "[STS]");
 		plugin.getConfig().addDefault("General.Logon_Message_Enabled", true);
@@ -34,5 +34,10 @@ public class Config {
 		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Percent", 70);
 		plugin.getConfig().addDefault("Login_Limiter.Enabled", false);
 		plugin.getConfig().addDefault("Login_Limiter.Time", 4);
+	}
+	public void editConfigCmd(String[] args) {
+		String action = args[1];
+		String value = args[2];
+		String data = args[3];
 	}
 }

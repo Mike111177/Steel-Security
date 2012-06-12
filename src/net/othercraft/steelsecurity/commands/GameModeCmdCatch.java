@@ -1,10 +1,10 @@
 package net.othercraft.steelsecurity.commands;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
 import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class GameModeCmdCatch extends SSCmdExe {
 	Main plugin;
@@ -12,7 +12,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 		super(name, true);//true only if its a listener, false if it isnt
 		this.plugin = instance;
 	}
-	@EventHandler 
+	@EventHandler
 	public void onGmChangeCmd(PlayerCommandPreprocessEvent event){
 		if (event.getMessage().toLowerCase().startsWith("/gm") || event.getMessage().toLowerCase().startsWith("/gamemode")) {
 			event.setCancelled(true);

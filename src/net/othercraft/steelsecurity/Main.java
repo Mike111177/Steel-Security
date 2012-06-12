@@ -12,7 +12,7 @@ public class Main extends JavaPlugin{
 	public static Main instance;
 
 	private Sts base;
-	
+
 	@SuppressWarnings("unused")
 	private ChatFilter cf;
 	@SuppressWarnings("unused")
@@ -35,7 +35,7 @@ public class Main extends JavaPlugin{
 		jm = new JoinMessage(null, this);
 		ll = new LoginLimiter(null, this);
 	}
-	
+
 	public void onDisable(){
 	}
 }

@@ -62,7 +62,7 @@ public abstract class SSCmdExe extends ExceptionLogger implements CommandExecuto
 	public boolean handleCommand(CommandSender sender, Command cmd, String label, String[] args){
 		return true;
 	}
-	
+
 	public void catchListenerException(Exception e, String l) throws IOException{
 		listenerException(e, l, "plugins/SteelSecurity");
 	}

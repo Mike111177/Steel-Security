@@ -3,37 +3,13 @@ package net.othercraft.steelsecurity;
 import java.io.File;
 import java.io.IOException;
 
-import net.othercraft.steelsecurity.utils.SSCmdExe;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
-public class PlayerConfigManager extends SSCmdExe {
+public abstract class PlayerConfigManager {
 
-	protected String stringPathToDir = "players";
-
-	public Main plugin;
-
-	public PlayerConfigManager(String name, Main instance) {
-		super(name, true);
-		this.plugin = instance;
-	}
-	@EventHandler
-	public void onLogin(PlayerLoginEvent event) {
-
-	}
-	@EventHandler
-	public void onLogOff(PlayerQuitEvent event) {
-
-	}
-	public void loadPlayerConfig(String playername) {
-
-	}
 	public FileConfiguration getConfig(String playername){
-		File directory = new File(stringPathToDir);
+		File directory = new File(Main.instance.getDataFolder()+File.separator+"Players");
 		if(!directory.isDirectory()){
 			return null;//the directory doesnt exist, so the file doesnt exist. make sure to check null on the other side of the method and catch if the config doesnt exist!
 		}
@@ -45,7 +21,7 @@ public class PlayerConfigManager extends SSCmdExe {
 		return config;
 	}
 	public boolean createConfig(String playername) throws IOException{
-		File directory = new File(stringPathToDir);
+		File directory = new File(Main.instance.getDataFolder()+File.separator+"Players");
 		if(!directory.isDirectory()){
 			directory.mkdirs();
 		}
@@ -57,7 +33,7 @@ public class PlayerConfigManager extends SSCmdExe {
 		return true; //config file successfully created
 	}
 	public void saveConfig(FileConfiguration config, String playername) throws IOException{
-		File file = new File(stringPathToDir, playername+".yml");
+		File file = new File(Main.instance.getDataFolder()+File.separator+"Players", playername+".yml");
 		if(!file.exists()){
 			file.createNewFile();
 		}

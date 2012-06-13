@@ -11,8 +11,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import ru.tehkode.permissions.PermissionManager;
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+
 public class Sts extends SSCmdExe {
 	Main plugin;
+	
+	PermissionManager pex = PermissionsEx.getPermissionManager();
 
 	public Sts(String name, Main instance) {
 		super(name, false);
@@ -68,13 +73,30 @@ public class Sts extends SSCmdExe {
 					}
 					else {
 						String targetname = args[1];
-						Player target = Bukkit.getPlayer(targetname);
+						OfflinePlayer target = Bukkit.getOfflinePlayer(targetname);
 						String perm = args[2];
-						if (target.hasPermission(perm)) {
-							sender.sendMessage(g + target.getName() + " has the permission " + perm);
+						String yes = (g + target.getName() + " has the permission " + perm);
+						String no = (r + target.getName() + " does not have the permission " + perm);
+						if (target.isOnline()) {
+							if (target.getPlayer().hasPermission(perm)) {
+								sender.sendMessage(yes);
+							}
+							else {
+								sender.sendMessage(no);
+							}
 						}
 						else {
-							sender.sendMessage(r + target.getName() + " does not have the permission " + perm);
+							if (Bukkit.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
+								if (pex.has(target.getPlayer(), perm)){
+									sender.sendMessage(yes);
+								}
+								else {
+									sender.sendMessage(no);
+								}
+							}
+							else {
+								sender.sendMessage(r + "Please install PermissionsEx to use this command with references to offline players.");
+							}
 						}
 					}
 				}

@@ -90,7 +90,6 @@ public class ChatFilter extends SSCmdExe {
 			try {
 				catchListenerException(e, event.getEventName());
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}

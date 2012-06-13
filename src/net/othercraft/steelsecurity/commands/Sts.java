@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -81,8 +80,8 @@ public class Sts extends SSCmdExe {
 						String world = "";
 						String worldname = "";
 						if (args.length==4) {
-						world = Bukkit.getWorld(args[3]).toString();
-						worldname = Bukkit.getWorld(args[3]).getName();
+							world = Bukkit.getWorld(args[3]).toString();
+							worldname = Bukkit.getWorld(args[3]).getName();
 						}
 						if (target.isOnline()) {
 							if (args.length==3) {
@@ -114,7 +113,7 @@ public class Sts extends SSCmdExe {
 								}
 								else {
 									sender.sendMessage(r + "Please define a a world when checking a permission of an offline player.");
-								}	
+								}
 							}
 							else {
 								sender.sendMessage(r + "Please install PermissionsEx to use this command with references to offline players.");

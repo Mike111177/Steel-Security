@@ -14,8 +14,9 @@ import org.bukkit.entity.Player;
 public class Sts extends SSCmdExe {
 	Main plugin;
 
-	public Sts(String name) {
+	public Sts(String name, Main instance) {
 		super(name, false);
+		plugin = instance;
 	}
 	//Defines Chat Colors
 	ChatColor r = ChatColor.RED;
@@ -148,6 +149,7 @@ public class Sts extends SSCmdExe {
 			if (args[0].equalsIgnoreCase("reload")) {
 				if (sender.hasPermission("steelsecurity.commands.reload")) {
 					plugin.reloadConfig();
+					sender.sendMessage(g + plugin.getConfig().getString("General.Prefix") + ": Config Reloaded.");
 				}
 				else {
 					sender.sendMessage(noperm);

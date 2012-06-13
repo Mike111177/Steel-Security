@@ -27,7 +27,7 @@ public class Main extends JavaPlugin{
 		commands();
 	}
 	private void commands() {//register commands here
-		base = new Sts("base");
+		base = new Sts("base", this);
 		getCommand("sts").setExecutor(base);
 	}
 	private void registerListeners() {//register listeners here

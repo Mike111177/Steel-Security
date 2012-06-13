@@ -1,9 +1,8 @@
-package net.othercraft.steelsecurity.listeners;
+package net.othercraft.steelsecurity;
 
 import java.io.File;
 import java.io.IOException;
 
-import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.configuration.file.FileConfiguration;

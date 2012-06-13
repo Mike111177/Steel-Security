@@ -1,14 +1,16 @@
-package net.othercraft.steelsecurity;
+package net.othercraft.steelsecurity.utils;
 
 import java.io.File;
 import java.io.IOException;
+
+import net.othercraft.steelsecurity.Main;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public abstract class PlayerConfigManager {
 
-	public FileConfiguration getConfig(String playername){
+	public static FileConfiguration getConfig(String playername){
 		File directory = new File(Main.instance.getDataFolder()+File.separator+"Players");
 		if(!directory.isDirectory()){
 			return null;//the directory doesnt exist, so the file doesnt exist. make sure to check null on the other side of the method and catch if the config doesnt exist!
@@ -20,7 +22,7 @@ public abstract class PlayerConfigManager {
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		return config;
 	}
-	public boolean createConfig(String playername) throws IOException{
+	public static boolean createConfig(String playername) throws IOException{
 		File directory = new File(Main.instance.getDataFolder()+File.separator+"Players");
 		if(!directory.isDirectory()){
 			directory.mkdirs();
@@ -32,7 +34,7 @@ public abstract class PlayerConfigManager {
 		file.createNewFile();
 		return true; //config file successfully created
 	}
-	public void saveConfig(FileConfiguration config, String playername) throws IOException{
+	public static void saveConfig(FileConfiguration config, String playername) throws IOException{
 		File file = new File(Main.instance.getDataFolder()+File.separator+"Players", playername+".yml");
 		if(!file.exists()){
 			file.createNewFile();

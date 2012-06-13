@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -16,7 +17,7 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class Sts extends SSCmdExe {
 	Main plugin;
-	
+
 	PermissionManager pex = PermissionsEx.getPermissionManager();
 
 	public Sts(String name, Main instance) {
@@ -67,7 +68,7 @@ public class Sts extends SSCmdExe {
 						sender.sendMessage("Not enough arguments!");
 						sender.sendMessage("Usage: /sts checkperm <player> <permission>");
 					}
-					else if (args.length>3) {
+					else if (args.length>4) {
 						sender.sendMessage("Too many arguments!");
 						sender.sendMessage("Usage: /sts checkperm <player> <permission>");
 					}
@@ -77,22 +78,43 @@ public class Sts extends SSCmdExe {
 						String perm = args[2];
 						String yes = (g + target.getName() + " has the permission " + perm);
 						String no = (r + target.getName() + " does not have the permission " + perm);
-						if (target.isOnline()) {
-							if (target.getPlayer().hasPermission(perm)) {
-								sender.sendMessage(yes);
-							}
-							else {
-								sender.sendMessage(no);
-							}
+						String world = "";
+						String worldname = "";
+						if (args.length==4) {
+						world = Bukkit.getWorld(args[3]).toString();
+						worldname = Bukkit.getWorld(args[3]).getName();
 						}
-						else {
-							if (Bukkit.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
-								if (pex.has(target.getPlayer(), perm)){
+						if (target.isOnline()) {
+							if (args.length==3) {
+								if (target.getPlayer().hasPermission(perm)) {
 									sender.sendMessage(yes);
 								}
 								else {
 									sender.sendMessage(no);
 								}
+							}
+							else {
+								if (pex.has(target.getName(), perm, world)){
+									sender.sendMessage(yes + " in world " + worldname);
+								}
+								else {
+									sender.sendMessage(no + " in world " + worldname);
+								}
+							}
+						}
+						else {
+							if (Bukkit.getServer().getPluginManager().isPluginEnabled("PermissionsEx")){
+								if (args.length==4){
+									if (pex.has(target.getName(), perm, world)){
+										sender.sendMessage(yes + " in world " + worldname);
+									}
+									else {
+										sender.sendMessage(no + " in world " + worldname);
+									}
+								}
+								else {
+									sender.sendMessage(r + "Please define a a world when checking a permission of an offline player.");
+								}	
 							}
 							else {
 								sender.sendMessage(r + "Please install PermissionsEx to use this command with references to offline players.");

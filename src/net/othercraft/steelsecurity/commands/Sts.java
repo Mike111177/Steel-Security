@@ -166,6 +166,14 @@ public class Sts extends SSCmdExe {
 					sender.sendMessage(noperm);
 				}
 			}
+			if (args[0].equalsIgnoreCase("gamemode")) {
+				if (sender.hasPermission("steelsecurity.commands.gamemode")) {
+					GameModeCmdCatch.stsgamemode(sender, args);
+				}
+				else {
+					sender.sendMessage(noperm);
+				}
+			}
 			if (args[0].equalsIgnoreCase("checkgm")) {
 				if (sender.hasPermission("steelsecurity.commands.checkgm")) {
 					if (args.length==2){
@@ -199,6 +207,9 @@ public class Sts extends SSCmdExe {
 		}
 		if (sender.hasPermission("steelsecurity.commands.listop")){
 			sender.sendMessage(g + "/sts listop:" + y + " List ops.");
+		}
+		if (sender.hasPermission("steelsecurity.commands.gamemode")) {
+			sender.sendMessage(g + "/sts gamemode:" + y + " Changes the gamemode of another player.");
 		}
 		if (sender.hasPermission("steelsecurity.commands.checkgm")){
 			sender.sendMessage(g + "/sts checkgm:" + y + " Checks what Game Mode a player is in.");

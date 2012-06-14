@@ -34,6 +34,8 @@ public class Config {
 		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Percent", 70);
 		plugin.getConfig().addDefault("Login_Limiter.Enabled", false);
 		plugin.getConfig().addDefault("Login_Limiter.Time", 4);
+		plugin.getConfig().addDefault("Offline_GameMode_Changer.Enabled", false);
+		plugin.getConfig().addDefault("Offline_GameMode_Changer.Default_GameMode", 0);
 	}
 	public void editConfigCmd(String[] args) {
 		String action = args[1];

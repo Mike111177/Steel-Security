@@ -23,6 +23,7 @@ public class PlayerConfigListener extends SSCmdExe {
 	@EventHandler
 	public void loadConfig(PlayerJoinEvent event)throws Exception{
 		try {
+			Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
 			String playername = event.getPlayer().getName();
 			FileConfiguration config = PlayerConfigManager.getConfig(playername);
 			if (config==null){
@@ -33,10 +34,14 @@ public class PlayerConfigListener extends SSCmdExe {
 					throw e;
 				}
 			}
-			config.addDefault("GameMode", 0);
+			if (gmcheck) {
+				config.addDefault("GameMode", plugin.getConfig().getInt("Offline_GameMode_Changer.Default_GameMode"));
+			}
 			config.options().copyDefaults(true);
 			PlayerConfigManager.saveConfig(config, playername);
-			event.getPlayer().setGameMode(GameMode.getByValue(config.getInt("GameMode")));
+			if (gmcheck) {
+				event.getPlayer().setGameMode(GameMode.getByValue(config.getInt("GameMode")));
+			}
 		}
 		catch (Exception e){
 			try {

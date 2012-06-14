@@ -127,29 +127,6 @@ public class Sts extends SSCmdExe {
 					sender.sendMessage(noperm);
 				}
 			}
-			if (args[0].equalsIgnoreCase("listgm")){//FIXME add a way to include offline players
-				if (sender.hasPermission("steelsecurity.commands.listgm")) {
-					Player[] p = Bukkit.getOnlinePlayers();
-					int count = p.length;
-					int counter = 0;
-					while (counter<count) {
-						Player rt = p[counter];
-						GameMode gm = rt.getGameMode();
-						if (args.length==2) {
-							if (args[1].equalsIgnoreCase(g.toString())){
-								sender.sendMessage(rt.getName() + ": " + gm);
-							}
-						}
-						else {
-							sender.sendMessage(rt.getName() + ": " + gm);
-						}
-						++counter;
-					}
-				}
-				else {
-					sender.sendMessage(noperm);
-				}
-			}
 			if (args[0].equalsIgnoreCase("listop")){
 				if (sender.hasPermission("steelsecurity.commands.listop")) {
 					String list = "";
@@ -219,9 +196,6 @@ public class Sts extends SSCmdExe {
 		}
 		if (sender.hasPermission("steelsecurity.commands.checkperm")){
 			sender.sendMessage(g + "/sts checkperm:" + y + " Checks a permmision for another player.");
-		}
-		if (sender.hasPermission("steelsecurity.commands.listgm")){
-			sender.sendMessage(g + "/sts listgm:" + y + " List online players with their gamemode.");
 		}
 		if (sender.hasPermission("steelsecurity.commands.listop")){
 			sender.sendMessage(g + "/sts listop:" + y + " List ops.");

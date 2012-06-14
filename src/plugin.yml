@@ -28,7 +28,6 @@ permissions:
         steelsecurity.commands.sts: true
         steelsecurity.commands.help: true
         steelsecurity.commands.checkperm: true
-        steelsecurity.commands.listgm: true
         steelsecurity.commands.listop: true
         steelsecurity.commands.checkgm: true
         steelsecurity.commands.reload: true

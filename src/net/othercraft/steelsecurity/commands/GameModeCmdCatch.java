@@ -1,11 +1,13 @@
 package net.othercraft.steelsecurity.commands;
 
 import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -39,15 +41,17 @@ public class GameModeCmdCatch extends SSCmdExe {
 			Player target = Bukkit.getPlayer(args[1]);
 			if (target.isOnline()){
 				gm = decodeGM(args[1], sender);
-				if (gm!=null){
-					
+				if (gmcheck) {
+					if (gm!=null) {
+						configSet(target, gm, sender);
+					}
 				}
 			}
 			else {
 				if (gmcheck) {
 					gm = decodeGM(args[1], sender);
 					if (gm!=null) {
-						
+						configSet(target, gm, sender);
 					}
 				}
 				else {
@@ -56,25 +60,34 @@ public class GameModeCmdCatch extends SSCmdExe {
 			}
 		}
 	}
-		private GameMode decodeGM(String pregm, CommandSender sender) {
-			GameMode gm = null;
-			switch (pregm){
-			case "1":
-				gm = (GameMode.getByValue(1));
-				break;
-			case "0":
-				gm = (GameMode.getByValue(0));
-				break;
-			case "(?i)creative":
-				gm = (GameMode.getByValue(1));
-				break;
-			case "(?i)survival":
-				gm = (GameMode.getByValue(0));
-				break;
-			default:
-				sender.sendMessage("Unknown game mode: " + pregm);
-				break;
-			}
-			return gm;
+	private void configSet(Player target, GameMode gm, CommandSender sender) {
+		FileConfiguration config = PlayerConfigManager.getConfig(target.getName());
+		if (config!=null) {
+			config.set("GameMode", gm.getValue());
+		}
+		else {
+			sender.sendMessage("There are no users registered with the name: "+ target.getName());
 		}
 	}
+	private GameMode decodeGM(String pregm, CommandSender sender) {
+		GameMode gm = null;
+		switch (pregm){
+		case "1":
+			gm = (GameMode.getByValue(1));
+			break;
+		case "0":
+			gm = (GameMode.getByValue(0));
+			break;
+		case "(?i)creative":
+			gm = (GameMode.getByValue(1));
+			break;
+		case "(?i)survival":
+			gm = (GameMode.getByValue(0));
+			break;
+		default:
+			sender.sendMessage("Unknown game mode: " + pregm);
+			break;
+		}
+		return gm;
+	}
+}

@@ -1,5 +1,6 @@
 package net.othercraft.steelsecurity;
 
+import net.othercraft.steelsecurity.commands.GameModeCmdCatch;
 import net.othercraft.steelsecurity.commands.Sts;
 import net.othercraft.steelsecurity.listeners.ChatFilter;
 import net.othercraft.steelsecurity.listeners.JoinMessage;
@@ -22,6 +23,9 @@ public class Main extends JavaPlugin{
 	private LoginLimiter ll;
 	@SuppressWarnings("unused")
 	private PlayerConfigListener pcl;
+	@SuppressWarnings("unused")
+	private GameModeCmdCatch gmcc;
+
 
 	public void onEnable(){
 		new Config(this).loadConfiguration();
@@ -38,6 +42,7 @@ public class Main extends JavaPlugin{
 		jm = new JoinMessage(null, this);
 		ll = new LoginLimiter(null, this);
 		pcl = new PlayerConfigListener(null, this);
+		gmcc = new GameModeCmdCatch(null, this);
 	}
 
 	public void onDisable(){

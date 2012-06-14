@@ -1,6 +1,7 @@
 package net.othercraft.steelsecurity.commands;
 
 import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.Bukkit;
@@ -9,6 +10,7 @@ import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import ru.tehkode.permissions.PermissionManager;
@@ -188,6 +190,14 @@ public class Sts extends SSCmdExe {
 				}
 			}
 			if (args[0].equalsIgnoreCase("checkgm")) {
+				if (sender.hasPermission("steelsecurity.commands.checkgm")) {
+					if (args.length==2){
+						String target = Bukkit.getServer().getPlayer(args[2]).getName();
+						FileConfiguration config = PlayerConfigManager.getConfig(target);
+						int gm = config.getInt("GameMode");
+						sender.sendMessage(target + " is in" + GameMode.getByValue(gm).name() + "mode.");
+					}
+				}
 			}
 			if (args[0].equalsIgnoreCase("reload")) {
 				if (sender.hasPermission("steelsecurity.commands.reload")) {
@@ -215,6 +225,9 @@ public class Sts extends SSCmdExe {
 		}
 		if (sender.hasPermission("steelsecurity.commands.listop")){
 			sender.sendMessage(g + "/sts listop:" + y + " List ops.");
+		}
+		if (sender.hasPermission("steelsecurity.commands.checkgm")){
+			sender.sendMessage(g + "/sts checkgm:" + y + " Checks what Game Mode a player is in.");
 		}
 		if (sender.hasPermission("steelsecurity.commands.reload")){
 			sender.sendMessage(g + "/sts reload:" + y + " Reloads config.");

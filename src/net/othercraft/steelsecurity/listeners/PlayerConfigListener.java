@@ -20,16 +20,23 @@ public class PlayerConfigListener extends SSCmdExe {
 		this.plugin = instance;
 	}
 	@EventHandler
-	public void loadConfig(PlayerJoinEvent event){
+	public void loadConfig(PlayerJoinEvent event)throws Exception{
 		try {
 			String playername = event.getPlayer().getName();
-			if (PlayerConfigManager.getConfig(playername)==null){
-				PlayerConfigManager.createConfig(playername);
+			FileConfiguration config = PlayerConfigManager.getConfig(playername);
+			if (config==null){
+				if(PlayerConfigManager.createConfig(playername)){
+					config = PlayerConfigManager.getConfig(playername);
+				} else {
+					IOException e = new IOException();
+					throw e;
+					return;
+				}
 			}
-			PlayerConfigManager.getConfig(playername).addDefault("GameMode", 0);
-			PlayerConfigManager.getConfig(playername).options().copyDefaults(true);
-			PlayerConfigManager.saveConfig(PlayerConfigManager.getConfig(playername), playername);
-			event.getPlayer().setGameMode(GameMode.getByValue(PlayerConfigManager.getConfig(playername).getInt("GameMode")));
+			config.addDefault("GameMode", 0);
+			config.options().copyDefaults(true);
+			PlayerConfigManager.saveConfig(config, playername);
+			event.getPlayer().setGameMode(GameMode.getByValue(config.getInt("GameMode")));
 		}
 		catch (Exception e){
 			try {

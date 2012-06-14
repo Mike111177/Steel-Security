@@ -6,6 +6,7 @@ import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
+import org.bukkit.GameMode;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -22,13 +23,13 @@ public class PlayerConfigListener extends SSCmdExe {
 	public void loadConfig(PlayerJoinEvent event){
 		try {
 			String playername = event.getPlayer().getName();
-
-			if (PlayerConfigManager.getConfig(playername)==null) {
+			if (PlayerConfigManager.getConfig(playername)==null){
 				PlayerConfigManager.createConfig(playername);
 			}
-			else {
-
-			}
+			PlayerConfigManager.getConfig(playername).addDefault("GameMode", 0);
+			PlayerConfigManager.getConfig(playername).options().copyDefaults(true);
+			PlayerConfigManager.saveConfig(PlayerConfigManager.getConfig(playername), playername);
+			event.getPlayer().setGameMode(GameMode.getByValue(PlayerConfigManager.getConfig(playername).getInt("GameMode")));
 		}
 		catch (Exception e){
 			try {

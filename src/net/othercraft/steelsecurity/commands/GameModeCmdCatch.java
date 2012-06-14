@@ -24,6 +24,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 		}
 	}
 	public void stsgamemode(CommandSender sender, String[] args) {
+		Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
 		String usage = "/sts gamemode <player> <Game Mode>";
 		if (args.length<3){
 			sender.sendMessage("Not enough arguments!");

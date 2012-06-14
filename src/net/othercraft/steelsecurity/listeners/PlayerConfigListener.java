@@ -30,7 +30,6 @@ public class PlayerConfigListener extends SSCmdExe {
 				} else {
 					IOException e = new IOException();
 					throw e;
-					return;
 				}
 			}
 			config.addDefault("GameMode", 0);

@@ -24,6 +24,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 		}
 	}
 	public void stsgamemode(CommandSender sender, String[] args) {
+		GameMode gm;
 		Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
 		String usage = "/sts gamemode <player> <Game Mode>";
 		if (args.length<3){
@@ -37,28 +38,43 @@ public class GameModeCmdCatch extends SSCmdExe {
 		else {
 			Player target = Bukkit.getPlayer(args[1]);
 			if (target.isOnline()){
-				switch (args[1]){
-				case "1":
-					target.setGameMode(GameMode.getByValue(1));
-					break;
-				case "0":
-					target.setGameMode(GameMode.getByValue(0));
-					break;
-				case "(?i)creative":
-					target.setGameMode(GameMode.getByValue(1));
-					break;
-				case "(?i)survival":
-					target.setGameMode(GameMode.getByValue(0));
-					break;
-				default:
-					sender.sendMessage("Unknown game mode: " + args[1]);
-					break;
+				gm = decodeGM(args[1], sender);
+				if (gm!=null){
+					
 				}
 			}
 			else {
-				
+				if (gmcheck) {
+					gm = decodeGM(args[1], sender);
+					if (gm!=null) {
+						
+					}
+				}
+				else {
+					sender.sendMessage("Please set Offline_GameMode_Changer.Enabled to true in the config in order to change the gamemode of an offline player.");
+				}
 			}
-
 		}
 	}
-}
+		private GameMode decodeGM(String pregm, CommandSender sender) {
+			GameMode gm = null;
+			switch (pregm){
+			case "1":
+				gm = (GameMode.getByValue(1));
+				break;
+			case "0":
+				gm = (GameMode.getByValue(0));
+				break;
+			case "(?i)creative":
+				gm = (GameMode.getByValue(1));
+				break;
+			case "(?i)survival":
+				gm = (GameMode.getByValue(0));
+				break;
+			default:
+				sender.sendMessage("Unknown game mode: " + pregm);
+				break;
+			}
+			return gm;
+		}
+	}

@@ -13,7 +13,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 public class GameModeCmdCatch extends SSCmdExe {
 	Main plugin;
 	public GameModeCmdCatch(String name, Main instance) {
-		super(name, true);//true only if its a listener, false if it isnt
+		super("GameModeCmdCatch", true);//true only if its a listener, false if it isnt
 		this.plugin = instance;
 	}
 	@EventHandler
@@ -23,7 +23,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 			event.setCancelled(true);
 		}
 	}
-	public static void stsgamemode(CommandSender sender, String[] args) {
+	public void stsgamemode(CommandSender sender, String[] args) {
 		String usage = "/sts gamemode <player> <Game Mode>";
 		if (args.length<3){
 			sender.sendMessage("Not enough arguments!");

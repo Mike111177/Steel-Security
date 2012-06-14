@@ -168,7 +168,7 @@ public class Sts extends SSCmdExe {
 			}
 			if (args[0].equalsIgnoreCase("gamemode")) {
 				if (sender.hasPermission("steelsecurity.commands.gamemode")) {
-					GameModeCmdCatch.stsgamemode(sender, args);
+					new GameModeCmdCatch(noperm, plugin).stsgamemode(sender, args);
 				}
 				else {
 					sender.sendMessage(noperm);

@@ -71,22 +71,14 @@ public class GameModeCmdCatch extends SSCmdExe {
 	}
 	private GameMode decodeGM(String pregm, CommandSender sender) {
 		GameMode gm = null;
-		switch (pregm){
-		case "1":
+		if (pregm=="(?i)creative" || pregm=="1") {
 			gm = (GameMode.getByValue(1));
-			break;
-		case "0":
+		}
+		else if(pregm=="(?i)survival" || pregm=="0"){
 			gm = (GameMode.getByValue(0));
-			break;
-		case "(?i)creative":
-			gm = (GameMode.getByValue(1));
-			break;
-		case "(?i)survival":
-			gm = (GameMode.getByValue(0));
-			break;
-		default:
+		}
+		else {
 			sender.sendMessage("Unknown game mode: " + pregm);
-			break;
 		}
 		return gm;
 	}

@@ -40,7 +40,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 		else {
 			Player target = Bukkit.getPlayer(args[1]);
 			if (target.isOnline()){
-				gm = decodeGM(args[1], sender);
+				gm = decodeGM(args[2], sender);
 				if (gmcheck) {
 					if (gm!=null) {
 						configSet(target, gm, sender);
@@ -49,7 +49,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 			}
 			else {
 				if (gmcheck) {
-					gm = decodeGM(args[1], sender);
+					gm = decodeGM(args[2], sender);
 					if (gm!=null) {
 						configSet(target, gm, sender);
 					}
@@ -71,10 +71,10 @@ public class GameModeCmdCatch extends SSCmdExe {
 	}
 	private GameMode decodeGM(String pregm, CommandSender sender) {
 		GameMode gm = null;
-		if (pregm=="(?i)creative" || pregm=="1") {
+		if (pregm.equalsIgnoreCase("creative") || pregm.equalsIgnoreCase("1")) {
 			gm = (GameMode.getByValue(1));
 		}
-		else if(pregm=="(?i)survival" || pregm=="0"){
+		else if(pregm.equalsIgnoreCase("survival") || pregm.equalsIgnoreCase("0")){
 			gm = (GameMode.getByValue(0));
 		}
 		else {

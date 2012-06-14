@@ -8,6 +8,7 @@ import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -23,25 +24,7 @@ public class PlayerConfigListener extends SSCmdExe {
 	@EventHandler
 	public void loadConfig(PlayerJoinEvent event)throws Exception{
 		try {
-			Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
-			String playername = event.getPlayer().getName();
-			FileConfiguration config = PlayerConfigManager.getConfig(playername);
-			if (config==null){
-				if(PlayerConfigManager.createConfig(playername)){
-					config = PlayerConfigManager.getConfig(playername);
-				} else {
-					IOException e = new IOException();
-					throw e;
-				}
-			}
-			if (gmcheck) {
-				config.addDefault("GameMode", plugin.getConfig().getInt("Offline_GameMode_Changer.Default_GameMode"));
-			}
-			config.options().copyDefaults(true);
-			PlayerConfigManager.saveConfig(config, playername);
-			if (gmcheck) {
-				event.getPlayer().setGameMode(GameMode.getByValue(config.getInt("GameMode")));
-			}
+			checkPlayerConfig(event.getPlayer());
 		}
 		catch (Exception e){
 			try {
@@ -49,6 +32,35 @@ public class PlayerConfigListener extends SSCmdExe {
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+		}
+	}
+	public void checkPlayerConfig(Player player) {
+		Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
+		String playername = player.getName();
+		FileConfiguration config = PlayerConfigManager.getConfig(playername);
+		if (config==null){
+			try {
+				if(PlayerConfigManager.createConfig(playername)){
+					config = PlayerConfigManager.getConfig(playername);
+				} else {
+					IOException e = new IOException();
+					throw e;
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		if (gmcheck) {
+			config.addDefault("GameMode", plugin.getConfig().getInt("Offline_GameMode_Changer.Default_GameMode"));
+		}
+		config.options().copyDefaults(true);
+		try {
+			PlayerConfigManager.saveConfig(config, playername);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (gmcheck) {
+			player.setGameMode(GameMode.getByValue(config.getInt("GameMode")));
 		}
 	}
 

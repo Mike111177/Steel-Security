@@ -1,5 +1,7 @@
 package net.othercraft.steelsecurity.commands;
 
+import java.io.IOException;
+
 import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
@@ -46,6 +48,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 						configSet(target, gm, sender);
 					}
 				}
+				target.setGameMode(gm);
 			}
 			else {
 				if (gmcheck) {
@@ -64,6 +67,11 @@ public class GameModeCmdCatch extends SSCmdExe {
 		FileConfiguration config = PlayerConfigManager.getConfig(target.getName());
 		if (config!=null) {
 			config.set("GameMode", gm.getValue());
+			try {
+				PlayerConfigManager.saveConfig(config, target.getName());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		else {
 			sender.sendMessage("There are no users registered with the name: "+ target.getName());

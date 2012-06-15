@@ -7,6 +7,8 @@ import net.othercraft.steelsecurity.listeners.JoinMessage;
 import net.othercraft.steelsecurity.listeners.LoginLimiter;
 import net.othercraft.steelsecurity.listeners.PlayerConfigListener;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin{
@@ -32,6 +34,14 @@ public class Main extends JavaPlugin{
 		instance = this;
 		registerListeners();
 		commands();
+		playerChecks();
+	}
+	private void playerChecks() {
+		Player[] players = Bukkit.getOnlinePlayers();
+		for (Player player : players) {
+			new PlayerConfigListener(null, this).checkPlayerConfig(player);
+		}
+		
 	}
 	private void commands() {//register commands here
 		base = new Sts("base", this);

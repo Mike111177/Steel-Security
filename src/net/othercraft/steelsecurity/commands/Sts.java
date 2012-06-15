@@ -63,7 +63,7 @@ public class Sts extends SSCmdExe {
 					sender.sendMessage(noperm);
 				}
 			}
-			if (args[0].equalsIgnoreCase("checkperm")){//FIXME stack error on check for an offline player.
+			if (args[0].equalsIgnoreCase("checkperm")){
 				if (sender.hasPermission("steelsecurity.commands.checkperm")) {
 					if (args.length<3) {
 						sender.sendMessage("Not enough arguments!");

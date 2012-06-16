@@ -18,6 +18,7 @@ public class SpectateManager extends SSCmdExe {
 	}
 	Map<Player, Boolean> spectators = new HashMap<Player, Boolean>();
 	Map<Player, Boolean> spectatees = new HashMap<Player, Boolean>();
+	Map<Player, Player> spectating = new HashMap<Player, Player>();
 	Map<Player, Player[]> speclist = new HashMap<Player, Player[]>();
 	
 	@EventHandler
@@ -26,16 +27,24 @@ public class SpectateManager extends SSCmdExe {
 	}
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
-		
 	}
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
-		
+		Player player = event.getPlayer();
+		if (spectatees.get(player)){
+			Player[] tostops = speclist.get(player);
+			for (Player tostop : tostops) {
+				stop(tostop);
+			}
+		}
+		spectators.remove(player);
+		spectatees.remove(player);
+		speclist.remove(player);
 	}
 	private void start() {
 		
 	}
-	private void stop() {
+	private void stop(Player tostop) {
 		
 	}
 	public void stopall(Boolean state) {

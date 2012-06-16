@@ -1,6 +1,7 @@
 package net.othercraft.steelsecurity.listeners;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -20,7 +21,7 @@ public class SpectateManager extends SSCmdExe {
 	Map<Player, Boolean> spectators = new HashMap<Player, Boolean>();//if some is a spectating someone else.
 	Map<Player, Boolean> spectatees = new HashMap<Player, Boolean>();//if someone is being spectated.
 	Map<Player, Player> spectating = new HashMap<Player, Player>();//Who a player is spectating.
-	Map<Player, Player[]> speclist = new HashMap<Player, Player[]>();//Who a player is being spectated by.
+	Map<Player, HashSet<Player>> speclist = new HashMap<Player, HashSet<Player>>();//Who a player is being spectated by.
 	Map<Player, Location> origion = new HashMap<Player, Location>();//Where a player was before beginning spectate
 	
 	
@@ -34,7 +35,7 @@ public class SpectateManager extends SSCmdExe {
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		if (spectatees.get(player)){
-			Player[] tostops = speclist.get(player);
+			HashSet<Player> tostops = speclist.get(player);
 			for (Player tostop : tostops) {
 				stop(tostop);
 			}
@@ -49,16 +50,14 @@ public class SpectateManager extends SSCmdExe {
 		spectating.put(tostart, tostarton);
 		origion.put(tostart, tostart.getLocation());
 		if (speclist.get(tostarton)!=null) {
-			Player[] before = speclist.get(tostarton);
-			Player[] after = new Player[before.length + 1];
-			for(int i = 0; i < before.length; i++) after[i] = before[i];
-			after[before.length] = tostart;
-			speclist.put(tostarton, after);
+			HashSet<Player> thenew = new HashSet<Player>();
+			thenew.add(tostart);
+			speclist.put(tostarton, thenew);
 		}
 		else {
-			Player[] list = null;
-			list[1] = tostart;
-			speclist.put(tostarton, list);
+			HashSet<Player> thenew = speclist.get(tostarton);
+			thenew.add(tostart);
+			speclist.put(tostarton, thenew);
 		}
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			tostart.hidePlayer(player);
@@ -66,8 +65,24 @@ public class SpectateManager extends SSCmdExe {
 		tostarton.hidePlayer(tostart);
 	}
 	private void stop(Player tostop) {
-		
-	}
+		Player tostopon = spectating.get(tostop);
+		spectators.put(tostop, false);
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			tostop.showPlayer(player);
+		}
+		tostopon.showPlayer(tostop);
+		spectating.remove(tostop);
+		tostop.teleport(origion.get(tostop));
+		origion.remove(tostop);
+		if (speclist.get(tostopon).size()==1){
+			speclist.remove(tostopon);
+		}
+		else {
+			HashSet<Player> thenew = speclist.get(tostopon);
+			thenew.remove(tostop);
+			speclist.put(tostopon, thenew);
+		}
+	}	
 	public void stopall(Boolean state) {
 		
 	}
@@ -83,7 +98,7 @@ public class SpectateManager extends SSCmdExe {
 	public Boolean isSpectating(Player player){
 		return spectators.get(player);
 	}
-	public Player[] getSpectators(Player player){
+	public HashSet<Player> getSpectators(Player player){
 		return speclist.get(player);
 	}
 

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -23,7 +24,7 @@ public class SpectateManager extends SSCmdExe {
 	Map<Player, Player> spectating = new HashMap<Player, Player>();//Who a player is spectating.
 	Map<Player, HashSet<Player>> speclist = new HashMap<Player, HashSet<Player>>();//Who a player is being spectated by.
 	Map<Player, Location> origion = new HashMap<Player, Location>();//Where a player was before beginning spectate
-	
+	HashSet<Player> spectates = new HashSet<Player>();//Who is specating other people
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
@@ -45,6 +46,7 @@ public class SpectateManager extends SSCmdExe {
 		spectatees.remove(player);
 	}
 	private void start(Player tostart, Player tostarton) {
+		spectates.add(tostart);
 		spectators.put(tostart, true);
 		spectatees.put(tostarton, true);
 		spectating.put(tostart, tostarton);
@@ -65,6 +67,7 @@ public class SpectateManager extends SSCmdExe {
 		tostarton.hidePlayer(tostart);
 	}
 	private void stop(Player tostop) {
+		spectates.remove(tostop);
 		Player tostopon = spectating.get(tostop);
 		spectators.put(tostop, false);
 		for (Player player : Bukkit.getOnlinePlayers()) {
@@ -84,9 +87,11 @@ public class SpectateManager extends SSCmdExe {
 		}
 	}	
 	public void stopall(Boolean state) {
-		
+		for (Player player : spectates) {
+			stop(player);
+		}
 	}
-	public void speccmd() {
+	public void speccmd(CommandSender sender, String[] args) {
 		
 	}
 	public Player getSpectatee(Player player){
@@ -100,6 +105,9 @@ public class SpectateManager extends SSCmdExe {
 	}
 	public HashSet<Player> getSpectators(Player player){
 		return speclist.get(player);
+	}
+	public HashSet<Player> getAllSpectators(){
+		return spectates;
 	}
 
 }

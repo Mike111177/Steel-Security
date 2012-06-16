@@ -7,6 +7,7 @@ import net.othercraft.steelsecurity.listeners.ChatFilter;
 import net.othercraft.steelsecurity.listeners.JoinMessage;
 import net.othercraft.steelsecurity.listeners.LoginLimiter;
 import net.othercraft.steelsecurity.listeners.PlayerConfigListener;
+import net.othercraft.steelsecurity.listeners.SpectateManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -30,6 +31,8 @@ public class Main extends JavaPlugin{
 	private GameModeCmdCatch gmcc;
 	@SuppressWarnings("unused")
 	private BlockBlacklist blbl;
+	@SuppressWarnings("unused")
+	private SpectateManager spm;
 
 
 	public void onEnable(){
@@ -44,7 +47,7 @@ public class Main extends JavaPlugin{
 		for (Player player : players) {
 			new PlayerConfigListener(null, this).checkPlayerConfig(player);
 		}
-		
+		new SpectateManager(null, this).stopAll(true);
 	}
 	private void commands() {//register commands here
 		base = new Sts("base", this);
@@ -57,6 +60,7 @@ public class Main extends JavaPlugin{
 		pcl = new PlayerConfigListener(null, this);
 		gmcc = new GameModeCmdCatch(null, this);
 		blbl = new BlockBlacklist(null, this);
+		spm = new SpectateManager(null, this);
 	}
 
 	public void onDisable(){

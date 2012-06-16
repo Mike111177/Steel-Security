@@ -12,11 +12,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 public class SpectateManager extends SSCmdExe {
 
-	public SpectateManager(String name, Boolean listener) {
+	public SpectateManager(String name, Main plugin) {
 		super("SpectateManager", true);
 	}
 	Map<Player, Boolean> spectators = new HashMap<Player, Boolean>();//if some is a spectating someone else.
@@ -87,12 +88,12 @@ public class SpectateManager extends SSCmdExe {
 			speclist.put(tostopon, thenew);
 		}
 	}	
-	public void stopall(Boolean state) {
+	public void stopAll(Boolean state) {
 		for (Player player : spectates) {
 			stop(player);
 		}
 	}
-	public void speccmd(CommandSender sender, String[] args) {
+	public void specCmd(CommandSender sender, String[] args) {
 		Player player = Bukkit.getPlayerExact(sender.getName());
 		if (!(args.length>2)){
 			if (spectators.get(player)) {

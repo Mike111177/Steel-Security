@@ -1,6 +1,7 @@
 package net.othercraft.steelsecurity.commands;
 
 import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.listeners.SpectateManager;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
@@ -187,6 +188,14 @@ public class Sts extends SSCmdExe {
 				if (sender.hasPermission("steelsecurity.commands.reload")) {
 					plugin.reloadConfig();
 					sender.sendMessage(g + plugin.getConfig().getString("General.Prefix") + ": Config Reloaded.");
+				}
+				else {
+					sender.sendMessage(noperm);
+				}
+			}
+			if (args[0].equalsIgnoreCase("spectate")) {
+				if (sender.hasPermission("steelsecurity.commands.spectate")) {
+					new SpectateManager(noperm, plugin).specCmd(sender, args);
 				}
 				else {
 					sender.sendMessage(noperm);

@@ -36,6 +36,8 @@ public class Config {
 		plugin.getConfig().addDefault("Login_Limiter.Time", 4);
 		plugin.getConfig().addDefault("Offline_GameMode_Changer.Enabled", false);
 		plugin.getConfig().addDefault("Offline_GameMode_Changer.Default_GameMode", 0);
+		plugin.getConfig().addDefault("Block_Blacklist.Enabled", false);
+		plugin.getConfig().addDefault("Block_Blacklist.Blocks", Arrays.asList("7", "10", "11"));
 	}
 	public void editConfigCmd(String[] args) {
 		String action = args[1];

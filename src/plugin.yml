@@ -21,6 +21,7 @@ permissions:
         steelsecurity.bypass.antiflood: true
         steelsecurity.bypass.loginlimiter: true
         steelsecurity.bypass.censor: true
+        steelsecurity.bypass.blockblackist: true
   steelsecurity.commands.*: 
      description: Gives access to all Steel Security commands.
      default: op

@@ -39,6 +39,7 @@ public class SpectateManager extends SSCmdExe {
 			HashSet<Player> tostops = speclist.get(player);
 			for (Player tostop : tostops) {
 				stop(tostop);
+				tostop.sendMessage("Spectating ended because player logged off.");
 			}
 			speclist.remove(player);
 		}
@@ -92,6 +93,19 @@ public class SpectateManager extends SSCmdExe {
 		}
 	}
 	public void speccmd(CommandSender sender, String[] args) {
+		Player player = Bukkit.getPlayerExact(sender.getName());
+		if (!(args.length>2)){
+			if (spectators.get(player)) {
+			stop(player);
+			}
+			if (args.length==2) {
+				start(player, Bukkit.getPlayer(args[1]));
+			}
+		}
+		else {
+			player.sendMessage("Too many arguments!");
+			player.sendMessage("Usage: /sts spectate <player>");
+		}
 		
 	}
 	public Player getSpectatee(Player player){

@@ -27,6 +27,9 @@ public class SpectateManager extends SSCmdExe {
 	}
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		spectators.put(player, false);
+		spectatees.put(player, false);
 	}
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {

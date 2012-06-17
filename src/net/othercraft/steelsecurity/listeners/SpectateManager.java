@@ -109,13 +109,13 @@ public class SpectateManager extends SSCmdExe {
 	//Beyond here only apllies to when a player is being spectated
 	@EventHandler
 	public void onFollow(PlayerMoveEvent event){
-		Boolean cancel = false;
-		if (spectators.get(event.getPlayer().getName())) cancel = true;
+		if (spectators.get(event.getPlayer().getName())) {
+			event.getPlayer().teleport(Bukkit.getPlayerExact(spectating.get(event.getPlayer().getName())));
+		}
 		if (spectatees.get(event.getPlayer().getName())) {
 			for (String playername : speclist.get(event.getPlayer().getName())) {
 				Bukkit.getPlayerExact(playername).teleport(event.getPlayer());
 			}
 		}
-		event.setCancelled(cancel);
 	}
 }

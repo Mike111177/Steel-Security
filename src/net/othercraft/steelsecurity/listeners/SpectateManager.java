@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class SpectateManager extends SSCmdExe {
@@ -61,7 +62,6 @@ public class SpectateManager extends SSCmdExe {
 			player.hidePlayer(tostart);
 		}
 		tostart.hidePlayer(tostarton);
-		System.out.println(tostarton);
 	}
 	private static void stop(Player tostop) {
 		spectates.remove(tostop);
@@ -75,6 +75,9 @@ public class SpectateManager extends SSCmdExe {
 		HashSet<String> thenew = speclist.get(tostopon.getName());
 		thenew.remove(tostop);
 		speclist.put(tostopon.getName(), thenew);
+		Location loc = origion.get(tostop.getName());
+		tostop.teleport(loc);
+		spectatees.put(tostopon.getName(), false);
 	}
 	public static void stopAll() {
 		for (String player : spectates) {
@@ -102,5 +105,17 @@ public class SpectateManager extends SSCmdExe {
 			spectatees.put(player.getName(), false);
 			speclist.put(player.getName(), new HashSet<String>());
 		}
+	}
+	//Beyond here only apllies to when a player is being spectated
+	@EventHandler
+	public void onFollow(PlayerMoveEvent event){
+		Boolean cancel = false;
+		if (spectators.get(event.getPlayer().getName())) cancel = true;
+		if (spectatees.get(event.getPlayer().getName())) {
+			for (String playername : speclist.get(event.getPlayer().getName())) {
+				Bukkit.getPlayerExact(playername).teleport(event.getPlayer());
+			}
+		}
+		event.setCancelled(cancel);
 	}
 }

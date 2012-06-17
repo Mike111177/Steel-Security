@@ -12,6 +12,9 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -45,9 +48,12 @@ public class SpectateManager extends SSCmdExe {
 				Bukkit.getPlayerExact(tostop).sendMessage("Spectating ended because player logged off.");
 			}
 		}
-		speclist.remove(player);
-		spectators.remove(player);
-		spectatees.remove(player);
+		if (spectators.get(player.getName())) {
+			stop(player);
+		}
+		speclist.remove(player.getName());
+		spectators.remove(player.getName());
+		spectatees.remove(player.getName());
 	}
 	private static void start(Player tostart, Player tostarton) {
 		spectates.add(tostart.getName());
@@ -62,6 +68,7 @@ public class SpectateManager extends SSCmdExe {
 			player.hidePlayer(tostart);
 		}
 		tostart.hidePlayer(tostarton);
+		tostart.teleport(tostarton);
 	}
 	private static void stop(Player tostop) {
 		spectates.remove(tostop);
@@ -78,6 +85,7 @@ public class SpectateManager extends SSCmdExe {
 		Location loc = origion.get(tostop.getName());
 		tostop.teleport(loc);
 		spectatees.put(tostopon.getName(), false);
+		origion.remove(tostop.getName());
 	}
 	public static void stopAll() {
 		for (String player : spectates) {
@@ -91,7 +99,18 @@ public class SpectateManager extends SSCmdExe {
 				stop(player);
 			}
 			if (args.length==2) {
-				start(player, Bukkit.getPlayer(args[1]));
+				Player tostarton = Bukkit.getPlayer(args[1]);
+				if (player!=tostarton){
+					if (tostarton!=null) {
+						start(player, tostarton);
+					}
+					else {
+						sender.sendMessage("We could not find anybody by the name of " + args[1]);
+					}
+				}
+				else {
+					sender.sendMessage("You can't spectate your self!");
+				}
 			}
 		}
 		else {
@@ -118,4 +137,23 @@ public class SpectateManager extends SSCmdExe {
 			}
 		}
 	}
+	@EventHandler
+	public void onBreak(BlockBreakEvent event){
+		if (spectators.get(event.getPlayer().getName())) {
+			event.setCancelled(true);
+		}
+	}
+	@EventHandler
+	public void onPlace(BlockPlaceEvent event){
+		if (spectators.get(event.getPlayer().getName())) {
+			event.setCancelled(true);
+		}
+	}
+	@EventHandler
+	public void onDrop(PlayerDropItemEvent event){
+		if (spectators.get(event.getPlayer().getName())) {
+			event.setCancelled(true);
+		}
+	}
+
 }

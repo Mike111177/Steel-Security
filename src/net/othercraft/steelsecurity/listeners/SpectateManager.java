@@ -14,10 +14,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerVelocityEvent;
 
 public class SpectateManager extends SSCmdExe {
 
@@ -138,6 +143,14 @@ public class SpectateManager extends SSCmdExe {
 		}
 	}
 	@EventHandler
+	public void onVelcity(PlayerVelocityEvent event){
+		if (spectatees.get(event.getPlayer().getName())) {
+			for (String playername : speclist.get(event.getPlayer().getName())) {
+				Bukkit.getPlayerExact(playername).setVelocity(event.getVelocity());
+			}
+		}
+	}
+	@EventHandler
 	public void onBreak(BlockBreakEvent event){
 		if (spectators.get(event.getPlayer().getName())) {
 			event.setCancelled(true);
@@ -155,5 +168,16 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 	}
-
+	@EventHandler
+	public void onPickup(PlayerPickupItemEvent event){
+		if (spectators.get(event.getPlayer().getName())) {
+			event.setCancelled(true);
+		}
+	}
+	@EventHandler
+	public void onInteract(PlayerInteractEvent event){
+		if (spectators.get(event.getPlayer().getName())) {
+			event.setCancelled(true);
+		}
+	}
 }

@@ -61,6 +61,7 @@ public class SpectateManager extends SSCmdExe {
 			player.hidePlayer(tostart);
 		}
 		tostart.hidePlayer(tostarton);
+		System.out.println(tostarton);
 	}
 	private static void stop(Player tostop) {
 		spectates.remove(tostop);
@@ -69,10 +70,8 @@ public class SpectateManager extends SSCmdExe {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.showPlayer(tostop);
 		}
-		tostopon.showPlayer(tostop);
+		tostop.showPlayer(tostopon);
 		spectating.remove(tostop);
-		tostop.teleport(origion.get(tostop));
-		origion.remove(tostop);
 		HashSet<String> thenew = speclist.get(tostopon.getName());
 		thenew.remove(tostop);
 		speclist.put(tostopon.getName(), thenew);
@@ -85,7 +84,7 @@ public class SpectateManager extends SSCmdExe {
 	public static void specCmd(CommandSender sender, String[] args) {
 		Player player = Bukkit.getPlayerExact(sender.getName());
 		if (!(args.length>2)){
-			if (spectators.get(player)) {
+			if (spectators.get(player.getName())) {
 				stop(player);
 			}
 			if (args.length==2) {

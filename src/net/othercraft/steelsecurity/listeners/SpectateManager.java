@@ -14,8 +14,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -60,7 +58,7 @@ public class SpectateManager extends SSCmdExe {
 		spectators.remove(player.getName());
 		spectatees.remove(player.getName());
 	}
-	private static void start(Player tostart, Player tostarton) {
+	private void start(Player tostart, Player tostarton) {
 		spectates.add(tostart.getName());
 		spectators.put(tostart.getName(), true);
 		spectatees.put(tostarton.getName(), true);
@@ -75,7 +73,7 @@ public class SpectateManager extends SSCmdExe {
 		tostart.hidePlayer(tostarton);
 		tostart.teleport(tostarton);
 	}
-	private static void stop(Player tostop) {
+	private void stop(Player tostop) {
 		spectates.remove(tostop);
 		Player tostopon = Bukkit.getPlayerExact(spectating.get(tostop.getName()));
 		spectators.put(tostop.getName(), false);
@@ -92,12 +90,12 @@ public class SpectateManager extends SSCmdExe {
 		spectatees.put(tostopon.getName(), false);
 		origion.remove(tostop.getName());
 	}
-	public static void stopAll() {
+	public void stopAll() {
 		for (String player : spectates) {
 			stop(Bukkit.getPlayerExact(player));
 		}
 	}
-	public static void specCmd(CommandSender sender, String[] args) {
+	public void specCmd(CommandSender sender, String[] args) {
 		Player player = Bukkit.getPlayerExact(sender.getName());
 		if (!(args.length>2)){
 			if (spectators.get(player.getName())) {
@@ -123,7 +121,7 @@ public class SpectateManager extends SSCmdExe {
 			player.sendMessage("Usage: /sts spectate <player>");
 		}
 	}
-	public static void registerAll() {
+	public void registerAll() {
 		for (Player player : Bukkit.getOnlinePlayers()){
 			spectators.put(player.getName(), false);
 			spectatees.put(player.getName(), false);

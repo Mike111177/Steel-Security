@@ -18,6 +18,8 @@ public class Main extends JavaPlugin{
 	public static Main instance;
 
 	private Sts base;
+	
+	SpectateManager spc;
 
 	@SuppressWarnings("unused")
 	private ChatFilter cf;
@@ -47,7 +49,7 @@ public class Main extends JavaPlugin{
 		for (Player player : players) {
 			new PlayerConfigListener(null, this).checkPlayerConfig(player);
 		}
-		SpectateManager.registerAll();
+		spc.registerAll();
 	}
 	private void commands() {//register commands here
 		base = new Sts("base", this);
@@ -64,6 +66,6 @@ public class Main extends JavaPlugin{
 	}
 
 	public void onDisable(){
-		SpectateManager.stopAll();
+		spc.stopAll();
 	}
 }

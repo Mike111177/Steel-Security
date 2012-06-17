@@ -17,7 +17,10 @@ import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class Sts extends SSCmdExe {
+	
 	Main plugin;
+	
+	SpectateManager spc;
 
 	PermissionManager pex = PermissionsEx.getPermissionManager();
 
@@ -195,7 +198,7 @@ public class Sts extends SSCmdExe {
 			}
 			if (args[0].equalsIgnoreCase("spectate")) {
 				if (sender.hasPermission("steelsecurity.commands.spectate")) {
-					SpectateManager.specCmd(sender, args);
+					spc.specCmd(sender, args);
 				}
 				else {
 					sender.sendMessage(noperm);

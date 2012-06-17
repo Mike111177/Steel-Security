@@ -20,12 +20,12 @@ public class SpectateManager extends SSCmdExe {
 	public SpectateManager(String name, Main plugin) {
 		super("SpectateManager", true);
 	}
-	Map<Player, Boolean> spectators = new HashMap<Player, Boolean>();//if some is a spectating someone else.
-	Map<Player, Boolean> spectatees = new HashMap<Player, Boolean>();//if someone is being spectated.
-	Map<Player, Player> spectating = new HashMap<Player, Player>();//Who a player is spectating.
-	Map<Player, HashSet<Player>> speclist = new HashMap<Player, HashSet<Player>>();//Who a player is being spectated by.
-	Map<Player, Location> origion = new HashMap<Player, Location>();//Where a player was before beginning spectate
-	HashSet<Player> spectates = new HashSet<Player>();//Who is specating other people
+	static Map<Player, Boolean> spectators = new HashMap<Player, Boolean>();//if some is a spectating someone else.
+	static Map<Player, Boolean> spectatees = new HashMap<Player, Boolean>();//if someone is being spectated.
+	static Map<Player, Player> spectating = new HashMap<Player, Player>();//Who a player is spectating.
+	static Map<Player, HashSet<Player>> speclist = new HashMap<Player, HashSet<Player>>();//Who a player is being spectated by.
+	static Map<Player, Location> origion = new HashMap<Player, Location>();//Where a player was before beginning spectate
+	static HashSet<Player> spectates = new HashSet<Player>();//Who is specating other people
 	
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
@@ -47,7 +47,7 @@ public class SpectateManager extends SSCmdExe {
 		spectators.remove(player);
 		spectatees.remove(player);
 	}
-	private void start(Player tostart, Player tostarton) {
+	private static void start(Player tostart, Player tostarton) {
 		spectates.add(tostart);
 		spectators.put(tostart, true);
 		spectatees.put(tostarton, true);
@@ -68,7 +68,7 @@ public class SpectateManager extends SSCmdExe {
 		}
 		tostarton.hidePlayer(tostart);
 	}
-	private void stop(Player tostop) {
+	private static void stop(Player tostop) {
 		spectates.remove(tostop);
 		Player tostopon = spectating.get(tostop);
 		spectators.put(tostop, false);
@@ -88,12 +88,12 @@ public class SpectateManager extends SSCmdExe {
 			speclist.put(tostopon, thenew);
 		}
 	}	
-	public void stopAll(Boolean state) {
+	public static void stopAll(Boolean state) {
 		for (Player player : spectates) {
 			stop(player);
 		}
 	}
-	public void specCmd(CommandSender sender, String[] args) {
+	public static void specCmd(CommandSender sender, String[] args) {
 		Player player = Bukkit.getPlayerExact(sender.getName());
 		if (!(args.length>2)){
 			if (spectators.get(player)) {

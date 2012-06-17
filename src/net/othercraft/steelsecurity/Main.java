@@ -47,6 +47,7 @@ public class Main extends JavaPlugin{
 		for (Player player : players) {
 			new PlayerConfigListener(null, this).checkPlayerConfig(player);
 		}
+		
 	}
 	private void commands() {//register commands here
 		base = new Sts("base", this);
@@ -63,6 +64,6 @@ public class Main extends JavaPlugin{
 	}
 
 	public void onDisable(){
-		new SpectateManager(null, this).stopAll(true);
+		SpectateManager.stopAll(true);
 	}
 }

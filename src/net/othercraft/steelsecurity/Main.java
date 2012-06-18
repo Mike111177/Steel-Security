@@ -51,7 +51,7 @@ public class Main extends JavaPlugin{
 		spm.registerAll();
 	}
 	private void commands() {//register commands here
-		base = new Sts("base", this);
+		base = new Sts("base", this, spm);
 		getCommand("sts").setExecutor(base);
 	}
 	private void registerListeners() {//register listeners here

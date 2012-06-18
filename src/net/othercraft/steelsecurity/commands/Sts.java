@@ -24,9 +24,10 @@ public class Sts extends SSCmdExe {
 
 	PermissionManager pex = PermissionsEx.getPermissionManager();
 
-	public Sts(String name, Main instance) {
-		super(name, false);
+	public Sts(String name, Main instance, SpectateManager spminstance) {
+		super("Sts", false);
 		plugin = instance;
+		spm = spminstance;
 	}
 	//Defines Chat Colors
 	ChatColor r = ChatColor.RED;

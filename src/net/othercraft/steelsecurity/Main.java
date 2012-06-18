@@ -65,6 +65,6 @@ public class Main extends JavaPlugin{
 	}
 
 	public void onDisable(){
-		spc.stopAll();
+		spm.stopAll();
 	}
 }

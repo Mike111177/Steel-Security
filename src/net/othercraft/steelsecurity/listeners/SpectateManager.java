@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -21,17 +22,19 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerVelocityEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class SpectateManager extends SSCmdExe {
 
 	public SpectateManager(String name, Main plugin) {
 		super("SpectateManager", true);
 	}
-	static Map<String, Boolean> spectators = new HashMap<String, Boolean>();//if some is a spectating someone else.
-	static Map<String, Boolean> spectatees = new HashMap<String, Boolean>();//if someone is being spectated.
-	static Map<String, String> spectating = new HashMap<String, String>();//Who a player is spectating.
-	static Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();//Who a player is being spectated by.
-	static Map<String, Location> origion = new HashMap<String, Location>();//Where a player was before beginning spectate
+	Map<String, Boolean> spectators = new HashMap<String, Boolean>();//if some is a spectating someone else.
+	Map<String, Boolean> spectatees = new HashMap<String, Boolean>();//if someone is being spectated.
+	Map<String, String> spectating = new HashMap<String, String>();//Who a player is spectating.
+	Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();//Who a player is being spectated by.
+	Map<String, Location> origion = new HashMap<String, Location>();//Where a player was before beginning spectate
+	Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();
 	static HashSet<String> spectates = new HashSet<String>();//Who is specating other people
 
 	@EventHandler
@@ -64,6 +67,8 @@ public class SpectateManager extends SSCmdExe {
 		spectatees.put(tostarton.getName(), true);
 		spectating.put(tostart.getName(), tostarton.getName());
 		origion.put(tostart.getName(), tostart.getLocation());
+		inventory.put(tostart.getName(), tostart.getInventory().getContents());
+		tostart.getInventory().setContents(tostarton.getInventory().getContents());
 		HashSet<String> thenew = speclist.get(tostarton.getName());
 		thenew.add(tostart.getName());
 		speclist.put(tostarton.getName(), thenew);
@@ -89,6 +94,8 @@ public class SpectateManager extends SSCmdExe {
 		tostop.teleport(loc);
 		spectatees.put(tostopon.getName(), false);
 		origion.remove(tostop.getName());
+		tostop.getInventory().setContents(inventory.get(tostop.getName()));
+		inventory.remove(tostop.getName());
 	}
 	public void stopAll() {
 		for (String player : spectates) {
@@ -153,11 +160,21 @@ public class SpectateManager extends SSCmdExe {
 		if (spectators.get(event.getPlayer().getName())) {
 			event.setCancelled(true);
 		}
+		if (spectatees.get(event.getPlayer().getName())){
+			for (String playername : speclist.get(event.getPlayer().getName())) {
+				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getPlayer().getInventory().getContents());
+			}
+		}
 	}
 	@EventHandler
 	public void onPlace(BlockPlaceEvent event){
 		if (spectators.get(event.getPlayer().getName())) {
 			event.setCancelled(true);
+		}
+		if (spectatees.get(event.getPlayer().getName())){
+			for (String playername : speclist.get(event.getPlayer().getName())) {
+				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getPlayer().getInventory().getContents());
+			}
 		}
 	}
 	@EventHandler
@@ -165,17 +182,38 @@ public class SpectateManager extends SSCmdExe {
 		if (spectators.get(event.getPlayer().getName())) {
 			event.setCancelled(true);
 		}
+		if (spectatees.get(event.getPlayer().getName())){
+			for (String playername : speclist.get(event.getPlayer().getName())) {
+				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getPlayer().getInventory().getContents());
+			}
+		}
 	}
 	@EventHandler
 	public void onPickup(PlayerPickupItemEvent event){
 		if (spectators.get(event.getPlayer().getName())) {
 			event.setCancelled(true);
 		}
+		if (spectatees.get(event.getPlayer().getName())){
+			for (String playername : speclist.get(event.getPlayer().getName())) {
+				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getPlayer().getInventory().getContents());
+			}
+		}
 	}
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event){
 		if (spectators.get(event.getPlayer().getName())) {
 			event.setCancelled(true);
+		}
+	}
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event){
+		if (spectators.get(event.getWhoClicked().getName())) {
+			event.setCancelled(true);
+		}
+		if (spectatees.get(event.getWhoClicked().getName())){
+			for (String playername : speclist.get(event.getWhoClicked().getName())) {
+				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getWhoClicked().getInventory().getContents());
+			}
 		}
 	}
 }

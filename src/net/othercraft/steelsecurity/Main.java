@@ -33,7 +33,6 @@ public class Main extends JavaPlugin{
 	private GameModeCmdCatch gmcc;
 	@SuppressWarnings("unused")
 	private BlockBlacklist blbl;
-	@SuppressWarnings("unused")
 	private SpectateManager spm;
 
 

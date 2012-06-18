@@ -20,7 +20,7 @@ public class Sts extends SSCmdExe {
 	
 	Main plugin;
 	
-	SpectateManager spc;
+	SpectateManager spm;
 
 	PermissionManager pex = PermissionsEx.getPermissionManager();
 
@@ -198,7 +198,7 @@ public class Sts extends SSCmdExe {
 			}
 			if (args[0].equalsIgnoreCase("spectate")) {
 				if (sender.hasPermission("steelsecurity.commands.spectate")) {
-					spc.specCmd(sender, args);
+					spm.specCmd(sender, args);
 				}
 				else {
 					sender.sendMessage(noperm);

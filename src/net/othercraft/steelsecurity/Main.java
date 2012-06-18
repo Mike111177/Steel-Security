@@ -49,7 +49,7 @@ public class Main extends JavaPlugin{
 		for (Player player : players) {
 			new PlayerConfigListener(null, this).checkPlayerConfig(player);
 		}
-		spc.registerAll();
+		spm.registerAll();
 	}
 	private void commands() {//register commands here
 		base = new Sts("base", this);

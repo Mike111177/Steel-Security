@@ -29,6 +29,9 @@ public class Config {
 		plugin.getConfig().addDefault("AntiSpam.AntiFlood.Speed", 250);
 		plugin.getConfig().addDefault("AntiSpam.Censoring.Enabled", false);
 		plugin.getConfig().addDefault("AntiSpam.Censoring.Block_Words", Arrays.asList("Nodus", "Avo", "ICHG"));
+		plugin.getConfig().addDefault("AntiSpam.Censoring.Canceling.Enabled", true);
+		plugin.getConfig().addDefault("AntiSpam.Censoring.Canceling.Minimum_Length", 4);
+		plugin.getConfig().addDefault("AntiSpam.Censoring.Canceling.Percent", 70);
 		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Enabled", true);
 		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Minimum_Length", 4);
 		plugin.getConfig().addDefault("AntiSpam.AntiCaps.Percent", 70);

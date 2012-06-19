@@ -57,7 +57,30 @@ public class ChatFilter extends SSCmdExe {
 						++wordcounter;
 					}
 				}
-
+				if (event.getMessage().length()>plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Minimum_Length")){//
+					if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Canceling.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.censor")) {//checks for if it should do the anticaps check
+						double percent = plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Percent");//gets the configured percent
+						int capcount = message.length();
+						int capcounter = 0;
+						Double uppercase = 0.0;
+						Double lowercase = 0.0;
+						while (capcounter<capcount) {
+							if (message.toCharArray()[capcounter] != ("*").toCharArray()[1]) {//counts both upper case and lower case letters
+								++lowercase;
+							}
+							else {
+								++uppercase;
+							}
+							++capcounter;
+						}
+						double total = uppercase + lowercase;
+						double result = uppercase/total;
+						percent = percent/100;
+						if (percent<result){//converts to lowercase if needed
+							spam = true;
+						}
+					}
+				}
 				if (event.getMessage().length()>plugin.getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")){//
 					if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.anticaps")) {//checks for if it should do the anticaps check
 						double percent = plugin.getConfig().getInt("AntiSpam.AntiCaps.Percent");//gets the configured percent

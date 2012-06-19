@@ -75,6 +75,10 @@ public class SpectateManager extends SSCmdExe {
 	}
 	private void start(Player tostart, Player tostarton) {
 		spectates.add(tostart.getName());
+		wasvanished.put(tostart.getName(), vm.isVanished(tostart));
+		if (vm.isVanished(tostart)){
+			vm.setVanished(tostart, false);
+		}
 		spectators.put(tostart.getName(), true);
 		spectatees.put(tostarton.getName(), true);
 		spectating.put(tostart.getName(), tostarton.getName());
@@ -91,9 +95,10 @@ public class SpectateManager extends SSCmdExe {
 		tostart.teleport(tostarton);
 	}
 	private void stop(Player tostop) {
+		String tostopname = tostop.getName();
 		spectates.remove(tostop);
-		Player tostopon = Bukkit.getPlayerExact(spectating.get(tostop.getName()));
-		spectators.put(tostop.getName(), false);
+		Player tostopon = Bukkit.getPlayerExact(spectating.get(tostopname));
+		spectators.put(tostopname, false);
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.showPlayer(tostop);
 		}
@@ -102,12 +107,14 @@ public class SpectateManager extends SSCmdExe {
 		HashSet<String> thenew = speclist.get(tostopon.getName());
 		thenew.remove(tostop);
 		speclist.put(tostopon.getName(), thenew);
-		Location loc = origion.get(tostop.getName());
+		Location loc = origion.get(tostopname);
 		tostop.teleport(loc);
 		spectatees.put(tostopon.getName(), false);
-		origion.remove(tostop.getName());
-		tostop.getInventory().setContents(inventory.get(tostop.getName()));
-		inventory.remove(tostop.getName());
+		origion.remove(tostopname);
+		tostop.getInventory().setContents(inventory.get(tostopname));
+		inventory.remove(tostopname);
+		vm.setVanished(tostop, wasvanished.get(tostopname));
+		wasvanished.remove(tostopname);
 	}
 	public void stopAll() {
 		for (String player : spectates) {
@@ -146,6 +153,9 @@ public class SpectateManager extends SSCmdExe {
 			spectatees.put(player.getName(), false);
 			speclist.put(player.getName(), new HashSet<String>());
 		}
+	}
+	public Boolean isSpectating(Player player){
+		return spectators.get(player.getName());
 	}
 	//Beyond here only apllies to when a player is being spectated
 	@EventHandler
@@ -233,7 +243,6 @@ public class SpectateManager extends SSCmdExe {
 		if (event.getTarget() instanceof Player){
 			Player player = (Player) event.getTarget();
 			if (spectators.get(player.getName())) {
-				event.setCancelled(true);
 			}
 		}
 	}

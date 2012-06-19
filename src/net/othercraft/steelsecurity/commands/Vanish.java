@@ -8,6 +8,7 @@ import net.othercraft.steelsecurity.listeners.SpectateManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -51,11 +52,13 @@ public class Vanish extends SSCmdExe {
 		if (o){
 			if (!isVanished(player)){
 				start(player);
+				isvanished.put(player.getName(), true);
 			}
 		}
 		else {
 			if (isVanished(player)){
 				stop(player);
+				isvanished.put(player.getName(), false);
 			}
 		}
 	}
@@ -69,5 +72,13 @@ public class Vanish extends SSCmdExe {
 			player.hidePlayer(tostart);
 		}
 	}
-
+	public void specCmd(CommandSender sender, String args){
+		Player player = Bukkit.getPlayerExact(sender.getName());
+		if (!spm.isSpectating(player)){
+			setVanished(player, !isVanished(player));
+		}
+		else {
+			sender.sendMessage("You can not vanish when you are spectating!");
+		}
+	}
 }

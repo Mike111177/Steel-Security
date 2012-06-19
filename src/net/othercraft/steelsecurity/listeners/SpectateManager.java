@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -148,7 +149,7 @@ public class SpectateManager extends SSCmdExe {
 		}
 	}
 	@EventHandler
-	public void onVelcity(PlayerVelocityEvent event){
+	public void onVelocity(PlayerVelocityEvent event){
 		if (spectatees.get(event.getPlayer().getName())) {
 			for (String playername : speclist.get(event.getPlayer().getName())) {
 				Bukkit.getPlayerExact(playername).setVelocity(event.getVelocity());
@@ -213,6 +214,15 @@ public class SpectateManager extends SSCmdExe {
 		if (spectatees.get(event.getWhoClicked().getName())){
 			for (String playername : speclist.get(event.getWhoClicked().getName())) {
 				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getWhoClicked().getInventory().getContents());
+			}
+		}
+	}
+	@EventHandler
+	public void onTarget(EntityTargetEvent event){
+		if (event.getTarget() instanceof Player){
+			Player player = (Player) event.getTarget();
+			if (spectators.get(player.getName())) {
+				event.setCancelled(true);
 			}
 		}
 	}

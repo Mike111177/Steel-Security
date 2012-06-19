@@ -46,6 +46,7 @@ public class SpectateManager extends SSCmdExe {
 	Map<String, Integer> health = new HashMap<String, Integer>();
 	Map<String, Integer> food = new HashMap<String, Integer>();
 	Map<String, Integer> exp = new HashMap<String, Integer>();
+	Map<String, Boolean> wasvanished = new HashMap<String, Boolean>();
 	HashSet<String> spectates = new HashSet<String>();//Who is specating other people
 
 	@EventHandler

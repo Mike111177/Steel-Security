@@ -2,15 +2,15 @@ package net.othercraft.steelsecurity.listeners;
 
 import java.util.List;
 
+import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.utils.SSCmdExe;
+
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import net.othercraft.steelsecurity.Main;
-import net.othercraft.steelsecurity.utils.SSCmdExe;
-
 public class BlockBlacklist extends SSCmdExe {
-	
+
 	Main plugin;
 
 	public BlockBlacklist(String name, Main instance) {
@@ -32,8 +32,8 @@ public class BlockBlacklist extends SSCmdExe {
 			}
 			event.setCancelled(cancel);
 		}
-		
+
 	}
-	
+
 
 }

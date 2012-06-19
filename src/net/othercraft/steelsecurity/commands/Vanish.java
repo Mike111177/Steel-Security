@@ -72,7 +72,7 @@ public class Vanish extends SSCmdExe {
 			player.hidePlayer(tostart);
 		}
 	}
-	public void specCmd(CommandSender sender, String args){
+	public void vmCmd(CommandSender sender, String[] args){
 		Player player = Bukkit.getPlayerExact(sender.getName());
 		if (!spm.isSpectating(player)){
 			setVanished(player, !isVanished(player));

@@ -17,17 +17,20 @@ import ru.tehkode.permissions.PermissionManager;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 public class Sts extends SSCmdExe {
-	
+
 	Main plugin;
-	
+
 	SpectateManager spm;
 
 	PermissionManager pex = PermissionsEx.getPermissionManager();
 
-	public Sts(String name, Main instance, SpectateManager spminstance) {
+	Vanish vm;
+
+	public Sts(String name, Main instance, SpectateManager spminstance, Vanish vanman) {
 		super("Sts", false);
 		plugin = instance;
 		spm = spminstance;
+		vm = vanman;
 	}
 	//Defines Chat Colors
 	ChatColor r = ChatColor.RED;
@@ -200,6 +203,14 @@ public class Sts extends SSCmdExe {
 			if (args[0].equalsIgnoreCase("spectate")) {
 				if (sender.hasPermission("steelsecurity.commands.spectate")) {
 					spm.specCmd(sender, args);
+				}
+				else {
+					sender.sendMessage(noperm);
+				}
+			}
+			if (args[0].equalsIgnoreCase("vanish")) {
+				if (sender.hasPermission("steelsecurity.commands.vanish")) {
+					vm.vmCmd(sender, args);
 				}
 				else {
 					sender.sendMessage(noperm);

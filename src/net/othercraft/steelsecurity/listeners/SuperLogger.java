@@ -9,11 +9,11 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class ChatBlockDeathCmdMoveLogger extends SSCmdExe {
+public class SuperLogger extends SSCmdExe {
 
 	Main plugin;
 
-	public ChatBlockDeathCmdMoveLogger(String name, Main instance) {
+	public SuperLogger(String name, Main instance) {
 		super(name, true);//true only if its a listener, false if it isnt
 		this.plugin = instance;
 	}

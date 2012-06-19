@@ -27,9 +27,9 @@ import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class SpectateManager extends SSCmdExe {
-	
+
 	Main plugin;
-	
+
 	Vanish vm;
 
 	public SpectateManager(String name, Main instance, Vanish vanman) {

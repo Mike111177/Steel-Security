@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 
 import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.commands.Vanish;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.Bukkit;
@@ -26,9 +27,15 @@ import org.bukkit.event.player.PlayerVelocityEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class SpectateManager extends SSCmdExe {
+	
+	Main plugin;
+	
+	Vanish vm;
 
-	public SpectateManager(String name, Main plugin) {
+	public SpectateManager(String name, Main instance, Vanish vanman) {
 		super("SpectateManager", true);
+		vm = vanman;
+		plugin = instance;
 	}
 	Map<String, Boolean> spectators = new HashMap<String, Boolean>();//if some is a spectating someone else.
 	Map<String, Boolean> spectatees = new HashMap<String, Boolean>();//if someone is being spectated.
@@ -36,7 +43,10 @@ public class SpectateManager extends SSCmdExe {
 	Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();//Who a player is being spectated by.
 	Map<String, Location> origion = new HashMap<String, Location>();//Where a player was before beginning spectate
 	Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();
-	static HashSet<String> spectates = new HashSet<String>();//Who is specating other people
+	Map<String, Integer> health = new HashMap<String, Integer>();
+	Map<String, Integer> food = new HashMap<String, Integer>();
+	Map<String, Integer> exp = new HashMap<String, Integer>();
+	HashSet<String> spectates = new HashSet<String>();//Who is specating other people
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {

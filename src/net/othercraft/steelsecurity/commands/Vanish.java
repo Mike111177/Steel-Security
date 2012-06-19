@@ -7,6 +7,7 @@ import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.listeners.SpectateManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -58,13 +59,15 @@ public class Vanish extends SSCmdExe {
 			}
 		}
 	}
-	private void stop(Player player) {
-		// TODO Auto-generated method stub
-
+	private void stop(Player tostop) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			player.showPlayer(tostop);
+		}
 	}
-	private void start(Player player) {
-		// TODO Auto-generated method stub
-
+	private void start(Player tostart) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			player.hidePlayer(tostart);
+		}
 	}
 
 }

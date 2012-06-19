@@ -42,7 +42,7 @@ public class SpectateManager extends SSCmdExe {
 	Map<String, String> spectating = new HashMap<String, String>();//Who a player is spectating.
 	Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();//Who a player is being spectated by.
 	Map<String, Location> origion = new HashMap<String, Location>();//Where a player was before beginning spectate
-	Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();
+	Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();//The players inventory before starting to spectate
 	Map<String, Integer> health = new HashMap<String, Integer>();
 	Map<String, Integer> food = new HashMap<String, Integer>();
 	Map<String, Integer> exp = new HashMap<String, Integer>();

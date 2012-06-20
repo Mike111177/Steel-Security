@@ -3,6 +3,7 @@ package net.othercraft.steelsecurity;
 import net.othercraft.steelsecurity.commands.GameModeCmdCatch;
 import net.othercraft.steelsecurity.commands.Sts;
 import net.othercraft.steelsecurity.commands.Vanish;
+import net.othercraft.steelsecurity.data.Violations;
 import net.othercraft.steelsecurity.listeners.BlockBlacklist;
 import net.othercraft.steelsecurity.listeners.ChatFilter;
 import net.othercraft.steelsecurity.listeners.JoinMessage;
@@ -33,6 +34,7 @@ public class Main extends JavaPlugin{
 	private BlockBlacklist blbl;
 	private SpectateManager spm;
 	private Vanish vm;
+	private Violations vio;
 
 
 	public void onEnable(){
@@ -54,12 +56,14 @@ public class Main extends JavaPlugin{
 		getCommand("sts").setExecutor(base);
 	}
 	private void registerListeners() {//register listeners here
-		cf = new ChatFilter(null, this);
+		vio = new Violations(null, this);
+		cf = new ChatFilter(null, this, vio);
 		jm = new JoinMessage(null, this);
 		ll = new LoginLimiter(null, this);
 		pcl = new PlayerConfigListener(null, this);
 		gmcc = new GameModeCmdCatch(null, this);
 		blbl = new BlockBlacklist(null, this);
+		
 		vm = new Vanish(null, this, spm);
 		spm = new SpectateManager(null, this, vm);
 	}

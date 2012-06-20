@@ -14,7 +14,6 @@ public class UpsideDown extends SSCmdExe {
 	@EventHandler
 	public void onMove(PlayerMoveEvent event) {
 		if (event.getPlayer().getLocation().getPitch()==180.0){
-			//TODO send warning or give like that upside down effect
 		}
 	}
 

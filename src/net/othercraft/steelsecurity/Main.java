@@ -1,5 +1,6 @@
 package net.othercraft.steelsecurity;
 
+import net.othercraft.steelsecurity.antihack.other.derp.UpsideDown;
 import net.othercraft.steelsecurity.commands.GameModeCmdCatch;
 import net.othercraft.steelsecurity.commands.Sts;
 import net.othercraft.steelsecurity.commands.Vanish;
@@ -35,6 +36,8 @@ public class Main extends JavaPlugin{
 	private SpectateManager spm;
 	private Vanish vm;
 	private Violations vio;
+	@SuppressWarnings("unused")
+	private UpsideDown upd;
 
 
 	public void onEnable(){
@@ -66,6 +69,7 @@ public class Main extends JavaPlugin{
 		blbl = new BlockBlacklist(null, this);
 		vm = new Vanish(null, this, spm);
 		spm = new SpectateManager(null, this, vm);
+		upd = new UpsideDown(null, this, vio);
 	}
 
 	public void onDisable(){

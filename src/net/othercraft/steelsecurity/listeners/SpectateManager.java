@@ -74,19 +74,23 @@ public class SpectateManager extends SSCmdExe {
 		spectatees.remove(player.getName());
 	}
 	private void start(Player tostart, Player tostarton) {
+		String tostartname = tostart.getName();
 		spectates.add(tostart.getName());
 		wasvanished.put(tostart.getName(), vm.isVanished(tostart));
 		if (vm.isVanished(tostart)){
 			vm.setVanished(tostart, false);
 		}
-		spectators.put(tostart.getName(), true);
+		spectators.put(tostartname, true);
 		spectatees.put(tostarton.getName(), true);
-		spectating.put(tostart.getName(), tostarton.getName());
-		origion.put(tostart.getName(), tostart.getLocation());
-		inventory.put(tostart.getName(), tostart.getInventory().getContents());
+		spectating.put(tostartname, tostarton.getName());
+		origion.put(tostartname, tostart.getLocation());
+		health.put(tostartname, tostart.getHealth());
+		food.put(tostartname, tostart.getFoodLevel());
+		exp.put(tostartname, tostart.getTotalExperience());
+		inventory.put(tostartname, tostart.getInventory().getContents());
 		tostart.getInventory().setContents(tostarton.getInventory().getContents());
 		HashSet<String> thenew = speclist.get(tostarton.getName());
-		thenew.add(tostart.getName());
+		thenew.add(tostartname);
 		speclist.put(tostarton.getName(), thenew);
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.hidePlayer(tostart);
@@ -113,6 +117,9 @@ public class SpectateManager extends SSCmdExe {
 		origion.remove(tostopname);
 		tostop.getInventory().setContents(inventory.get(tostopname));
 		inventory.remove(tostopname);
+		food.remove(tostopname);
+		health.remove(tostopname);
+		exp.remove(tostopname);
 		vm.setVanished(tostop, wasvanished.get(tostopname));
 		wasvanished.remove(tostopname);
 	}

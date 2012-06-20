@@ -42,9 +42,4 @@ public class Config {
 		plugin.getConfig().addDefault("Block_Blacklist.Enabled", false);
 		plugin.getConfig().addDefault("Block_Blacklist.Blocks", Arrays.asList("7", "10", "11"));
 	}
-	public void editConfigCmd(String[] args) {
-		String action = args[1];
-		String value = args[2];
-		String data = args[3];
-	}
 }

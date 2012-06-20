@@ -15,10 +15,10 @@ import org.bukkit.event.player.PlayerChatEvent;
 public class ChatFilter extends SSCmdExe {
 
 	public Main plugin;
-	
+
 	public  Violations vio;
-	
-	Map<String, Long> chattimes = new HashMap<String, Long>();// for tracking the speed of chat
+
+	private Map<String, Long> chattimes = new HashMap<String, Long>();// for tracking the speed of chat
 
 	public ChatFilter(String name, Main instance, Violations viol) {
 		super("ChatFilter", true);//true only if its a listener, false if it isnt

@@ -37,17 +37,17 @@ public class SpectateManager extends SSCmdExe {
 		vm = vanman;
 		plugin = instance;
 	}
-	Map<String, Boolean> spectators = new HashMap<String, Boolean>();//if some is a spectating someone else.
-	Map<String, Boolean> spectatees = new HashMap<String, Boolean>();//if someone is being spectated.
-	Map<String, String> spectating = new HashMap<String, String>();//Who a player is spectating.
-	Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();//Who a player is being spectated by.
-	Map<String, Location> origion = new HashMap<String, Location>();//Where a player was before beginning spectate
-	Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();//The players inventory before starting to spectate
-	Map<String, Integer> health = new HashMap<String, Integer>();
-	Map<String, Integer> food = new HashMap<String, Integer>();
-	Map<String, Integer> exp = new HashMap<String, Integer>();
-	Map<String, Boolean> wasvanished = new HashMap<String, Boolean>();
-	HashSet<String> spectates = new HashSet<String>();//Who is specating other people
+	private Map<String, Boolean> spectators = new HashMap<String, Boolean>();//if some is a spectating someone else.
+	private Map<String, Boolean> spectatees = new HashMap<String, Boolean>();//if someone is being spectated.
+	private Map<String, String> spectating = new HashMap<String, String>();//Who a player is spectating.
+	private Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();//Who a player is being spectated by.
+	private Map<String, Location> origion = new HashMap<String, Location>();//Where a player was before beginning spectate
+	private Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();//The players inventory before starting to spectate
+	private Map<String, Integer> health = new HashMap<String, Integer>();
+	private Map<String, Integer> food = new HashMap<String, Integer>();
+	private Map<String, Integer> exp = new HashMap<String, Integer>();
+	private Map<String, Boolean> wasvanished = new HashMap<String, Boolean>();
+	private HashSet<String> spectates = new HashSet<String>();//Who is specating other people
 
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {

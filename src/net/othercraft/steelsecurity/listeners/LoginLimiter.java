@@ -14,7 +14,7 @@ public class LoginLimiter extends SSCmdExe {
 
 	public Main plugin;
 
-	Map<String, Long> logintimes = new HashMap<String, Long>();// for tracking the speed of chat
+	private Map<String, Long> logintimes = new HashMap<String, Long>();// for tracking the speed of chat
 
 	public LoginLimiter(String name, Main instance) {
 		super("LoginLimiter", true);//true only if its a listener, false if it isnt

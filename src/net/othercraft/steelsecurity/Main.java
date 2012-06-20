@@ -50,6 +50,7 @@ public class Main extends JavaPlugin{
 			pcl.checkPlayerConfig(player);
 		}
 		spm.registerAll();
+		vio.engageAll();
 	}
 	private void commands() {//register commands here
 		base = new Sts("base", this, spm, vm);
@@ -63,7 +64,6 @@ public class Main extends JavaPlugin{
 		pcl = new PlayerConfigListener(null, this);
 		gmcc = new GameModeCmdCatch(null, this);
 		blbl = new BlockBlacklist(null, this);
-		
 		vm = new Vanish(null, this, spm);
 		spm = new SpectateManager(null, this, vm);
 	}

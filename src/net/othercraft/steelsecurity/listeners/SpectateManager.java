@@ -117,8 +117,11 @@ public class SpectateManager extends SSCmdExe {
 		origion.remove(tostopname);
 		tostop.getInventory().setContents(inventory.get(tostopname));
 		inventory.remove(tostopname);
+		tostop.setFoodLevel(food.get(tostopname));
 		food.remove(tostopname);
+		tostop.setHealth(health.get(tostopname));
 		health.remove(tostopname);
+		tostop.setExp(exp.get(tostopname));
 		exp.remove(tostopname);
 		vm.setVanished(tostop, wasvanished.get(tostopname));
 		wasvanished.remove(tostopname);
@@ -190,9 +193,9 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 		if (spectatees.get(event.getPlayer().getName())){
-			for (String playername : speclist.get(event.getPlayer().getName())) {
-				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getPlayer().getInventory().getContents());
-			}
+			HashSet<String> list = speclist.get(event.getPlayer().getName());
+			Player player = (Player) event.getPlayer();
+			inventoryUpdate(list, player);
 		}
 	}
 	@EventHandler
@@ -201,9 +204,9 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 		if (spectatees.get(event.getPlayer().getName())){
-			for (String playername : speclist.get(event.getPlayer().getName())) {
-				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getPlayer().getInventory().getContents());
-			}
+			HashSet<String> list = speclist.get(event.getPlayer().getName());
+			Player player = (Player) event.getPlayer();
+			inventoryUpdate(list, player);
 		}
 	}
 	@EventHandler
@@ -212,9 +215,9 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 		if (spectatees.get(event.getPlayer().getName())){
-			for (String playername : speclist.get(event.getPlayer().getName())) {
-				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getPlayer().getInventory().getContents());
-			}
+			HashSet<String> list = speclist.get(event.getPlayer().getName());
+			Player player = (Player) event.getPlayer();
+			inventoryUpdate(list, player);
 		}
 	}
 	@EventHandler
@@ -223,10 +226,10 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 		if (spectatees.get(event.getPlayer().getName())){
-			for (String playername : speclist.get(event.getPlayer().getName())) {
-				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getPlayer().getInventory().getContents());
+			HashSet<String> list = speclist.get(event.getPlayer().getName());
+			Player player = (Player) event.getPlayer();
+			inventoryUpdate(list, player);
 			}
-		}
 	}
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event){
@@ -240,17 +243,27 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 		if (spectatees.get(event.getWhoClicked().getName())){
-			for (String playername : speclist.get(event.getWhoClicked().getName())) {
-				Bukkit.getPlayerExact(playername).getInventory().setContents(event.getWhoClicked().getInventory().getContents());
+			HashSet<String> list = speclist.get(event.getWhoClicked().getName());
+			Player player = (Player) event.getWhoClicked();
+			inventoryUpdate(list, player);
 			}
 		}
-	}
 	@EventHandler
 	public void onTarget(EntityTargetEvent event){
 		if (event.getTarget() instanceof Player){
 			Player player = (Player) event.getTarget();
 			if (spectators.get(player.getName())) {
+				event.setCancelled(true);
 			}
 		}
+	}
+	private void inventoryUpdate(final HashSet<String> list, final Player player){
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			   public void run() {
+				   for (String playername : list) {
+						Bukkit.getPlayerExact(playername).getInventory().setContents(player.getInventory().getContents());
+					}
+			   }
+			}, 1L);
 	}
 }

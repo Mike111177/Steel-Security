@@ -16,11 +16,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -261,6 +264,35 @@ public class SpectateManager extends SSCmdExe {
 			Player player = (Player) event.getTarget();
 			if (spectators.get(player.getName())) {
 				event.setCancelled(true);
+			}
+		}
+	}
+	@EventHandler
+	public void onGmChange(PlayerGameModeChangeEvent event){
+		if (spectators.get(event.getPlayer().getName())) {
+			event.setCancelled(true);
+		}
+		if (spectatees.get(event.getPlayer().getName())){
+			Player player = event.getPlayer();
+			gameUpdate(player);
+		}
+	}
+	@EventHandler
+	public void onLvlChange(PlayerLevelChangeEvent event){
+		if (spectatees.get(event.getPlayer().getName())){
+			Player player = event.getPlayer();
+			expUpdate(player);
+		}
+	}
+	@EventHandler
+	public void onDamage(EntityDamageEvent event){
+		if (event.getEntity() instanceof Player){
+			Player player = (Player) event.getEntity();
+			if (spectators.get(player.getName())) {
+				event.setCancelled(true);
+			}
+			if (spectatees.get(player.getName())){
+				healthUpdate(player);
 			}
 		}
 	}

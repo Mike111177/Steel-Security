@@ -9,6 +9,7 @@ import net.othercraft.steelsecurity.commands.Vanish;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -46,6 +47,7 @@ public class SpectateManager extends SSCmdExe {
 	private Map<String, Integer> health = new HashMap<String, Integer>();
 	private Map<String, Integer> food = new HashMap<String, Integer>();
 	private Map<String, Integer> exp = new HashMap<String, Integer>();
+	private Map<String, Integer> game = new HashMap<String, Integer>();
 	private Map<String, Boolean> wasvanished = new HashMap<String, Boolean>();
 	private HashSet<String> spectates = new HashSet<String>();//Who is specating other people
 
@@ -88,6 +90,8 @@ public class SpectateManager extends SSCmdExe {
 		food.put(tostartname, tostart.getFoodLevel());
 		exp.put(tostartname, tostart.getTotalExperience());
 		inventory.put(tostartname, tostart.getInventory().getContents());
+		game.put(tostartname, tostart.getGameMode().getValue());
+		tostart.setGameMode(tostarton.getGameMode());
 		tostart.getInventory().setContents(tostarton.getInventory().getContents());
 		HashSet<String> thenew = speclist.get(tostarton.getName());
 		thenew.add(tostartname);
@@ -97,7 +101,13 @@ public class SpectateManager extends SSCmdExe {
 		}
 		tostart.hidePlayer(tostarton);
 		tostart.teleport(tostarton);
+		inventoryUpdate(tostarton);
+		healthUpdate(tostarton);
+		expUpdate(tostarton);
+		foodUpdate(tostarton);
+		gameUpdate(tostarton);
 	}
+	
 	private void stop(Player tostop) {
 		String tostopname = tostop.getName();
 		spectates.remove(tostop);
@@ -123,6 +133,8 @@ public class SpectateManager extends SSCmdExe {
 		health.remove(tostopname);
 		tostop.setExp(exp.get(tostopname));
 		exp.remove(tostopname);
+		tostop.setGameMode(GameMode.getByValue(game.get(tostopname)));
+		game.remove(tostopname);
 		vm.setVanished(tostop, wasvanished.get(tostopname));
 		wasvanished.remove(tostopname);
 	}
@@ -193,9 +205,8 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 		if (spectatees.get(event.getPlayer().getName())){
-			HashSet<String> list = speclist.get(event.getPlayer().getName());
 			Player player = (Player) event.getPlayer();
-			inventoryUpdate(list, player);
+			inventoryUpdate(player);
 		}
 	}
 	@EventHandler
@@ -204,9 +215,8 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 		if (spectatees.get(event.getPlayer().getName())){
-			HashSet<String> list = speclist.get(event.getPlayer().getName());
 			Player player = (Player) event.getPlayer();
-			inventoryUpdate(list, player);
+			inventoryUpdate(player);
 		}
 	}
 	@EventHandler
@@ -215,9 +225,8 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 		if (spectatees.get(event.getPlayer().getName())){
-			HashSet<String> list = speclist.get(event.getPlayer().getName());
 			Player player = (Player) event.getPlayer();
-			inventoryUpdate(list, player);
+			inventoryUpdate(player);
 		}
 	}
 	@EventHandler
@@ -226,9 +235,8 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 		if (spectatees.get(event.getPlayer().getName())){
-			HashSet<String> list = speclist.get(event.getPlayer().getName());
 			Player player = (Player) event.getPlayer();
-			inventoryUpdate(list, player);
+			inventoryUpdate(player);
 			}
 	}
 	@EventHandler
@@ -243,9 +251,8 @@ public class SpectateManager extends SSCmdExe {
 			event.setCancelled(true);
 		}
 		if (spectatees.get(event.getWhoClicked().getName())){
-			HashSet<String> list = speclist.get(event.getWhoClicked().getName());
 			Player player = (Player) event.getWhoClicked();
-			inventoryUpdate(list, player);
+			inventoryUpdate(player);
 			}
 		}
 	@EventHandler
@@ -257,7 +264,8 @@ public class SpectateManager extends SSCmdExe {
 			}
 		}
 	}
-	private void inventoryUpdate(final HashSet<String> list, final Player player){
+	private void inventoryUpdate(final Player player){
+		final HashSet<String> list = speclist.get(player.getName());
 		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 			   public void run() {
 				   for (String playername : list) {
@@ -265,5 +273,27 @@ public class SpectateManager extends SSCmdExe {
 					}
 			   }
 			}, 1L);
+	}
+	private void gameUpdate(final Player player) {
+		final HashSet<String> list = speclist.get(player.getName());
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			   public void run() {
+				   for (String playername : list) {
+						Bukkit.getPlayerExact(playername).setGameMode(player.getGameMode());
+					}
+			   }
+			}, 1L);
+	}
+	private void foodUpdate(Player tostarton) {
+		// TODO Auto-generated method stub
+		
+	}
+	private void expUpdate(Player tostarton) {
+		// TODO Auto-generated method stub
+		
+	}
+	private void healthUpdate(Player tostarton) {
+		// TODO Auto-generated method stub
+		
 	}
 }

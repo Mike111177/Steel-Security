@@ -46,7 +46,7 @@ public class SpectateManager extends SSCmdExe {
 	private Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();//The players inventory before starting to spectate
 	private Map<String, Integer> health = new HashMap<String, Integer>();
 	private Map<String, Integer> food = new HashMap<String, Integer>();
-	private Map<String, Integer> exp = new HashMap<String, Integer>();
+	private Map<String, Float> exp = new HashMap<String, Float>();
 	private Map<String, Integer> game = new HashMap<String, Integer>();
 	private Map<String, Boolean> wasvanished = new HashMap<String, Boolean>();
 	private HashSet<String> spectates = new HashSet<String>();//Who is specating other people
@@ -88,7 +88,7 @@ public class SpectateManager extends SSCmdExe {
 		origion.put(tostartname, tostart.getLocation());
 		health.put(tostartname, tostart.getHealth());
 		food.put(tostartname, tostart.getFoodLevel());
-		exp.put(tostartname, tostart.getTotalExperience());
+		exp.put(tostartname, tostart.getExp());
 		inventory.put(tostartname, tostart.getInventory().getContents());
 		game.put(tostartname, tostart.getGameMode().getValue());
 		tostart.setGameMode(tostarton.getGameMode());
@@ -107,7 +107,7 @@ public class SpectateManager extends SSCmdExe {
 		foodUpdate(tostarton);
 		gameUpdate(tostarton);
 	}
-	
+
 	private void stop(Player tostop) {
 		String tostopname = tostop.getName();
 		spectates.remove(tostop);
@@ -237,7 +237,7 @@ public class SpectateManager extends SSCmdExe {
 		if (spectatees.get(event.getPlayer().getName())){
 			Player player = (Player) event.getPlayer();
 			inventoryUpdate(player);
-			}
+		}
 	}
 	@EventHandler
 	public void onInteract(PlayerInteractEvent event){
@@ -253,8 +253,8 @@ public class SpectateManager extends SSCmdExe {
 		if (spectatees.get(event.getWhoClicked().getName())){
 			Player player = (Player) event.getWhoClicked();
 			inventoryUpdate(player);
-			}
 		}
+	}
 	@EventHandler
 	public void onTarget(EntityTargetEvent event){
 		if (event.getTarget() instanceof Player){
@@ -267,33 +267,53 @@ public class SpectateManager extends SSCmdExe {
 	private void inventoryUpdate(final Player player){
 		final HashSet<String> list = speclist.get(player.getName());
 		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			   public void run() {
-				   for (String playername : list) {
-						Bukkit.getPlayerExact(playername).getInventory().setContents(player.getInventory().getContents());
-					}
-			   }
-			}, 1L);
+			public void run() {
+				for (String playername : list) {
+					Bukkit.getPlayerExact(playername).getInventory().setContents(player.getInventory().getContents());
+				}
+			}
+		}, 1L);
 	}
 	private void gameUpdate(final Player player) {
 		final HashSet<String> list = speclist.get(player.getName());
 		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-			   public void run() {
-				   for (String playername : list) {
+			public void run() {
+				for (String playername : list) {
+					Bukkit.getPlayerExact(playername).setGameMode(player.getGameMode());
+				}
+			}
+		}, 1L);
+	}
+	private void foodUpdate(final Player player) {
+		final HashSet<String> list = speclist.get(player.getName());
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				for (String playername : list) {
+					Bukkit.getPlayerExact(playername).setFoodLevel(player.getFoodLevel());
+				}
+			}
+		}, 1L);
+	}
+	private void expUpdate(final Player player) {
+		final HashSet<String> list = speclist.get(player.getName());
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				for (String playername : list) {
+					Bukkit.getPlayerExact(playername).setExp(player.getExp());
+				}
+			}
+		}, 1L);
+	}
+	private void healthUpdate(final Player player) {
+		final HashSet<String> list = speclist.get(player.getName());
+		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+			public void run() {
+				if (player.getHealth()<0){
+					for (String playername : list) {
 						Bukkit.getPlayerExact(playername).setGameMode(player.getGameMode());
 					}
-			   }
-			}, 1L);
-	}
-	private void foodUpdate(Player tostarton) {
-		// TODO Auto-generated method stub
-		
-	}
-	private void expUpdate(Player tostarton) {
-		// TODO Auto-generated method stub
-		
-	}
-	private void healthUpdate(Player tostarton) {
-		// TODO Auto-generated method stub
-		
+				}
+			}
+		}, 1L);
 	}
 }

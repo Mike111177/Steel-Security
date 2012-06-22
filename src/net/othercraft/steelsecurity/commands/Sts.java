@@ -13,16 +13,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import ru.tehkode.permissions.PermissionManager;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
-
 public class Sts extends SSCmdExe {
 
     Main plugin;
 
     SpectateManager spm;
-
-    PermissionManager pex = PermissionsEx.getPermissionManager();
 
     Vanish vm;
 
@@ -81,40 +76,21 @@ public class Sts extends SSCmdExe {
 			String perm = args[2];
 			String yes = (g + target.getName() + " has the permission " + perm);
 			String no = (r + target.getName() + " does not have the permission " + perm);
-			String world = "";
-			String worldname = "";
-			if (args.length == 4) {
-			    world = Bukkit.getWorld(args[3]).toString();
-			    worldname = Bukkit.getWorld(args[3]).getName();
-			}
 			if (target.isOnline()) {
-			    if (args.length == 3) {
+			    if (args.length == 2) {
 				if (target.getPlayer().hasPermission(perm)) {
 				    sender.sendMessage(yes);
 				} else {
 				    sender.sendMessage(no);
 				}
-			    } else {
-				if (pex.has(target.getName(), perm, world)) {
-				    sender.sendMessage(yes + " in world " + worldname);
-				} else {
-				    sender.sendMessage(no + " in world " + worldname);
-				}
 			    }
-			} else {
-			    if (Bukkit.getServer().getPluginManager().isPluginEnabled("PermissionsEx")) {
-				if (args.length == 4) {
-				    if (pex.has(target.getName(), perm, world)) {
-					sender.sendMessage(yes + " in world " + worldname);
-				    } else {
-					sender.sendMessage(no + " in world " + worldname);
-				    }
-				} else {
-				    sender.sendMessage(r + "Please define a a world when checking a permission of an offline player.");
-				}
-			    } else {
-				sender.sendMessage(r + "Please install PermissionsEx to use this command with references to offline players.");
+			    else {
+				sender.sendMessage("Incoorect Arguments!");
+				sender.sendMessage("Use /sts checkperm <player>");
 			    }
+			} 
+			else {
+			    sender.sendMessage("Were sorry, we could not find a player named " + targetname);
 			}
 		    }
 		} else {
@@ -206,6 +182,9 @@ public class Sts extends SSCmdExe {
 	}
 	if (sender.hasPermission("steelsecurity.commands.checkperm")) {
 	    sender.sendMessage(g + "/sts checkperm:" + y + " Checks a permmision for another player.");
+	}
+	if (sender.hasPermission("steelsecurity.commands.spectate")) {
+	    sender.sendMessage(g + "/sts spectate:" + y + " Shows you the world from the eyes of another player.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.listop")) {
 	    sender.sendMessage(g + "/sts listop:" + y + " List ops.");

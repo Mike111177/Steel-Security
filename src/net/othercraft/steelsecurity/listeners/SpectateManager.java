@@ -156,7 +156,6 @@ public class SpectateManager extends SSCmdExe {
 	expUpdate(tostarton);
 	foodUpdate(tostarton);
 	gameUpdate(tostarton);
-	System.out.println(spectating);
     }
 
     private void stop(Player tostop) {
@@ -485,14 +484,12 @@ public class SpectateManager extends SSCmdExe {
 
     private void healthUpdate(final Player player) {
 	final HashSet<String> list = speclist.get(player.getName());
-	System.out.println(player.getHealth());
 	plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 	    public void run() {
 		int newhealth = player.getHealth();
 		if (newhealth < 1) {
 		    newhealth = 1;
 		}
-		System.out.println(newhealth);
 		for (String playername : list) {
 		    Bukkit.getPlayerExact(playername).setHealth(newhealth);
 		}

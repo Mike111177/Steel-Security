@@ -100,6 +100,9 @@ public class SpectateManager extends SSCmdExe {
 	spectators.put(player.getName(), false);
 	spectatees.put(player.getName(), false);
 	speclist.put(player.getName(), new HashSet<String>());
+	for (String playername : spectates) {
+	    event.getPlayer().hidePlayer(Bukkit.getPlayerExact(playername));
+	}
     }
 
     @EventHandler
@@ -153,6 +156,7 @@ public class SpectateManager extends SSCmdExe {
 	expUpdate(tostarton);
 	foodUpdate(tostarton);
 	gameUpdate(tostarton);
+	System.out.println(spectating);
     }
 
     private void stop(Player tostop) {
@@ -202,19 +206,26 @@ public class SpectateManager extends SSCmdExe {
 	    }
 	    if (args.length == 2) {
 		Player tostarton = Bukkit.getPlayer(args[1]);
-		if (player != tostarton) {
-		    if (tostarton != null) {
-			start(player, tostarton);
-		    } else {
-			sender.sendMessage("We could not find anybody by the name of " + args[1]);
+		    if (player != tostarton) {
+			if (tostarton != null) {
+			    if (!spectators.get(tostarton.getName())) {
+			    start(player, tostarton);
+			    }
+			    else {
+				sender.sendMessage("Were sorry, you can not spectate someone who is all ready spectating someone else.");
+			    }
+			} 
+			else {
+			    sender.sendMessage("We could not find anybody by the name of " + args[1]);
+			}
+		    } 
+		    else {
+			sender.sendMessage("You can't spectate your self!");
 		    }
-		} else {
-		    sender.sendMessage("You can't spectate your self!");
-		}
+	    } else {
+		player.sendMessage("Too many arguments!");
+		player.sendMessage("Usage: /sts spectate <player>");
 	    }
-	} else {
-	    player.sendMessage("Too many arguments!");
-	    player.sendMessage("Usage: /sts spectate <player>");
 	}
     }
 
@@ -228,6 +239,9 @@ public class SpectateManager extends SSCmdExe {
 
     public Boolean isSpectating(Player player) {
 	return spectators.get(player.getName());
+    }
+    public Map<String, String> spectateList(){
+	return spectating;
     }
 
     // Beyond here only apllies to when a player is being spectated

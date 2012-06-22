@@ -14,24 +14,27 @@ public class SuperLogger extends SSCmdExe {
 	Main plugin;
 
 	public SuperLogger(String name, Main instance) {
-		super(name, true);//true only if its a listener, false if it isnt
+		super(name, true);// true only if its a listener, false if it isnt
 		this.plugin = instance;
 	}
 
 	@EventHandler
-	public void onPlayerChat(PlayerChatEvent event){
+	public void onPlayerChat(PlayerChatEvent event) {
 
 	}
+
 	@EventHandler
-	public void onMove(PlayerMoveEvent event){
+	public void onMove(PlayerMoveEvent event) {
 
 	}
+
 	@EventHandler
-	public void onBlockChange(BlockEvent event){
+	public void onBlockChange(BlockEvent event) {
 
 	}
+
 	@EventHandler
-	public void onPlayerDeath(PlayerDeathEvent event){
+	public void onPlayerDeath(PlayerDeathEvent event) {
 
 	}
 

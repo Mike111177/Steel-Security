@@ -12,21 +12,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-
 public class PlayerConfigListener extends SSCmdExe {
 
 	public Main plugin;
 
 	public PlayerConfigListener(String name, Main instance) {
-		super("PlayerConfigListener", true);//true only if its a listener, false if it isnt
+		super("PlayerConfigListener", true);// true only if its a listener,
+											// false if it isnt
 		this.plugin = instance;
 	}
+
 	@EventHandler
-	public void loadConfig(PlayerJoinEvent event)throws Exception{
+	public void loadConfig(PlayerJoinEvent event) throws Exception {
 		try {
 			checkPlayerConfig(event.getPlayer());
-		}
-		catch (Exception e){
+		} catch (Exception e) {
 			try {
 				catchListenerException(e, event.getEventName());
 			} catch (IOException e1) {
@@ -34,13 +34,15 @@ public class PlayerConfigListener extends SSCmdExe {
 			}
 		}
 	}
+
 	public void checkPlayerConfig(Player player) {
-		Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
+		Boolean gmcheck = plugin.getConfig().getBoolean(
+				"Offline_GameMode_Changer.Enabled");
 		String playername = player.getName();
 		FileConfiguration config = PlayerConfigManager.getConfig(playername);
-		if (config==null){
+		if (config == null) {
 			try {
-				if(PlayerConfigManager.createConfig(playername)){
+				if (PlayerConfigManager.createConfig(playername)) {
 					config = PlayerConfigManager.getConfig(playername);
 				} else {
 					IOException e = new IOException();
@@ -51,7 +53,10 @@ public class PlayerConfigListener extends SSCmdExe {
 			}
 		}
 		if (gmcheck) {
-			config.addDefault("GameMode", plugin.getConfig().getInt("Offline_GameMode_Changer.Default_GameMode"));
+			config.addDefault(
+					"GameMode",
+					plugin.getConfig().getInt(
+							"Offline_GameMode_Changer.Default_GameMode"));
 		}
 		config.options().copyDefaults(true);
 		try {
@@ -63,6 +68,5 @@ public class PlayerConfigListener extends SSCmdExe {
 			player.setGameMode(GameMode.getByValue(config.getInt("GameMode")));
 		}
 	}
-
 
 }

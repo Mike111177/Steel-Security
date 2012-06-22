@@ -10,7 +10,8 @@ public class FarBreak extends SSCmdExe {
 	public FarBreak(String name, Boolean listener) {
 		super("FarBreak", true);
 	}
+
 	@EventHandler
-	public void onPlace(BlockBreakEvent event){
+	public void onPlace(BlockBreakEvent event) {
 	}
 }

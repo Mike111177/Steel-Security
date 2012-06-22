@@ -10,7 +10,8 @@ public class FarPlace extends SSCmdExe {
 	public FarPlace(String name, Boolean listener) {
 		super("FarPlace", true);
 	}
+
 	@EventHandler
-	public void onPlace(BlockPlaceEvent event){
+	public void onPlace(BlockPlaceEvent event) {
 	}
 }

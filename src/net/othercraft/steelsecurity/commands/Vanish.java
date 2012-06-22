@@ -33,51 +33,54 @@ public class Vanish extends SSCmdExe {
 		Player player = event.getPlayer();
 		isvanished.put(player.getName(), false);
 	}
+
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 		isvanished.remove(player.getName());
 	}
-	public Boolean isVanished(Player player){
+
+	public Boolean isVanished(Player player) {
 		Boolean result;
-		if (isvanished.get(player.getName())!=null){
+		if (isvanished.get(player.getName()) != null) {
 			result = isvanished.get(player.getName());
-		}
-		else {
+		} else {
 			result = false;
 		}
 		return result;
 	}
-	public void setVanished(Player player, Boolean o){
-		if (o){
-			if (!isVanished(player)){
+
+	public void setVanished(Player player, Boolean o) {
+		if (o) {
+			if (!isVanished(player)) {
 				start(player);
 				isvanished.put(player.getName(), true);
 			}
-		}
-		else {
-			if (isVanished(player)){
+		} else {
+			if (isVanished(player)) {
 				stop(player);
 				isvanished.put(player.getName(), false);
 			}
 		}
 	}
+
 	private void stop(Player tostop) {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.showPlayer(tostop);
 		}
 	}
+
 	private void start(Player tostart) {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			player.hidePlayer(tostart);
 		}
 	}
-	public void vmCmd(CommandSender sender, String[] args){
+
+	public void vmCmd(CommandSender sender, String[] args) {
 		Player player = Bukkit.getPlayerExact(sender.getName());
-		if (!spm.isSpectating(player)){
+		if (!spm.isSpectating(player)) {
 			setVanished(player, !isVanished(player));
-		}
-		else {
+		} else {
 			sender.sendMessage("You can not vanish when you are spectating!");
 		}
 	}

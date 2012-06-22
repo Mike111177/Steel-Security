@@ -19,21 +19,26 @@ import org.bukkit.command.CommandSender;
 
 public abstract class ExceptionLogger {
 
-	public void commandException(Exception e, String directoryString, CommandSender s, Command c, String[] args) throws IOException{
+	public void commandException(Exception e, String directoryString,
+			CommandSender s, Command c, String[] args) throws IOException {
 		createFile(directoryString, "Exceptions.log");
 		Logger logger = Logger.getLogger(directoryString);
 		String date = Calendar.getInstance().getTime().toString();
-		logger.log(Level.SEVERE, date + " Command " + cmdToString(c, args) + " used by " + s.getName() + " generated an exception." , e);
+		logger.log(Level.SEVERE, date + " Command " + cmdToString(c, args)
+				+ " used by " + s.getName() + " generated an exception.", e);
 	}
 
-	public void listenerException(Exception e, String name, String path) throws IOException{
+	public void listenerException(Exception e, String name, String path)
+			throws IOException {
 		createFile(path, "Exceptions.log");
 		Logger logger = Logger.getLogger(path);
 		String date = Calendar.getInstance().getTime().toString();
-		logger.log(Level.SEVERE, date + " Event " + name + " generated an exception.", e);
+		logger.log(Level.SEVERE, date + " Event " + name
+				+ " generated an exception.", e);
 	}
 
-	public void createFile(String directoryName, String fileName) throws IOException {
+	public void createFile(String directoryName, String fileName)
+			throws IOException {
 		File dir = new File(directoryName);
 		if (!dir.exists()) {
 			dir.mkdirs();
@@ -48,7 +53,7 @@ public abstract class ExceptionLogger {
 		String command = "";
 		command += "/" + c.getName() + " ";
 		if (args != null) {
-			for (int i = 0; i < args.length; i ++) {
+			for (int i = 0; i < args.length; i++) {
 				command += args[i] + " ";
 			}
 		}

@@ -16,7 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Main extends JavaPlugin{
+public class Main extends JavaPlugin {
 
 	public static Main instance;
 
@@ -39,14 +39,14 @@ public class Main extends JavaPlugin{
 	@SuppressWarnings("unused")
 	private UpsideDown upd;
 
-
-	public void onEnable(){
+	public void onEnable() {
 		new Config(this).loadConfiguration();
 		instance = this;
 		registerListeners();
 		commands();
 		playerChecks();
 	}
+
 	private void playerChecks() {
 		Player[] players = Bukkit.getOnlinePlayers();
 		for (Player player : players) {
@@ -55,11 +55,13 @@ public class Main extends JavaPlugin{
 		spm.registerAll();
 		vio.engageAll();
 	}
-	private void commands() {//register commands here
+
+	private void commands() {// register commands here
 		base = new Sts("base", this, spm, vm);
 		getCommand("sts").setExecutor(base);
 	}
-	private void registerListeners() {//register listeners here
+
+	private void registerListeners() {// register listeners here
 		vio = new Violations(null, this);
 		cf = new ChatFilter(null, this, vio);
 		jm = new JoinMessage(null, this);
@@ -72,7 +74,7 @@ public class Main extends JavaPlugin{
 		upd = new UpsideDown(null, this, vio);
 	}
 
-	public void onDisable(){
+	public void onDisable() {
 		spm.stopAll();
 	}
 }

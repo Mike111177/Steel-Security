@@ -17,23 +17,27 @@ public class BlockBlacklist extends SSCmdExe {
 		super("BlockBlacklist", true);
 		plugin = instance;
 	}
+
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
-		if (!event.getPlayer().hasPermission("steelsecurity.bypass.blockblackist") || !plugin.getConfig().getBoolean("Block_Blacklist.Enabled")) {
+		if (!event.getPlayer().hasPermission(
+				"steelsecurity.bypass.blockblackist")
+				|| !plugin.getConfig().getBoolean("Block_Blacklist.Enabled")) {
 			Boolean cancel = false;
 			Material block = event.getBlockPlaced().getType();
-			List<?> config = plugin.getConfig().getStringList("Block_Blacklist.Blocks");
+			List<?> config = plugin.getConfig().getStringList(
+					"Block_Blacklist.Blocks");
 			String[] list = config.toArray(new String[config.size()]);
 			int count = config.size();
 			int counter = 0;
-			while (count>counter) {
-				if (Material.getMaterial(Integer.parseInt(list[counter])) == block) cancel = true;
+			while (count > counter) {
+				if (Material.getMaterial(Integer.parseInt(list[counter])) == block)
+					cancel = true;
 				counter++;
 			}
 			event.setCancelled(cancel);
 		}
 
 	}
-
 
 }

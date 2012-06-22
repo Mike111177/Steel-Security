@@ -19,24 +19,31 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
-public abstract class SSCmdExe extends ExceptionLogger implements CommandExecutor, Listener, SSCmdExeInterface{
+public abstract class SSCmdExe extends ExceptionLogger implements
+		CommandExecutor, Listener, SSCmdExeInterface {
 
 	public final String name;
 
 	/**
 	 * @Constructor
-	 * @param name This is the name of the class. whenever exceptions are logged, it will be in a folder named after the class.
-	 * @param listener If the subclass requires it to be registered as a listener, this needs to be true, or else your events wont be utilized.
+	 * @param name
+	 *            This is the name of the class. whenever exceptions are logged,
+	 *            it will be in a folder named after the class.
+	 * @param listener
+	 *            If the subclass requires it to be registered as a listener,
+	 *            this needs to be true, or else your events wont be utilized.
 	 */
-	public SSCmdExe(String name, Boolean listener){
+	public SSCmdExe(String name, Boolean listener) {
 		this.name = name;
-		if(listener){
-			Bukkit.getPluginManager().registerEvents(this,Main.instance);
+		if (listener) {
+			Bukkit.getPluginManager().registerEvents(this, Main.instance);
 		}
 	}
 
-	@Override //This is our supermethod for dealing with commands. We dont touch this.
-	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
+	@Override
+	// This is our supermethod for dealing with commands. We dont touch this.
+	public boolean onCommand(CommandSender sender, Command cmd, String label,
+			String[] args) {
 		try {
 			boolean command = handleCommand(sender, cmd, label, args);
 			return command;
@@ -45,25 +52,34 @@ public abstract class SSCmdExe extends ExceptionLogger implements CommandExecuto
 			try {
 				commandException(e, "plugins/SteelSecurity", sender, cmd, args);
 			} catch (IOException e1) {
-				System.out.println("[SteelSecurity] There was an error during exception logging.");
+				System.out
+						.println("[SteelSecurity] There was an error during exception logging.");
 			}
 			return true;
 		}
 	}
+
 	/**
 	 * Handles commands in the cmd executor subclasses. Please use @Override
 	 * 
-	 * @param sender sender of the command
-	 * @param cmd the command
-	 * @param label the commandLabel
-	 * @param args the arguments
-	 * @return return true if the command was successful, false if there was an error.
+	 * @param sender
+	 *            sender of the command
+	 * @param cmd
+	 *            the command
+	 * @param label
+	 *            the commandLabel
+	 * @param args
+	 *            the arguments
+	 * @return return true if the command was successful, false if there was an
+	 *         error.
 	 */
-	public boolean handleCommand(CommandSender sender, Command cmd, String label, String[] args){
+	public boolean handleCommand(CommandSender sender, Command cmd,
+			String label, String[] args) {
 		return true;
 	}
 
-	public void catchListenerException(Exception e, String l) throws IOException{
+	public void catchListenerException(Exception e, String l)
+			throws IOException {
 		listenerException(e, l, "plugins/SteelSecurity");
 	}
 }

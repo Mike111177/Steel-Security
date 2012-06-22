@@ -7,11 +7,11 @@ import org.bukkit.event.block.BlockBreakEvent;
 
 public class FarBreak extends SSCmdExe {
 
-	public FarBreak(String name, Boolean listener) {
-		super("FarBreak", true);
-	}
+    public FarBreak(String name, Boolean listener) {
+	super("FarBreak", true);
+    }
 
-	@EventHandler
-	public void onPlace(BlockBreakEvent event) {
-	}
+    @EventHandler
+    public void onPlace(BlockBreakEvent event) {
+    }
 }

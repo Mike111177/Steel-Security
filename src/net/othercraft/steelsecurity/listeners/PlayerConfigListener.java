@@ -14,59 +14,55 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerConfigListener extends SSCmdExe {
 
-	public Main plugin;
+    public Main plugin;
 
-	public PlayerConfigListener(String name, Main instance) {
-		super("PlayerConfigListener", true);// true only if its a listener,
-											// false if it isnt
-		this.plugin = instance;
-	}
+    public PlayerConfigListener(String name, Main instance) {
+	super("PlayerConfigListener", true);// true only if its a listener,
+					    // false if it isnt
+	this.plugin = instance;
+    }
 
-	@EventHandler
-	public void loadConfig(PlayerJoinEvent event) throws Exception {
-		try {
-			checkPlayerConfig(event.getPlayer());
-		} catch (Exception e) {
-			try {
-				catchListenerException(e, event.getEventName());
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
-		}
+    @EventHandler
+    public void loadConfig(PlayerJoinEvent event) throws Exception {
+	try {
+	    checkPlayerConfig(event.getPlayer());
+	} catch (Exception e) {
+	    try {
+		catchListenerException(e, event.getEventName());
+	    } catch (IOException e1) {
+		e1.printStackTrace();
+	    }
 	}
+    }
 
-	public void checkPlayerConfig(Player player) {
-		Boolean gmcheck = plugin.getConfig().getBoolean(
-				"Offline_GameMode_Changer.Enabled");
-		String playername = player.getName();
-		FileConfiguration config = PlayerConfigManager.getConfig(playername);
-		if (config == null) {
-			try {
-				if (PlayerConfigManager.createConfig(playername)) {
-					config = PlayerConfigManager.getConfig(playername);
-				} else {
-					IOException e = new IOException();
-					throw e;
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+    public void checkPlayerConfig(Player player) {
+	Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
+	String playername = player.getName();
+	FileConfiguration config = PlayerConfigManager.getConfig(playername);
+	if (config == null) {
+	    try {
+		if (PlayerConfigManager.createConfig(playername)) {
+		    config = PlayerConfigManager.getConfig(playername);
+		} else {
+		    IOException e = new IOException();
+		    throw e;
 		}
-		if (gmcheck) {
-			config.addDefault(
-					"GameMode",
-					plugin.getConfig().getInt(
-							"Offline_GameMode_Changer.Default_GameMode"));
-		}
-		config.options().copyDefaults(true);
-		try {
-			PlayerConfigManager.saveConfig(config, playername);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if (gmcheck) {
-			player.setGameMode(GameMode.getByValue(config.getInt("GameMode")));
-		}
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
 	}
+	if (gmcheck) {
+	    config.addDefault("GameMode", plugin.getConfig().getInt("Offline_GameMode_Changer.Default_GameMode"));
+	}
+	config.options().copyDefaults(true);
+	try {
+	    PlayerConfigManager.saveConfig(config, playername);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	if (gmcheck) {
+	    player.setGameMode(GameMode.getByValue(config.getInt("GameMode")));
+	}
+    }
 
 }

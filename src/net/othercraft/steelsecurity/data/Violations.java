@@ -14,87 +14,87 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Violations extends SSCmdExe {
 
-	Main plugin;
+    Main plugin;
 
-	public Violations(String name, Main instance) {
-		super("Violations", true);
-		plugin = instance;
+    public Violations(String name, Main instance) {
+	super("Violations", true);
+	plugin = instance;
+    }
+
+    private Map<String, Integer> flood = new HashMap<String, Integer>();
+    private Map<String, Integer> derp = new HashMap<String, Integer>();
+
+    public void addFlood(Player player) {
+	int n = flood.get(player.getName());
+	n++;
+	flood.put(player.getName(), n);
+    }
+
+    public void subtractFlood(Player player) {
+	int n = flood.get(player.getName());
+	if (n > 0) {
+	    n--;
 	}
+	flood.put(player.getName(), n);
+    }
 
-	private Map<String, Integer> flood = new HashMap<String, Integer>();
-	private Map<String, Integer> derp = new HashMap<String, Integer>();
-
-	public void addFlood(Player player) {
-		int n = flood.get(player.getName());
-		n++;
-		flood.put(player.getName(), n);
+    public void setFlood(Player player, Integer value) {
+	if (value >= 0) {
+	    flood.put(player.getName(), value);
 	}
+    }
 
-	public void subtractFlood(Player player) {
-		int n = flood.get(player.getName());
-		if (n > 0) {
-			n--;
-		}
-		flood.put(player.getName(), n);
-	}
+    public Integer getFlood(Player player) {
+	return flood.get(player.getName());
+    }
 
-	public void setFlood(Player player, Integer value) {
-		if (value >= 0) {
-			flood.put(player.getName(), value);
-		}
-	}
+    public void addDerp(Player player) {
+	int n = derp.get(player.getName());
+	n++;
+	derp.put(player.getName(), n);
+    }
 
-	public Integer getFlood(Player player) {
-		return flood.get(player.getName());
+    public void subtractDerp(Player player) {
+	int n = derp.get(player.getName());
+	if (n > 0) {
+	    n--;
 	}
+	derp.put(player.getName(), n);
+    }
 
-	public void addDerp(Player player) {
-		int n = derp.get(player.getName());
-		n++;
-		derp.put(player.getName(), n);
+    public void setDerp(Player player, Integer value) {
+	if (value >= 0) {
+	    derp.put(player.getName(), value);
 	}
+    }
 
-	public void subtractDerp(Player player) {
-		int n = derp.get(player.getName());
-		if (n > 0) {
-			n--;
-		}
-		derp.put(player.getName(), n);
-	}
+    public Integer getDerp(Player player) {
+	return derp.get(player.getName());
+    }
 
-	public void setDerp(Player player, Integer value) {
-		if (value >= 0) {
-			derp.put(player.getName(), value);
-		}
-	}
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+	engage(event.getPlayer());
+    }
 
-	public Integer getDerp(Player player) {
-		return derp.get(player.getName());
-	}
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event) {
+	disengage(event.getPlayer());
+    }
 
-	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
-		engage(event.getPlayer());
-	}
+    public void engage(Player player) {
+	flood.put(player.getName(), 0);
+	derp.put(player.getName(), 0);
+    }
 
-	@EventHandler
-	public void onQuit(PlayerQuitEvent event) {
-		disengage(event.getPlayer());
-	}
+    private void disengage(Player player) {
+	flood.remove(player.getName());
+	derp.remove(player.getName());
+    }
 
-	public void engage(Player player) {
-		flood.put(player.getName(), 0);
-		derp.put(player.getName(), 0);
+    public void engageAll() {
+	for (Player player : Bukkit.getOnlinePlayers()) {
+	    engage(player);
 	}
-
-	private void disengage(Player player) {
-		flood.remove(player.getName());
-		derp.remove(player.getName());
-	}
-
-	public void engageAll() {
-		for (Player player : Bukkit.getOnlinePlayers()) {
-			engage(player);
-		}
-	}
+    }
 }

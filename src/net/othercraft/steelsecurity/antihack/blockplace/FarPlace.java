@@ -7,11 +7,11 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class FarPlace extends SSCmdExe {
 
-	public FarPlace(String name, Boolean listener) {
-		super("FarPlace", true);
-	}
+    public FarPlace(String name, Boolean listener) {
+	super("FarPlace", true);
+    }
 
-	@EventHandler
-	public void onPlace(BlockPlaceEvent event) {
-	}
+    @EventHandler
+    public void onPlace(BlockPlaceEvent event) {
+    }
 }

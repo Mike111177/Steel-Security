@@ -18,63 +18,63 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 
-	public static Main instance;
+    public static Main instance;
 
-	private Sts base;
+    private Sts base;
 
-	@SuppressWarnings("unused")
-	private ChatFilter cf;
-	@SuppressWarnings("unused")
-	private JoinMessage jm;
-	@SuppressWarnings("unused")
-	private LoginLimiter ll;
-	private PlayerConfigListener pcl;
-	@SuppressWarnings("unused")
-	private GameModeCmdCatch gmcc;
-	@SuppressWarnings("unused")
-	private BlockBlacklist blbl;
-	private SpectateManager spm;
-	private Vanish vm;
-	private Violations vio;
-	@SuppressWarnings("unused")
-	private UpsideDown upd;
+    @SuppressWarnings("unused")
+    private ChatFilter cf;
+    @SuppressWarnings("unused")
+    private JoinMessage jm;
+    @SuppressWarnings("unused")
+    private LoginLimiter ll;
+    private PlayerConfigListener pcl;
+    @SuppressWarnings("unused")
+    private GameModeCmdCatch gmcc;
+    @SuppressWarnings("unused")
+    private BlockBlacklist blbl;
+    private SpectateManager spm;
+    private Vanish vm;
+    private Violations vio;
+    @SuppressWarnings("unused")
+    private UpsideDown upd;
 
-	public void onEnable() {
-		new Config(this).loadConfiguration();
-		instance = this;
-		registerListeners();
-		commands();
-		playerChecks();
+    public void onEnable() {
+	new Config(this).loadConfiguration();
+	instance = this;
+	registerListeners();
+	commands();
+	playerChecks();
+    }
+
+    private void playerChecks() {
+	Player[] players = Bukkit.getOnlinePlayers();
+	for (Player player : players) {
+	    pcl.checkPlayerConfig(player);
 	}
+	spm.registerAll();
+	vio.engageAll();
+    }
 
-	private void playerChecks() {
-		Player[] players = Bukkit.getOnlinePlayers();
-		for (Player player : players) {
-			pcl.checkPlayerConfig(player);
-		}
-		spm.registerAll();
-		vio.engageAll();
-	}
+    private void commands() {// register commands here
+	base = new Sts("base", this, spm, vm);
+	getCommand("sts").setExecutor(base);
+    }
 
-	private void commands() {// register commands here
-		base = new Sts("base", this, spm, vm);
-		getCommand("sts").setExecutor(base);
-	}
+    private void registerListeners() {// register listeners here
+	vio = new Violations(null, this);
+	cf = new ChatFilter(null, this, vio);
+	jm = new JoinMessage(null, this);
+	ll = new LoginLimiter(null, this);
+	pcl = new PlayerConfigListener(null, this);
+	gmcc = new GameModeCmdCatch(null, this);
+	blbl = new BlockBlacklist(null, this);
+	vm = new Vanish(null, this, spm);
+	spm = new SpectateManager(null, this, vm);
+	upd = new UpsideDown(null, this, vio);
+    }
 
-	private void registerListeners() {// register listeners here
-		vio = new Violations(null, this);
-		cf = new ChatFilter(null, this, vio);
-		jm = new JoinMessage(null, this);
-		ll = new LoginLimiter(null, this);
-		pcl = new PlayerConfigListener(null, this);
-		gmcc = new GameModeCmdCatch(null, this);
-		blbl = new BlockBlacklist(null, this);
-		vm = new Vanish(null, this, spm);
-		spm = new SpectateManager(null, this, vm);
-		upd = new UpsideDown(null, this, vio);
-	}
-
-	public void onDisable() {
-		spm.stopAll();
-	}
+    public void onDisable() {
+	spm.stopAll();
+    }
 }

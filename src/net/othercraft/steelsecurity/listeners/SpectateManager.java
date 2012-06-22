@@ -17,7 +17,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
@@ -296,6 +298,30 @@ public class SpectateManager extends SSCmdExe {
 			}
 		}
 	}
+	@EventHandler
+	public void onHeal(EntityRegainHealthEvent event){
+		if (event.getEntity() instanceof Player){
+			Player player = (Player) event.getEntity();
+			if (spectators.get(player.getName())) {
+				event.setCancelled(true);
+			}
+			if (spectatees.get(player.getName())){
+				healthUpdate(player);
+			}
+		}
+	}
+	@EventHandler
+	public void onFoodChange(FoodLevelChangeEvent event){
+		if (event.getEntity() instanceof Player){
+			Player player = (Player) event.getEntity();
+			if (spectators.get(player.getName())) {
+				event.setCancelled(true);
+			}
+			if (spectatees.get(player.getName())){
+				foodUpdate(player);
+			}
+		}
+	}
 	private void inventoryUpdate(final Player player){
 		final HashSet<String> list = speclist.get(player.getName());
 		plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
@@ -342,7 +368,7 @@ public class SpectateManager extends SSCmdExe {
 			public void run() {
 				if (player.getHealth()<0){
 					for (String playername : list) {
-						Bukkit.getPlayerExact(playername).setGameMode(player.getGameMode());
+						Bukkit.getPlayerExact(playername).setHealth(player.getHealth());
 					}
 				}
 			}

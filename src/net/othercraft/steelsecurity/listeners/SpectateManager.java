@@ -97,7 +97,6 @@ public class SpectateManager extends SSCmdExe {
 	    vm.setVanished(tostart, false);
 	}
 	spectators.put(tostartname, true);
-	spectatees.put(tostarton.getName(), true);
 	spectating.put(tostartname, tostarton.getName());
 	origion.put(tostartname, tostart.getLocation());
 	health.put(tostartname, tostart.getHealth());
@@ -132,7 +131,13 @@ public class SpectateManager extends SSCmdExe {
 		}
 	    }
 	}
+	if (spectatees.get(tostartname)){
+	    for (String player : speclist.get(tostartname)) {
+		restart(Bukkit.getPlayerExact(player));
+	    }
+	}
 	wasflying.put(tostartname, tostart.getAllowFlight());
+	spectatees.put(tostarton.getName(), true);
 	tostart.setAllowFlight(true);
 	tostart.hidePlayer(tostarton);
 	tostart.teleport(tostarton);
@@ -145,20 +150,15 @@ public class SpectateManager extends SSCmdExe {
 
     private void stop(Player tostop) {
 	String tostopname = tostop.getName();
-	spectates.remove(tostop);
 	Player tostopon = Bukkit.getPlayerExact(spectating.get(tostopname));
-	spectators.put(tostopname, false);
 	for (Player player : Bukkit.getOnlinePlayers()) {
 	    player.showPlayer(tostop);
 	}
 	tostop.showPlayer(tostopon);
-	spectating.remove(tostop);
 	HashSet<String> thenew = speclist.get(tostopon.getName());
 	thenew.remove(tostop);
-	speclist.put(tostopon.getName(), thenew);
 	Location loc = origion.get(tostopname);
 	tostop.teleport(loc);
-	spectatees.put(tostopon.getName(), false);
 	origion.remove(tostopname);
 	tostop.getInventory().setContents(inventory.get(tostopname));
 	inventory.remove(tostopname);
@@ -174,12 +174,27 @@ public class SpectateManager extends SSCmdExe {
 	wasvanished.remove(tostopname);
 	tostop.setAllowFlight(wasflying.get(tostopname));
 	wasflying.remove(tostopname);
+	if (spectatees.get(tostopname)){
+	    for (String player : speclist.get(tostopname)) {
+		restart(Bukkit.getPlayerExact(player));
+	    }
+	}
+	spectators.put(tostopname, false);
+	spectates.remove(tostop);
+	spectating.remove(tostop);
+	speclist.put(tostopon.getName(), thenew);
+	spectatees.put(tostopon.getName(), false);
     }
 
     public void stopAll() {
 	for (String player : spectates) {
 	    stop(Bukkit.getPlayerExact(player));
 	}
+    }
+    public void restart(Player torestart){
+	Player torestarton = Bukkit.getPlayerExact(spectating.get(torestart.getName()));
+	stop(torestart);
+	start(torestart, torestarton);
     }
 
     public void specCmd(CommandSender sender, String[] args) {
@@ -229,28 +244,10 @@ public class SpectateManager extends SSCmdExe {
 	Player player = event.getPlayer();
 	if (spectators.get(player.getName())) {
 	    event.getPlayer().teleport(Bukkit.getPlayerExact(spectating.get(event.getPlayer().getName())));
-	    if (isSpectating(event.getPlayer())){
-		    Boolean done = false;
-		    Player checkplayer = player;
-		    Player nextplayer = Bukkit.getPlayerExact(spectating.get(checkplayer.getName()));
-		    while (!done) {
-			if (!spectators.get(nextplayer.getName())) {
-			    checkplayer.teleport(Bukkit.getPlayerExact(spectating.get(event.getPlayer().getName())));
-			    done = true;
-			}
-			else if (!(nextplayer == player)) {
-			    checkplayer.teleport(Bukkit.getPlayerExact(spectating.get(event.getPlayer().getName())));
-			    player = nextplayer;
-			    nextplayer = Bukkit.getPlayerExact(spectating.get(player.getName()));
-			}
-			else {
-			    done = true;
-			}
-		    }
-		}
 	}
 	if (spectatees.get(event.getPlayer().getName())) {
 	    for (String playername : speclist.get(event.getPlayer().getName())) {
+		Bukkit.getPlayerExact(playername).setVelocity(event.getPlayer().getVelocity());
 		Bukkit.getPlayerExact(playername).teleport(event.getPlayer());
 	    }
 	}

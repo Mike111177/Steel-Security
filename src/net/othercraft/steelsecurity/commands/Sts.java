@@ -186,6 +186,9 @@ public class Sts extends SSCmdExe {
 	if (sender.hasPermission("steelsecurity.commands.spectate")) {
 	    sender.sendMessage(g + "/sts spectate:" + y + " Shows you the world from the eyes of another player.");
 	}
+	if (sender.hasPermission("steelsecurity.commands.vanish")) {
+	    sender.sendMessage(g + "/sts vanish:" + y + " Makes you disapear.");
+	}
 	if (sender.hasPermission("steelsecurity.commands.listop")) {
 	    sender.sendMessage(g + "/sts listop:" + y + " List ops.");
 	}

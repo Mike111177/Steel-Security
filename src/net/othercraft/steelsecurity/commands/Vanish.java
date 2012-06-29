@@ -66,13 +66,15 @@ public class Vanish extends SSCmdExe {
 
     private void stop(Player tostop) {
 	for (Player player : Bukkit.getOnlinePlayers()) {
-	    player.showPlayer(tostop);
+		player.showPlayer(tostop);
 	}
     }
 
     private void start(Player tostart) {
 	for (Player player : Bukkit.getOnlinePlayers()) {
-	    player.hidePlayer(tostart);
+	    if (!player.hasPermission("steelsecurity.commands.vanish.cansee")){
+		player.hidePlayer(tostart);
+	    }
 	}
     }
 

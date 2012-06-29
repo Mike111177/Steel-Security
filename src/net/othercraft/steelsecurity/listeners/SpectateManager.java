@@ -146,6 +146,10 @@ public class SpectateManager extends SSCmdExe {
 	expUpdate(tostarton);
 	foodUpdate(tostarton);
 	gameUpdate(tostarton);
+	if (spectators.get(tostarton.getName())){
+		tostart.sendMessage("Warining:");
+		tostart.sendMessage("The player you are spectating is spectating another playrer. This may cause laggy or incomplete results.");
+	    }
     }
 
     private void stop(Player tostop) {
@@ -216,7 +220,7 @@ public class SpectateManager extends SSCmdExe {
 		    else {
 			sender.sendMessage("You can't spectate your self!");
 		    }
-	    } else {
+	    } else if (args.length>2){
 		player.sendMessage("Too many arguments!");
 		player.sendMessage("Usage: /sts spectate <player>");
 	    }

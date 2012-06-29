@@ -37,88 +37,64 @@ public class ChatFilter extends SSCmdExe {
 	try {
 	    int speed = plugin.getConfig().getInt("AntiSpam.AntiFlood.Speed");
 	    Boolean spam = true;// if this is true at the end cancel the event
-	    String name = event.getPlayer().getName();// name of the player for
-						      // use in the hashmap
+	    String name = event.getPlayer().getName();// name of the player for use in the hashmap
 	    Long time = System.currentTimeMillis();// current time
-	    Long lasttime = chattimes.get(name);// last time the player has
-						// chatted
+	    Long lasttime = chattimes.get(name);
 	    if (lasttime == null)
-		lasttime = Long.valueOf(time - (speed + 1));// default if the
-							    // player hasnt
-							    // chatted yet
-	    int check = (time.intValue() - lasttime.intValue());// used to
-								// compare to
-								// the
-								// configured
-								// speed
+		lasttime = Long.valueOf(time - (speed + 1));
+	    int check = (time.intValue() - lasttime.intValue());
 	    chattimes.put(name, time);// overwrites the old time with the new
 				      // one
-	    if (check > speed || !plugin.getConfig().getBoolean("AntiSpam.AntiFlood.Enabled") || !event.getPlayer().hasPermission("steelsecurity.bypass.antiflood")) {// checks if the
-																				      // speed of chat
-																				      // is faster
-																				      // than what is
-																				      // configured
+	    if (check > speed || !plugin.getConfig().getBoolean("AntiSpam.AntiFlood.Enabled") || !event.getPlayer().hasPermission("steelsecurity.bypass.antiflood")) {
 		spam = false;// sets spam to false
 	    }
 	    String message = event.getMessage();// prepairs message for editing
-	    if ((!spam)) {// only bothers with the anticaps and the censoring if
-			  // it isnt spam.
-		if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.censor")) {// checks if it
-																		     // so scan
-																		     // for
-																		     // configured
-																		     // word
+	    if ((!spam)) {
+		if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.censor")) {
 		    @SuppressWarnings("unchecked")
-		    List<String> list = (List<String>) plugin.getConfig().getList("AntiSpam.Censoring.Block_Words");// retreives
-														    // the
-														    // list
-														    // of
-														    // blocked
-														    // words
-		    int wordcount = list.size();// the length of the list of
-						// blocked words
-		    int wordcounter = 0;// i like using this instead of for
-					// loops becasue these are less
-					// restricting
-		    while (wordcounter < wordcount) {
-			String newword;
-			String badword = list.get(wordcounter);
-			int lettercount = list.get(wordcounter).toCharArray().length;// word
-										     // length
-			int lettercounter = 0;
-			newword = "";
-			while (lettercounter < lettercount) {// used to generate
-							     // a new word
-							     // considting of
-							     // *s
-			    newword = (newword + "*");
-			    ++lettercounter;
+		    List<String> blist = (List<String>) plugin.getConfig().getList("AntiSpam.Censoring.Block_Words");
+		    @SuppressWarnings("unchecked")
+		    List<String> glist = (List<String>) plugin.getConfig().getList("AntiSpam.Censoring.Allowed_Words");
+		    String[] mlist = message.split(" ");
+		    String[] nmlist = message.split(" ");
+		    String nm = "";
+		    for (String bword : blist){
+			if (message.toLowerCase().contains(bword.toLowerCase())){
+			    int bindexer = 0;
+			    String nword = "";
+			    while (bindexer<bword.length()){
+				nword = (nword+"*");
+				bindexer++;
+			    }
+			    int mindex = 0;
+			   for (String mword : mlist){
+			       for (String gword : glist){
+				   if (!gword.equalsIgnoreCase(mword)){
+				       nmlist[mindex]=nmlist[mindex].replaceAll("(?i)" + bword, nword);
+				   }
+				   mindex++;
+			       }
+
+			   }
+			   for (String nnword: nmlist){
+			       nm = nm + nnword + " ";
+			   }
 			}
-			message = message.replaceAll("(?i)" + badword, newword);
-			++wordcounter;
 		    }
+		    if (!nm.equals("")){
+			message = nm;
+		    }
+		    event.setMessage(message);
 		}
 		if (event.getMessage().length() > plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Minimum_Length")) {//
-		    if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Canceling.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.censor")) {// checks
-																				   // for
-																				   // if it
-																				   // should
-																				   // do
-																				   // the
-																				   // anticaps
-																				   // check
-			double percent = plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Percent");// gets
-													   // the
-													   // configured
-													   // percent
+		    if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Canceling.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.censor")) {
+			double percent = plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Percent");
 			int capcount = message.length();
 			int capcounter = 0;
 			Double uppercase = 0.0;
 			Double lowercase = 0.0;
 			while (capcounter < capcount) {
-			    if (message.toCharArray()[capcounter] != ("*").toCharArray()[1]) {// counts both upper
-											      // case and lower case
-											      // letters
+			    if (message.toCharArray()[capcounter] != ("*").toCharArray()[0]) {
 				++lowercase;
 			    } else {
 				++uppercase;
@@ -128,37 +104,20 @@ public class ChatFilter extends SSCmdExe {
 			double total = uppercase + lowercase;
 			double result = uppercase / total;
 			percent = percent / 100;
-			if (percent < result) {// converts to lowercase if
-					       // needed
+			if (percent < result) {
 			    spam = true;
 			}
 		    }
 		}
 		if (event.getMessage().length() > plugin.getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")) {//
-		    if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.anticaps")) {// checks
-																			  // for
-																			  // if it
-																			  // should
-																			  // do
-																			  // the
-																			  // anticaps
-																			  // check
-			double percent = plugin.getConfig().getInt("AntiSpam.AntiCaps.Percent");// gets the
-												// configured
-												// percent
+		    if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.anticaps")) {
+			double percent = plugin.getConfig().getInt("AntiSpam.AntiCaps.Percent");
 			int capcount = message.length();
 			int capcounter = 0;
 			Double uppercase = 0.0;
 			Double lowercase = 0.0;
 			while (capcounter < capcount) {
-			    if (message.toCharArray()[capcounter] == message.toLowerCase().toCharArray()[capcounter]) {// counts
-														       // both
-														       // upper
-														       // case
-														       // and
-														       // lower
-														       // case
-														       // letters
+			    if (message.toCharArray()[capcounter] == message.toLowerCase().toCharArray()[capcounter]) {
 				++lowercase;
 			    } else {
 				++uppercase;
@@ -168,16 +127,16 @@ public class ChatFilter extends SSCmdExe {
 			double total = uppercase + lowercase;
 			double result = uppercase / total;
 			percent = percent / 100;
-			if (percent < result) {// converts to lowercase if
-					       // needed
+			if (percent < result) {
 			    message = message.toLowerCase();
 			}
 		    }
 		}
-		event.setMessage(message);// changes message to newly generated
-					  // one
+		event.setMessage(message);
 	    }
-	    event.setCancelled(spam);// cancel if it spam from the beginning
+	    if (spam){
+		    event.setCancelled(true);
+	    }
 	} catch (Exception e) {
 	    try {
 		catchListenerException(e, event.getEventName());

@@ -46,53 +46,19 @@ public class SpectateManager extends SSCmdExe {
 	plugin = instance;
     }
 
-    private Map<String, Boolean> spectators = new HashMap<String, Boolean>();// if
-									     // some
-									     // is
-									     // a
-									     // spectating
-									     // someone
-									     // else.
-    private Map<String, Boolean> spectatees = new HashMap<String, Boolean>();// if
-									     // someone
-									     // is
-									     // being
-									     // spectated.
-    private Map<String, String> spectating = new HashMap<String, String>();// Who
-									   // a
-									   // player
-									   // is
-									   // spectating.
-    private Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();// Who
-											   // a
-											   // player
-											   // is
-											   // being
-											   // spectated
-											   // by.
-    private Map<String, Location> origion = new HashMap<String, Location>();// Where
-									    // a
-									    // player
-									    // was
-									    // before
-									    // beginning
-									    // spectate
-    private Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();// The
-										    // players
-										    // inventory
-										    // before
-										    // starting
-										    // to
-										    // spectate
+    private Map<String, Boolean> spectators = new HashMap<String, Boolean>();//if someone is spectating someone else
+    private Map<String, Boolean> spectatees = new HashMap<String, Boolean>();// if someone is being spectated
+    private Map<String, String> spectating = new HashMap<String, String>();// Who a player is spectating
+    private Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();// Who a player is being spectated by.
+    private Map<String, Location> origion = new HashMap<String, Location>();// Where a player was before begining spectate
+    private Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();// The players inventory before spectating
     private Map<String, Integer> health = new HashMap<String, Integer>();
     private Map<String, Integer> food = new HashMap<String, Integer>();
     private Map<String, Float> exp = new HashMap<String, Float>();
     private Map<String, Integer> game = new HashMap<String, Integer>();
     private Map<String, Boolean> wasvanished = new HashMap<String, Boolean>();
     private Map<String, Boolean> wasflying = new HashMap<String, Boolean>();
-    private HashSet<String> spectates = new HashSet<String>();// Who is
-							      // specating
-							      // other people
+    private HashSet<String> spectates = new HashSet<String>();// Who is spectating other people
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -146,6 +112,25 @@ public class SpectateManager extends SSCmdExe {
 	speclist.put(tostarton.getName(), thenew);
 	for (Player player : Bukkit.getOnlinePlayers()) {
 	    player.hidePlayer(tostart);
+	}
+	if (isSpectating(tostarton)){
+	    Boolean done = false;
+	    Player player = tostarton;
+	    Player nextplayer = Bukkit.getPlayerExact(spectating.get(tostartname));
+	    while (!done) {
+		if (!spectators.get(nextplayer.getName())) {
+		    tostart.hidePlayer(nextplayer);
+		    done = true;
+		}
+		else if (!(nextplayer == tostart)) {
+		    tostart.hidePlayer(nextplayer);
+		    player = nextplayer;
+		    nextplayer = Bukkit.getPlayerExact(spectating.get(player.getName()));
+		}
+		else {
+		    done = true;
+		}
+	    }
 	}
 	wasflying.put(tostartname, tostart.getAllowFlight());
 	tostart.setAllowFlight(true);
@@ -207,15 +192,10 @@ public class SpectateManager extends SSCmdExe {
 		Player tostarton = Bukkit.getPlayer(args[1]);
 		    if (player != tostarton) {
 			if (tostarton != null) {
-			    if (!spectators.get(tostarton.getName())) {
 			    start(player, tostarton);
-			    }
-			    else {
-				sender.sendMessage("Were sorry, you can not spectate someone who is all ready spectating someone else.");
-			    }
 			} 
 			else {
-			    sender.sendMessage("We could not find anybody by the name of " + args[1]);
+			    sender.sendMessage("We could not find anybody by the name of " + args[1] + ".");
 			}
 		    } 
 		    else {
@@ -246,8 +226,28 @@ public class SpectateManager extends SSCmdExe {
     // Beyond here only apllies to when a player is being spectated
     @EventHandler
     public void onFollow(PlayerMoveEvent event) {
-	if (spectators.get(event.getPlayer().getName())) {
+	Player player = event.getPlayer();
+	if (spectators.get(player.getName())) {
 	    event.getPlayer().teleport(Bukkit.getPlayerExact(spectating.get(event.getPlayer().getName())));
+	    if (isSpectating(event.getPlayer())){
+		    Boolean done = false;
+		    Player checkplayer = player;
+		    Player nextplayer = Bukkit.getPlayerExact(spectating.get(checkplayer.getName()));
+		    while (!done) {
+			if (!spectators.get(nextplayer.getName())) {
+			    checkplayer.teleport(Bukkit.getPlayerExact(spectating.get(event.getPlayer().getName())));
+			    done = true;
+			}
+			else if (!(nextplayer == player)) {
+			    checkplayer.teleport(Bukkit.getPlayerExact(spectating.get(event.getPlayer().getName())));
+			    player = nextplayer;
+			    nextplayer = Bukkit.getPlayerExact(spectating.get(player.getName()));
+			}
+			else {
+			    done = true;
+			}
+		    }
+		}
 	}
 	if (spectatees.get(event.getPlayer().getName())) {
 	    for (String playername : speclist.get(event.getPlayer().getName())) {

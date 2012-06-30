@@ -48,11 +48,9 @@ public class Main extends JavaPlugin {
     }
 
     private void playerChecks() {
-	Player[] players = Bukkit.getOnlinePlayers();
-	for (Player player : players) {
-	    pcl.checkPlayerConfig(player);
-	}
+	pcl.checkAll();
 	spm.registerAll();
+	vm.registerAll();
 	vio.engageAll();
     }
 
@@ -76,5 +74,6 @@ public class Main extends JavaPlugin {
 
     public void onDisable() {
 	spm.stopAll();
+	vm.stopAll();
     }
 }

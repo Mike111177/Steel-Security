@@ -26,7 +26,7 @@ public class Vanish extends SSCmdExe {
 	spm = specman;
     }
 
-    Map<String, Boolean> isvanished = new HashMap<String, Boolean>();
+    private Map<String, Boolean> isvanished = new HashMap<String, Boolean>();
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
@@ -86,4 +86,11 @@ public class Vanish extends SSCmdExe {
 	    sender.sendMessage("You can not vanish when you are spectating!");
 	}
     }
+    public void stopAll(){
+	for (Player player : Bukkit.getOnlinePlayers()) stop(player);
+    }
+    public void registerAll() {
+	for (Player player : Bukkit.getOnlinePlayers()) isvanished.put(player.getName(), false);
+    }
+    
 }

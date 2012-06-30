@@ -6,6 +6,7 @@ import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -63,6 +64,10 @@ public class PlayerConfigListener extends SSCmdExe {
 	if (gmcheck) {
 	    player.setGameMode(GameMode.getByValue(config.getInt("GameMode")));
 	}
+    }
+
+    public void checkAll() {
+	for (Player player : Bukkit.getOnlinePlayers()) checkPlayerConfig(player);
     }
 
 }

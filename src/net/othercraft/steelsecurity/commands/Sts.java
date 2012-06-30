@@ -12,6 +12,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 
 public class Sts extends SSCmdExe {
 
@@ -29,16 +30,18 @@ public class Sts extends SSCmdExe {
     }
 
     // Defines Chat Colors
-    ChatColor r = ChatColor.RED;
-    ChatColor g = ChatColor.GREEN;
-    ChatColor y = ChatColor.YELLOW;
-    ChatColor w = ChatColor.WHITE;
-    ChatColor b = ChatColor.BLUE;
+    protected ChatColor r = ChatColor.RED;
+    protected ChatColor g = ChatColor.GREEN;
+    protected ChatColor y = ChatColor.YELLOW;
+    protected ChatColor w = ChatColor.WHITE;
+    protected ChatColor b = ChatColor.BLUE;
     // Defines No Permission String
-    String noperm = (r + "You don't have permission to do this!");
+    protected String noperm = (r + "You don't have permission to do this!");
+    protected String playeronly = (r + "This command can only be done by a player!");
 
     // Receives command and takes actions.
     public void command(CommandSender sender, String[] args) {
+	Boolean isplayer = sender instanceof Player;
 	if (args.length == 0) {
 	    if (sender.hasPermission("steelsecurity.commands.sts")) {
 		sender.sendMessage(g + "This server is running Steel Security");
@@ -155,17 +158,37 @@ public class Sts extends SSCmdExe {
 		}
 	    }
 	    if (args[0].equalsIgnoreCase("spectate")) {
-		if (sender.hasPermission("steelsecurity.commands.spectate")) {
-		    spm.specCmd(sender, args);
+		if (isplayer) {
+		    if (sender.hasPermission("steelsecurity.commands.spectate")) {
+			spm.specCmd(sender, args);
+		    } else {
+			sender.sendMessage(noperm);
+		    }
 		} else {
-		    sender.sendMessage(noperm);
+		    sender.sendMessage(playeronly);
+		}
+	    }
+	    if (args[0].equalsIgnoreCase("spectateoff")) {
+		if (isplayer) {
+		    if (sender.hasPermission("steelsecurity.commands.spectate")) {
+			Player player = (Player) sender;
+			spm.endSpectating(player);
+		    } else {
+			sender.sendMessage(noperm);
+		    }
+		} else {
+		    sender.sendMessage(playeronly);
 		}
 	    }
 	    if (args[0].equalsIgnoreCase("vanish")) {
-		if (sender.hasPermission("steelsecurity.commands.vanish")) {
-		    vm.vmCmd(sender, args);
+		if (isplayer) {
+		    if (sender.hasPermission("steelsecurity.commands.vanish")) {
+			vm.vmCmd(sender, args);
+		    } else {
+			sender.sendMessage(noperm);
+		    }
 		} else {
-		    sender.sendMessage(noperm);
+		    sender.sendMessage(playeronly);
 		}
 	    }
 	}
@@ -183,6 +206,9 @@ public class Sts extends SSCmdExe {
 	}
 	if (sender.hasPermission("steelsecurity.commands.spectate")) {
 	    sender.sendMessage(g + "/sts spectate:" + y + " Shows you the world from the eyes of another player.");
+	}
+	if (sender.hasPermission("steelsecurity.commands.spectate")) {
+	    sender.sendMessage(g + "/sts spectateoff:" + y + " Stops spectating.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.vanish")) {
 	    sender.sendMessage(g + "/sts vanish:" + y + " Makes you disapear.");

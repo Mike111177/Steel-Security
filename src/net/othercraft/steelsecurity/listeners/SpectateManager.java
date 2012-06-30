@@ -146,7 +146,7 @@ public class SpectateManager extends SSCmdExe {
 	gameUpdate(tostarton);
 	if (spectators.get(tostarton.getName())) {
 	    tostart.sendMessage("Warining:");
-	    tostart.sendMessage("The player you are spectating is spectating another playrer. This may cause laggy or incomplete results.");
+	    tostart.sendMessage("The player you are spectating is spectating another player. This may cause laggy or incomplete results.");
 	}
     }
 
@@ -238,6 +238,9 @@ public class SpectateManager extends SSCmdExe {
 
     public Map<String, String> spectateList() {
 	return spectating;
+    }
+    public void endSpectating(Player player){
+	if (spectators.get(player.getName())) stop(player);
     }
 
     // Beyond here only apllies to when a player is being spectated

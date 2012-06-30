@@ -12,8 +12,6 @@ import net.othercraft.steelsecurity.listeners.LoginLimiter;
 import net.othercraft.steelsecurity.listeners.PlayerConfigListener;
 import net.othercraft.steelsecurity.listeners.SpectateManager;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -33,7 +31,7 @@ public class Main extends JavaPlugin {
     private GameModeCmdCatch gmcc;
     @SuppressWarnings("unused")
     private BlockBlacklist blbl;
-    private SpectateManager spm;
+    public SpectateManager spm;
     private Vanish vm;
     private Violations vio;
     @SuppressWarnings("unused")
@@ -67,9 +65,10 @@ public class Main extends JavaPlugin {
 	pcl = new PlayerConfigListener(null, this);
 	gmcc = new GameModeCmdCatch(null, this);
 	blbl = new BlockBlacklist(null, this);
-	vm = new Vanish(null, this, spm);
+	vm = new Vanish(null, this);
 	spm = new SpectateManager(null, this, vm);
 	upd = new UpsideDown(null, this, vio);
+	vm.specGet();
     }
 
     public void onDisable() {

@@ -233,7 +233,8 @@ public class SpectateManager extends SSCmdExe {
     }
 
     public Boolean isSpectating(Player player) {
-	return spectators.get(player.getName());
+	Boolean result = spectators.get(player.getName());
+	return result;
     }
 
     public Map<String, String> spectateList() {

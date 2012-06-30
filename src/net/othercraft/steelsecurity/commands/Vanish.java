@@ -20,10 +20,12 @@ public class Vanish extends SSCmdExe {
 
     SpectateManager spm;
 
-    public Vanish(String name, Main instance, SpectateManager specman) {
+    public Vanish(String name, Main instance) {
 	super("Vanish", true);
 	plugin = instance;
-	spm = specman;
+    }
+    public void specGet(){
+	spm = plugin.spm;
     }
 
     private Map<String, Boolean> isvanished = new HashMap<String, Boolean>();
@@ -66,7 +68,12 @@ public class Vanish extends SSCmdExe {
 
     private void stop(Player tostop) {
 	for (Player player : Bukkit.getOnlinePlayers()) {
-	    player.showPlayer(tostop);
+	    if (!player.hasPermission("steelsecurity.commands.vanish.cansee")) {
+		player.showPlayer(tostop);
+	    }
+	    else if (tostop.hasPermission("steelsecurity.commands.vanish")){
+		player.sendMessage(tostop.getName() + " is visable.");
+	    }
 	}
     }
 
@@ -74,6 +81,9 @@ public class Vanish extends SSCmdExe {
 	for (Player player : Bukkit.getOnlinePlayers()) {
 	    if (!player.hasPermission("steelsecurity.commands.vanish.cansee")) {
 		player.hidePlayer(tostart);
+	    }
+	    else if (tostart.hasPermission("steelsecurity.commands.vanish")){
+		player.sendMessage(tostart.getName() + " has disapeared.");
 	    }
 	}
     }

@@ -43,8 +43,7 @@ public class ChatFilter extends SSCmdExe {
 	    if (lasttime == null)
 		lasttime = Long.valueOf(time - (speed + 1));
 	    int check = (time.intValue() - lasttime.intValue());
-	    chattimes.put(name, time);// overwrites the old time with the new
-				      // one
+	    chattimes.put(name, time);// overwrites the old time with the one
 	    if (check > speed || !plugin.getConfig().getBoolean("AntiSpam.AntiFlood.Enabled") || !event.getPlayer().hasPermission("steelsecurity.bypass.antiflood")) {
 		spam = false;// sets spam to false
 	    }
@@ -56,37 +55,37 @@ public class ChatFilter extends SSCmdExe {
 		    @SuppressWarnings("unchecked")
 		    List<String> glist = (List<String>) plugin.getConfig().getList("AntiSpam.Censoring.Allowed_Words");
 		    String[] mlist = message.split(" ");
-		    String[] nmlist = message.split(" ");
+		    String[] nmlist = mlist;
 		    String nm = "";
-		    for (String bword : blist) {
-			if (message.toLowerCase().contains(bword.toLowerCase())) {
-			    int bindexer = 0;
-			    String nword = "";
-			    while (bindexer < bword.length()) {
-				nword = (nword + "*");
-				bindexer++;
-			    }
-			    int mindex = 0;
-			    for (String mword : mlist) {
-				for (String gword : glist) {
-				    if (!gword.equalsIgnoreCase(mword)) {
-					nmlist[mindex] = nmlist[mindex].replaceAll("(?i)" + bword, nword);
-				    }
-				    mindex++;
-				}
-
-			    }
-			    for (String nnword : nmlist) {
-				nm = nm + nnword + " ";
+		    int mindex = 0;
+		    for (String cword : mlist){
+			Boolean correct = true;
+			for (String gword : glist) {
+			    if (cword.equalsIgnoreCase(gword)){
+				correct = false;
 			    }
 			}
+			if (correct) {
+			    for (String bword : blist){
+				if (cword.toLowerCase().contains(bword.toLowerCase())){
+				    int bindex = 0;
+				    String nword = "";
+				    while (bindex<bword.length()) {
+					nword = nword + "*";
+					bindex++;
+				    }
+				    nmlist[mindex] = mlist[mindex].replaceAll("(?i)" + bword, nword);
+				}
+			    }
+			}
+			mindex++;
 		    }
-		    if (!nm.equals("")) {
+			for (String nnword : nmlist) {
+			nm = nm + nnword + " ";
+		    }
 			message = nm;
-		    }
-		    event.setMessage(message);
 		}
-		if (event.getMessage().length() > plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Minimum_Length")) {//
+		if (message.length() > plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Minimum_Length")) {//
 		    if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Canceling.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.censor")) {
 			double percent = plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Percent");
 			int capcount = message.length();
@@ -109,7 +108,7 @@ public class ChatFilter extends SSCmdExe {
 			}
 		    }
 		}
-		if (event.getMessage().length() > plugin.getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")) {//
+		if (message.length() > plugin.getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")) {//
 		    if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.anticaps")) {
 			double percent = plugin.getConfig().getInt("AntiSpam.AntiCaps.Percent");
 			int capcount = message.length();

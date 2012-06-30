@@ -46,7 +46,7 @@ public class SpectateManager extends SSCmdExe {
 	plugin = instance;
     }
 
-    private Map<String, Boolean> spectators = new HashMap<String, Boolean>();//if someone is spectating someone else
+    private Map<String, Boolean> spectators = new HashMap<String, Boolean>();// if someone is spectating someone else
     private Map<String, Boolean> spectatees = new HashMap<String, Boolean>();// if someone is being spectated
     private Map<String, String> spectating = new HashMap<String, String>();// Who a player is spectating
     private Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();// Who a player is being spectated by.
@@ -112,7 +112,7 @@ public class SpectateManager extends SSCmdExe {
 	for (Player player : Bukkit.getOnlinePlayers()) {
 	    player.hidePlayer(tostart);
 	}
-	if (isSpectating(tostarton)){
+	if (isSpectating(tostarton)) {
 	    Boolean done = false;
 	    Player player = tostarton;
 	    Player nextplayer = Bukkit.getPlayerExact(spectating.get(tostartname));
@@ -120,18 +120,16 @@ public class SpectateManager extends SSCmdExe {
 		if (!spectators.get(nextplayer.getName())) {
 		    tostart.hidePlayer(nextplayer);
 		    done = true;
-		}
-		else if (!(nextplayer == tostart)) {
+		} else if (!(nextplayer == tostart)) {
 		    tostart.hidePlayer(nextplayer);
 		    player = nextplayer;
 		    nextplayer = Bukkit.getPlayerExact(spectating.get(player.getName()));
-		}
-		else {
+		} else {
 		    done = true;
 		}
 	    }
 	}
-	if (spectatees.get(tostartname)){
+	if (spectatees.get(tostartname)) {
 	    for (String player : speclist.get(tostartname)) {
 		restart(Bukkit.getPlayerExact(player));
 	    }
@@ -146,10 +144,10 @@ public class SpectateManager extends SSCmdExe {
 	expUpdate(tostarton);
 	foodUpdate(tostarton);
 	gameUpdate(tostarton);
-	if (spectators.get(tostarton.getName())){
-		tostart.sendMessage("Warining:");
-		tostart.sendMessage("The player you are spectating is spectating another playrer. This may cause laggy or incomplete results.");
-	    }
+	if (spectators.get(tostarton.getName())) {
+	    tostart.sendMessage("Warining:");
+	    tostart.sendMessage("The player you are spectating is spectating another playrer. This may cause laggy or incomplete results.");
+	}
     }
 
     private void stop(Player tostop) {
@@ -178,7 +176,7 @@ public class SpectateManager extends SSCmdExe {
 	wasvanished.remove(tostopname);
 	tostop.setAllowFlight(wasflying.get(tostopname));
 	wasflying.remove(tostopname);
-	if (spectatees.get(tostopname)){
+	if (spectatees.get(tostopname)) {
 	    for (String player : speclist.get(tostopname)) {
 		restart(Bukkit.getPlayerExact(player));
 	    }
@@ -195,7 +193,8 @@ public class SpectateManager extends SSCmdExe {
 	    stop(Bukkit.getPlayerExact(player));
 	}
     }
-    public void restart(Player torestart){
+
+    public void restart(Player torestart) {
 	Player torestarton = Bukkit.getPlayerExact(spectating.get(torestart.getName()));
 	stop(torestart);
 	start(torestart, torestarton);
@@ -209,18 +208,16 @@ public class SpectateManager extends SSCmdExe {
 	    }
 	    if (args.length == 2) {
 		Player tostarton = Bukkit.getPlayer(args[1]);
-		    if (player != tostarton) {
-			if (tostarton != null) {
-			    start(player, tostarton);
-			} 
-			else {
-			    sender.sendMessage("We could not find anybody by the name of " + args[1] + ".");
-			}
-		    } 
-		    else {
-			sender.sendMessage("You can't spectate your self!");
+		if (player != tostarton) {
+		    if (tostarton != null) {
+			start(player, tostarton);
+		    } else {
+			sender.sendMessage("We could not find anybody by the name of " + args[1] + ".");
 		    }
-	    } else if (args.length>2){
+		} else {
+		    sender.sendMessage("You can't spectate your self!");
+		}
+	    } else if (args.length > 2) {
 		player.sendMessage("Too many arguments!");
 		player.sendMessage("Usage: /sts spectate <player>");
 	    }
@@ -238,7 +235,8 @@ public class SpectateManager extends SSCmdExe {
     public Boolean isSpectating(Player player) {
 	return spectators.get(player.getName());
     }
-    public Map<String, String> spectateList(){
+
+    public Map<String, String> spectateList() {
 	return spectating;
     }
 

@@ -5,8 +5,8 @@ import java.io.IOException;
 import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
+import net.othercraft.steelsecurity.utils.Tools;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,18 +18,17 @@ public class GameModeCmdCatch extends SSCmdExe {
     Main plugin;
 
     public GameModeCmdCatch(String name, Main instance) {
-	super("GameModeCmdCatch", true);// true only if its a listener, false if
-					// it isnt
+	super("GameModeCmdCatch", true);// true only if its a listener, false if it isnt
 	this.plugin = instance;
     }
 
     @EventHandler
     public void onGmChangeCmd(PlayerCommandPreprocessEvent event) {
-	if (event.getMessage().toLowerCase().startsWith("/gm") || event.getMessage().toLowerCase().startsWith("/gamemode")) {
-	    String message = event.getMessage();
-	    if (event.getMessage().toLowerCase().startsWith("/gm")) {
+	String message = event.getMessage();
+	if (message.toLowerCase().startsWith("/gm") || message.toLowerCase().startsWith("/gamemode")) {
+	    if (message.toLowerCase().startsWith("/gm")) {
 		message = message.toLowerCase().replaceAll("/gm", "/sts gamemode");
-	    } else if (event.getMessage().toLowerCase().startsWith("/gamemode")) {
+	    } else if (message.toLowerCase().startsWith("/gamemode")) {
 		message = message.toLowerCase().replaceAll("/gamemode", "/sts gamemode");
 	    }
 	    event.setMessage(message);
@@ -38,8 +37,9 @@ public class GameModeCmdCatch extends SSCmdExe {
 
     public void stsgamemode(CommandSender sender, String[] args) {
 	GameMode gm;
+	String gmn;
 	Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
-	String usage = "/sts gamemode <player> <Game Mode>";
+	String usage = "/sts gamemode <player> <Game Mode>|/gm <player> <Game Mode>|/gamemode <player> <Game Mode>";
 	if (args.length < 3) {
 	    sender.sendMessage("Not enough arguments!");
 	    sender.sendMessage(usage);
@@ -47,23 +47,29 @@ public class GameModeCmdCatch extends SSCmdExe {
 	    sender.sendMessage("Too many arguments!");
 	    sender.sendMessage(usage);
 	} else {
-	    Player target = Bukkit.getPlayerExact(args[1]);
-	    if (target.isOnline()) {
-		gm = decodeGM(args[2], sender);
-		if (gmcheck) {
-		    if (gm != null) {
-			configSet(target, gm, sender);
-		    }
-		}
-		target.setGameMode(gm);
-	    } else {
-		if (gmcheck) {
+	    Player target = decodePlayer(args[1], sender);
+	    if (target != null) {
+		if (target.isOnline()) {
 		    gm = decodeGM(args[2], sender);
 		    if (gm != null) {
-			configSet(target, gm, sender);
+			if (gmcheck) {
+			    configSet(target, gm, sender);
+			}
+			gmn = gm.name();
+			target.setGameMode(gm);
+			sender.sendMessage(target + "'s game mode has been set to " + gmn + ".");
 		    }
 		} else {
-		    sender.sendMessage("Please set Offline_GameMode_Changer.Enabled to true in the config in order to change the gamemode of an offline player.");
+		    if (gmcheck) {
+			gm = decodeGM(args[2], sender);
+			if (gm != null) {
+			    gmn = gm.name();
+			    configSet(target, gm, sender);
+			    sender.sendMessage(target + "'s game mode will be set to " + gmn + " next time they log on.");
+			}
+		    } else {
+			sender.sendMessage("Please set Offline_GameMode_Changer.Enabled to true in the config in order to change the gamemode of an offline player.");
+		    }
 		}
 	    }
 	}
@@ -93,5 +99,28 @@ public class GameModeCmdCatch extends SSCmdExe {
 	    sender.sendMessage("Unknown game mode: " + pregm);
 	}
 	return gm;
+    }
+
+    private Player decodePlayer(String pname, CommandSender sender) {
+	Player[] list = Tools.safePlayer(pname);
+	switch (list.length) {
+	case 1:
+	    return list[0];
+	case 0:
+	    sender.sendMessage("Were sorry, we could not find anyone with the name of " + pname);
+	    return null;
+	default:
+	    sender.sendMessage("We found " + list.length + " that match your criteria. Please be more specific.");
+	    String nlist = "";
+	    for (Player scan : list) {
+		if (list.equals("")) {
+		    nlist = (scan.getName());
+		} else {
+		    nlist = (list + ", " + scan.getName());
+		}
+	    }
+	    sender.sendMessage("The players we found are" + nlist + ".");
+	    return null;
+	}
     }
 }

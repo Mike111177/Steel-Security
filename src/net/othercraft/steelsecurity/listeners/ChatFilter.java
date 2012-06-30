@@ -58,30 +58,30 @@ public class ChatFilter extends SSCmdExe {
 		    String[] mlist = message.split(" ");
 		    String[] nmlist = message.split(" ");
 		    String nm = "";
-		    for (String bword : blist){
-			if (message.toLowerCase().contains(bword.toLowerCase())){
+		    for (String bword : blist) {
+			if (message.toLowerCase().contains(bword.toLowerCase())) {
 			    int bindexer = 0;
 			    String nword = "";
-			    while (bindexer<bword.length()){
-				nword = (nword+"*");
+			    while (bindexer < bword.length()) {
+				nword = (nword + "*");
 				bindexer++;
 			    }
 			    int mindex = 0;
-			   for (String mword : mlist){
-			       for (String gword : glist){
-				   if (!gword.equalsIgnoreCase(mword)){
-				       nmlist[mindex]=nmlist[mindex].replaceAll("(?i)" + bword, nword);
-				   }
-				   mindex++;
-			       }
+			    for (String mword : mlist) {
+				for (String gword : glist) {
+				    if (!gword.equalsIgnoreCase(mword)) {
+					nmlist[mindex] = nmlist[mindex].replaceAll("(?i)" + bword, nword);
+				    }
+				    mindex++;
+				}
 
-			   }
-			   for (String nnword: nmlist){
-			       nm = nm + nnword + " ";
-			   }
+			    }
+			    for (String nnword : nmlist) {
+				nm = nm + nnword + " ";
+			    }
 			}
 		    }
-		    if (!nm.equals("")){
+		    if (!nm.equals("")) {
 			message = nm;
 		    }
 		    event.setMessage(message);
@@ -134,8 +134,8 @@ public class ChatFilter extends SSCmdExe {
 		}
 		event.setMessage(message);
 	    }
-	    if (spam){
-		    event.setCancelled(true);
+	    if (spam) {
+		event.setCancelled(true);
 	    }
 	} catch (Exception e) {
 	    try {

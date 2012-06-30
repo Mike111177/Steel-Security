@@ -83,13 +83,11 @@ public class Sts extends SSCmdExe {
 				} else {
 				    sender.sendMessage(no);
 				}
-			    }
-			    else {
+			    } else {
 				sender.sendMessage("Incoorect Arguments!");
 				sender.sendMessage("Use /sts checkperm <player>");
 			    }
-			} 
-			else {
+			} else {
 			    sender.sendMessage("Were sorry, we could not find a player named " + targetname);
 			}
 		    }

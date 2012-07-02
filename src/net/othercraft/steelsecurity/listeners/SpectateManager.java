@@ -139,11 +139,11 @@ public class SpectateManager extends SSCmdExe {
 	tostart.setAllowFlight(true);
 	tostart.hidePlayer(tostarton);
 	tostart.teleport(tostarton);
+	gameUpdate(tostarton);
 	inventoryUpdate(tostarton);
 	healthUpdate(tostarton);
 	expUpdate(tostarton);
 	foodUpdate(tostarton);
-	gameUpdate(tostarton);
 	if (spectators.get(tostarton.getName())) {
 	    tostart.sendMessage("Warining:");
 	    tostart.sendMessage("The player you are spectating is spectating another player. This may cause laggy or incomplete results.");
@@ -162,6 +162,8 @@ public class SpectateManager extends SSCmdExe {
 	Location loc = origion.get(tostopname);
 	tostop.teleport(loc);
 	origion.remove(tostopname);
+	tostop.setGameMode(GameMode.getByValue(game.get(tostopname)));
+	game.remove(tostopname);
 	tostop.getInventory().setContents(inventory.get(tostopname));
 	inventory.remove(tostopname);
 	tostop.setFoodLevel(food.get(tostopname));
@@ -170,8 +172,6 @@ public class SpectateManager extends SSCmdExe {
 	health.remove(tostopname);
 	tostop.setExp(exp.get(tostopname));
 	exp.remove(tostopname);
-	tostop.setGameMode(GameMode.getByValue(game.get(tostopname)));
-	game.remove(tostopname);
 	vm.setVanished(tostop, wasvanished.get(tostopname));
 	wasvanished.remove(tostopname);
 	tostop.setAllowFlight(wasflying.get(tostopname));
@@ -205,12 +205,14 @@ public class SpectateManager extends SSCmdExe {
 	if (!(args.length > 2)) {
 	    if (spectators.get(player.getName())) {
 		stop(player);
+		sender.sendMessage("You have stopped spectating.");
 	    }
 	    if (args.length == 2) {
 		Player tostarton = Bukkit.getPlayer(args[1]);
 		if (player != tostarton) {
 		    if (tostarton != null) {
 			start(player, tostarton);
+			sender.sendMessage("You have begun spectating " + tostarton.getName() + ".");
 		    } else {
 			sender.sendMessage("We could not find anybody by the name of " + args[1] + ".");
 		    }
@@ -240,10 +242,6 @@ public class SpectateManager extends SSCmdExe {
     public Map<String, String> spectateList() {
 	return spectating;
     }
-    public void endSpectating(Player player){
-	if (spectators.get(player.getName())) stop(player);
-    }
-
     // Beyond here only apllies to when a player is being spectated
     @EventHandler
     public void onFollow(PlayerMoveEvent event) {

@@ -4,6 +4,7 @@ import net.othercraft.steelsecurity.antihack.other.derp.UpsideDown;
 import net.othercraft.steelsecurity.commands.GameModeCmdCatch;
 import net.othercraft.steelsecurity.commands.Sts;
 import net.othercraft.steelsecurity.commands.Vanish;
+import net.othercraft.steelsecurity.data.DatabaseManager;
 import net.othercraft.steelsecurity.data.Violations;
 import net.othercraft.steelsecurity.listeners.BlockBlacklist;
 import net.othercraft.steelsecurity.listeners.ChatFilter;
@@ -36,6 +37,7 @@ public class Main extends JavaPlugin {
     private Violations vio;
     @SuppressWarnings("unused")
     private UpsideDown upd;
+    protected DatabaseManager dbm = new DatabaseManager();
 
     public void onEnable() {
 	new Config(this).loadConfiguration();
@@ -43,6 +45,7 @@ public class Main extends JavaPlugin {
 	registerListeners();
 	commands();
 	playerChecks();
+	dbm.sqlCheck();
     }
 
     private void playerChecks() {

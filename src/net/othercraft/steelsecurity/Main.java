@@ -45,7 +45,6 @@ public class Main extends JavaPlugin {
 	registerListeners();
 	commands();
 	playerChecks();
-	dbm.sqlCheck();
     }
 
     private void playerChecks() {

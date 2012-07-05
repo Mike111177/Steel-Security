@@ -1,6 +1,7 @@
 package net.othercraft.steelsecurity.commands;
 
 import java.io.IOException;
+import java.util.Set;
 
 import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
@@ -57,7 +58,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 			}
 			gmn = gm.name();
 			target.setGameMode(gm);
-			sender.sendMessage(target + "'s game mode has been set to " + gmn + ".");
+			sender.sendMessage(target.getName() + "'s game mode has been set to " + gmn + ".");
 		    }
 		} else {
 		    if (gmcheck) {
@@ -65,7 +66,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 			if (gm != null) {
 			    gmn = gm.name();
 			    configSet(target, gm, sender);
-			    sender.sendMessage(target + "'s game mode will be set to " + gmn + " next time they log on.");
+			    sender.sendMessage(target.getName() + "'s game mode will be set to " + gmn + " next time they log on.");
 			}
 		    } else {
 			sender.sendMessage("Please set Offline_GameMode_Changer.Enabled to true in the config in order to change the gamemode of an offline player.");
@@ -102,15 +103,19 @@ public class GameModeCmdCatch extends SSCmdExe {
     }
 
     private Player decodePlayer(String pname, CommandSender sender) {
-	Player[] list = Tools.safePlayer(pname);
-	switch (list.length) {
+	Set<Player> list = Tools.safePlayer(pname);
+	switch (list.size()) {
 	case 1:
-	    return list[0];
+	    Player r = null;
+	    for (Player p : list) {
+		r = p;
+	    }
+	    return r;
 	case 0:
 	    sender.sendMessage("Were sorry, we could not find anyone with the name of " + pname);
 	    return null;
 	default:
-	    sender.sendMessage("We found " + list.length + " that match your criteria. Please be more specific.");
+	    sender.sendMessage("We found " + list.size() + " that match your criteria. Please be more specific.");
 	    String nlist = "";
 	    for (Player scan : list) {
 		if (list.equals("")) {

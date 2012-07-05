@@ -8,14 +8,13 @@ import org.bukkit.entity.Player;
 
 public abstract class Tools {
 
-    public static Player[] safePlayer(String pname) {
+    public static Set<Player> safePlayer(String pname) {
 	Set<Player> list = new HashSet<Player>();
 	for (Player scan : Bukkit.getServer().getOnlinePlayers()) {
-	    if (scan.getName().startsWith(pname)) {
+	    if (scan.getName().toLowerCase().startsWith(pname.toLowerCase())) {
 		list.add(scan);
 	    }
 	}
-	Player[] toreturn = (Player[]) list.toArray();
-	return toreturn;
+	return list;
     }
 }

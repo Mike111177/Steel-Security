@@ -1,6 +1,7 @@
-package net.othercraft.steelsecurity.data;
+package net.othercraft.steelsecurity.data.databases;
 
 import java.util.PriorityQueue;
+
 
 public class DatabaseManager {
     

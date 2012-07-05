@@ -1,19 +1,20 @@
 package net.othercraft.steelsecurity;
 
+import java.io.File;
+
 import net.othercraft.steelsecurity.antihack.other.derp.UpsideDown;
 import net.othercraft.steelsecurity.commands.GameModeCmdCatch;
 import net.othercraft.steelsecurity.commands.Sts;
 import net.othercraft.steelsecurity.commands.Vanish;
-import net.othercraft.steelsecurity.data.DatabaseManager;
 import net.othercraft.steelsecurity.data.Violations;
+import net.othercraft.steelsecurity.data.databases.DatabaseManager;
 import net.othercraft.steelsecurity.listeners.BlockBlacklist;
 import net.othercraft.steelsecurity.listeners.ChatFilter;
 import net.othercraft.steelsecurity.listeners.JoinMessage;
 import net.othercraft.steelsecurity.listeners.LoginLimiter;
 import net.othercraft.steelsecurity.listeners.PlayerConfigListener;
 import net.othercraft.steelsecurity.listeners.SpectateManager;
-import net.othercraft.steelsecurity.utils.AntiHackConfigManager;
-import net.othercraft.steelsecurity.utils.DatabaseConfigManager;
+import net.othercraft.steelsecurity.utils.ExtraConfigManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -40,20 +41,38 @@ public class Main extends JavaPlugin {
     @SuppressWarnings("unused")
     private UpsideDown upd;
     private DatabaseManager dbm = new DatabaseManager();
-    private DatabaseConfigManager dbcm = new DatabaseConfigManager(this);
-    private AntiHackConfigManager anticm = new AntiHackConfigManager(this);
+    private ExtraConfigManager anticm;
+    private ExtraConfigManager data;
+    private ExtraConfigManager log;
+    private File dataFolder = null;
 
     public void onEnable() {
+	dataFolder = getDataFolder();
 	config();
 	instance = this;
 	registerListeners();
 	commands();
 	playerChecks();
     }
-
+    protected ExtraConfigManager dataConfig(){
+	return data;
+    }
+    protected ExtraConfigManager logConfig(){
+	return log;
+    }
+    protected ExtraConfigManager antiHackConfig(){
+	return anticm;
+    }
+    
+    public ExtraConfigManager getNewConfig(File folder, String name){
+	return new ExtraConfigManager(folder, name);
+    }
+    
     private void config() {
-	new Config(this, dbcm, anticm).loadConfiguration();
-	
+	anticm = new ExtraConfigManager(dataFolder, "AntiHack");
+	log = new ExtraConfigManager(dataFolder, "Database");
+	data = new ExtraConfigManager(dataFolder, "Logging");
+	new Config(this, anticm, log, data).loadConfiguration();
     }
 
     private void playerChecks() {

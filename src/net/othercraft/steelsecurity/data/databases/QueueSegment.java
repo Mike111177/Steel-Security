@@ -1,4 +1,4 @@
-package net.othercraft.steelsecurity.data;
+package net.othercraft.steelsecurity.data.databases;
 
 import org.bukkit.entity.Player;
 

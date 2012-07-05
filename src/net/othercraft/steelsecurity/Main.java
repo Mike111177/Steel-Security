@@ -53,15 +53,20 @@ public class Main extends JavaPlugin {
     private ExtraConfigManager anticm;
     private ExtraConfigManager data;
     private ExtraConfigManager logc;
+    private ExtraConfigManager tickc;
     private static final Logger log = Logger.getLogger("Minecraft");
     private File dataFolder = null;
 
     private Double currentVersion;
-
+    private String versionName;
+    private String newVersionName;
     private double newVersion;
+    
+    
 
     public void onEnable() {
-	currentVersion = Double.valueOf(getDescription().getVersion().split("-")[0].replaceFirst("\\.", ""));
+	versionName = getDescription().getVersion().split("-")[0];
+	currentVersion = Double.valueOf(versionName.replaceFirst("\\.", ""));
 	this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
 
 	    @Override
@@ -69,7 +74,8 @@ public class Main extends JavaPlugin {
 		try {
 		    newVersion = updateCheck(currentVersion);
 		    if (newVersion > currentVersion) {
-			log.warning("Steel Security " + newVersion + " is out! You are running: Steel Security " + currentVersion);
+			log.warning("Steel Security " + newVersionName + " is out!");
+			log.warning("You are running: Steel Security " + versionName);
 			log.warning("Update Steel Security at: http://dev.bukkit.org/server-mods/steel-security");
 		    }
 		} catch (Exception e) {
@@ -78,6 +84,7 @@ public class Main extends JavaPlugin {
 	    }
 
 	}, 0, 432000);
+	System.out.println(newVersion);
 	dataFolder = getDataFolder();
 	config();
 	instance = this;
@@ -106,7 +113,8 @@ public class Main extends JavaPlugin {
 	anticm = new ExtraConfigManager(dataFolder, "AntiHack");
 	logc = new ExtraConfigManager(dataFolder, "Database");
 	data = new ExtraConfigManager(dataFolder, "Logging");
-	new Config(this, anticm, logc, data).loadConfiguration();
+	tickc = new ExtraConfigManager(dataFolder, "Tickets");
+	new Config(this, anticm, logc, data, tickc).loadConfiguration();
     }
 
     private void playerChecks() {
@@ -128,7 +136,9 @@ public class Main extends JavaPlugin {
                 NodeList firstElementTagName = firstElement.getElementsByTagName("title");
                 Element firstNameElement = (Element) firstElementTagName.item(0);
                 NodeList firstNodes = firstNameElement.getChildNodes();
-                return Double.valueOf(firstNodes.item(0).getNodeValue().replace("Steel Security", "").replaceFirst(".", "").trim());
+                System.out.println(firstNodes.item(0).getNodeValue());
+                newVersionName = firstNodes.item(0).getNodeValue().replace("Steel Security", "");
+                return Double.valueOf(newVersionName.replaceFirst("\\.", "").trim());
             }
         }
         catch (Exception localException) {
@@ -164,5 +174,14 @@ public class Main extends JavaPlugin {
     }
     public double getCurrentVersion() {
 	return currentVersion;
+    }
+    public String getLatestVersionName() {
+	return newVersionName;
+    }
+    public String getCurrentVersionName() {
+	return versionName;
+    }
+    public Logger getLogger(){
+	return log;
     }
 }

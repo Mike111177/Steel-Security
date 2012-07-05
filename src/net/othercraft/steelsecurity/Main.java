@@ -1,6 +1,10 @@
 package net.othercraft.steelsecurity;
 
 import java.io.File;
+import java.net.URL;
+import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import net.othercraft.steelsecurity.antihack.other.derp.UpsideDown;
 import net.othercraft.steelsecurity.commands.GameModeCmdCatch;
@@ -18,6 +22,10 @@ import net.othercraft.steelsecurity.utils.ExtraConfigManager;
 import net.othercraft.steelsecurity.utils.FlatFileLogger;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class Main extends JavaPlugin {
 
@@ -44,10 +52,32 @@ public class Main extends JavaPlugin {
     private DatabaseManager dbm = new DatabaseManager();
     private ExtraConfigManager anticm;
     private ExtraConfigManager data;
-    private ExtraConfigManager log;
+    private ExtraConfigManager logc;
+    private static final Logger log = Logger.getLogger("Minecraft");
     private File dataFolder = null;
 
+    private Double currentVersion;
+
+    private double newVersion;
+
     public void onEnable() {
+	currentVersion = Double.valueOf(getDescription().getVersion().split("-")[0].replaceFirst("\\.", ""));
+	this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+
+	    @Override
+	    public void run() {
+		try {
+		    newVersion = updateCheck(currentVersion);
+		    if (newVersion > currentVersion) {
+			log.warning("Steel Security " + newVersion + " is out! You are running: Steel Security " + currentVersion);
+			log.warning("Update Steel Security at: http://dev.bukkit.org/server-mods/steel-security");
+		    }
+		} catch (Exception e) {
+		    // ignore exceptions
+		}
+	    }
+
+	}, 0, 432000);
 	dataFolder = getDataFolder();
 	config();
 	instance = this;
@@ -59,7 +89,7 @@ public class Main extends JavaPlugin {
 	return data;
     }
     protected ExtraConfigManager logConfig(){
-	return log;
+	return logc;
     }
     protected ExtraConfigManager antiHackConfig(){
 	return anticm;
@@ -74,9 +104,9 @@ public class Main extends JavaPlugin {
     
     private void config() {
 	anticm = new ExtraConfigManager(dataFolder, "AntiHack");
-	log = new ExtraConfigManager(dataFolder, "Database");
+	logc = new ExtraConfigManager(dataFolder, "Database");
 	data = new ExtraConfigManager(dataFolder, "Logging");
-	new Config(this, anticm, log, data).loadConfiguration();
+	new Config(this, anticm, logc, data).loadConfiguration();
     }
 
     private void playerChecks() {
@@ -84,6 +114,26 @@ public class Main extends JavaPlugin {
 	spm.registerAll();
 	vm.registerAll();
 	vio.engageAll();
+    }
+    public double updateCheck(double currentVersion) throws Exception {
+        String pluginUrlString = "http://dev.bukkit.org/server-mods/steel-security/files.rss";
+        try {
+            URL url = new URL(pluginUrlString);
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
+            doc.getDocumentElement().normalize();
+            NodeList nodes = doc.getElementsByTagName("item");
+            Node firstNode = nodes.item(0);
+            if (firstNode.getNodeType() == 1) {
+                Element firstElement = (Element)firstNode;
+                NodeList firstElementTagName = firstElement.getElementsByTagName("title");
+                Element firstNameElement = (Element) firstElementTagName.item(0);
+                NodeList firstNodes = firstNameElement.getChildNodes();
+                return Double.valueOf(firstNodes.item(0).getNodeValue().replace("Steel Security", "").replaceFirst(".", "").trim());
+            }
+        }
+        catch (Exception localException) {
+        }
+        return currentVersion;
     }
 
     private void commands() {// register commands here
@@ -108,5 +158,11 @@ public class Main extends JavaPlugin {
     public void onDisable() {
 	spm.stopAll();
 	vm.stopAll();
+    }
+    public double getLatestVersion() {
+	return newVersion;
+    }
+    public double getCurrentVersion() {
+	return currentVersion;
     }
 }

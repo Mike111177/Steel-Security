@@ -5,18 +5,9 @@ import java.util.PriorityQueue;
 
 public class DatabaseManager {
     
-    private Boolean online;
-    
-    private Boolean running;
-    
-    private PriorityQueue<QueueSegment> queue;
+    private PriorityQueue<QueueSegment> queue = new PriorityQueue<QueueSegment>();
     
     public void addQueue(QueueSegment seg){
 	queue.add(seg);
-    }
-    private void queRun(){
-	if (queue.size()==0){
-	    
-	}	
     }
 }

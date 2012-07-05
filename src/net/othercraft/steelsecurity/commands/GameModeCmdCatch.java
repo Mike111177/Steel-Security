@@ -118,11 +118,10 @@ public class GameModeCmdCatch extends SSCmdExe {
 	    sender.sendMessage("We found " + list.size() + " that match your criteria. Please be more specific.");
 	    String nlist = "";
 	    for (Player scan : list) {
-		if (list.equals("")) {
-		    nlist = (scan.getName());
-		} else {
-		    nlist = (list + ", " + scan.getName());
-		}
+		nlist = (list + ", " + scan.getName());
+	    }
+	    if (!nlist.equals("")){
+		nlist = nlist.replaceFirst(",", "");
 	    }
 	    sender.sendMessage("The players we found are" + nlist + ".");
 	    return null;

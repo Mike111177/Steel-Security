@@ -158,7 +158,7 @@ public class SpectateManager extends SSCmdExe {
 	}
 	tostop.showPlayer(tostopon);
 	HashSet<String> thenew = speclist.get(tostopon.getName());
-	thenew.remove(tostop);
+	thenew.remove(tostopname);
 	Location loc = origion.get(tostopname);
 	tostop.teleport(loc);
 	origion.remove(tostopname);
@@ -182,8 +182,8 @@ public class SpectateManager extends SSCmdExe {
 	    }
 	}
 	spectators.put(tostopname, false);
-	spectates.remove(tostop);
-	spectating.remove(tostop);
+	spectates.remove(tostopname);
+	spectating.remove(tostopname);
 	speclist.put(tostopon.getName(), thenew);
 	spectatees.put(tostopon.getName(), false);
     }

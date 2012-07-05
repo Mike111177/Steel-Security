@@ -28,8 +28,6 @@ public class Config {
 	defaults();
 	plugin.getConfig().options().copyDefaults(true);
 	plugin.saveConfig();
-	datac.getConfig().options().copyDefaults(true);
-	datac.saveConfig();
     }
 
     private void defaults() { // Defaults

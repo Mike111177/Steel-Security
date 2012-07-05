@@ -8,12 +8,19 @@ package net.othercraft.steelsecurity;
 
 import java.util.Arrays;
 
+import net.othercraft.steelsecurity.utils.AntiHackConfigManager;
+import net.othercraft.steelsecurity.utils.DatabaseConfigManager;
+
 public class Config {
 
     private Main plugin;
+    private DatabaseConfigManager dbcm;
+    private AntiHackConfigManager anticm;
 
-    public Config(Main instance) {
-	this.plugin = instance;
+    public Config(Main instance, DatabaseConfigManager dataconfig, AntiHackConfigManager anticom) {
+	plugin = instance;
+	dbcm = dataconfig;
+	anticm = anticom;
     }
 
     public void loadConfiguration() {

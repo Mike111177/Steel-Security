@@ -12,6 +12,8 @@ import net.othercraft.steelsecurity.listeners.JoinMessage;
 import net.othercraft.steelsecurity.listeners.LoginLimiter;
 import net.othercraft.steelsecurity.listeners.PlayerConfigListener;
 import net.othercraft.steelsecurity.listeners.SpectateManager;
+import net.othercraft.steelsecurity.utils.AntiHackConfigManager;
+import net.othercraft.steelsecurity.utils.DatabaseConfigManager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -37,14 +39,21 @@ public class Main extends JavaPlugin {
     private Violations vio;
     @SuppressWarnings("unused")
     private UpsideDown upd;
-    protected DatabaseManager dbm = new DatabaseManager();
+    private DatabaseManager dbm = new DatabaseManager();
+    private DatabaseConfigManager dbcm = new DatabaseConfigManager(this);
+    private AntiHackConfigManager anticm = new AntiHackConfigManager(this);
 
     public void onEnable() {
-	new Config(this).loadConfiguration();
+	config();
 	instance = this;
 	registerListeners();
 	commands();
 	playerChecks();
+    }
+
+    private void config() {
+	new Config(this, dbcm, anticm).loadConfiguration();
+	
     }
 
     private void playerChecks() {

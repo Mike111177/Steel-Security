@@ -1,10 +1,6 @@
 package net.othercraft.steelsecurity.data;
 
-import java.sql.ResultSet;
 import java.util.PriorityQueue;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class DatabaseManager {
     

@@ -15,6 +15,7 @@ import net.othercraft.steelsecurity.listeners.LoginLimiter;
 import net.othercraft.steelsecurity.listeners.PlayerConfigListener;
 import net.othercraft.steelsecurity.listeners.SpectateManager;
 import net.othercraft.steelsecurity.utils.ExtraConfigManager;
+import net.othercraft.steelsecurity.utils.FlatFileLogger;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -66,6 +67,9 @@ public class Main extends JavaPlugin {
     
     public ExtraConfigManager getNewConfig(File folder, String name){
 	return new ExtraConfigManager(folder, name);
+    }
+    public FlatFileLogger getNewLog(File folder, String name){
+	return new FlatFileLogger(folder, name);
     }
     
     private void config() {

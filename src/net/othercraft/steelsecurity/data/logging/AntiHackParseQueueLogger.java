@@ -1,6 +1,6 @@
 package net.othercraft.steelsecurity.data.logging;
 
-public class antiHackParseQueueLogger {
+public class AntiHackParseQueueLogger {
     
     public void fly(){
 	

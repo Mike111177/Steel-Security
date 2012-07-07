@@ -84,7 +84,6 @@ public class Main extends JavaPlugin {
 	    }
 
 	}, 0, 432000);
-	System.out.println(newVersion);
 	dataFolder = getDataFolder();
 	config();
 	instance = this;
@@ -136,7 +135,6 @@ public class Main extends JavaPlugin {
                 NodeList firstElementTagName = firstElement.getElementsByTagName("title");
                 Element firstNameElement = (Element) firstElementTagName.item(0);
                 NodeList firstNodes = firstNameElement.getChildNodes();
-                System.out.println(firstNodes.item(0).getNodeValue());
                 newVersionName = firstNodes.item(0).getNodeValue().replace("Steel Security", "");
                 return Double.valueOf(newVersionName.replaceFirst("\\.", "").trim());
             }

@@ -3,6 +3,7 @@ package net.othercraft.steelsecurity.listeners;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.commands.Vanish;
@@ -39,11 +40,14 @@ public class SpectateManager extends SSCmdExe {
     Main plugin;
 
     Vanish vm;
+    
+    Logger log;
 
-    public SpectateManager(String name, Main instance, Vanish vanman) {
+    public SpectateManager(String name, Main instance, Vanish vanman, Logger log) {
 	super("SpectateManager", true);
 	vm = vanman;
 	plugin = instance;
+	this.log = log;
     }
 
     private Map<String, Boolean> spectators = new HashMap<String, Boolean>();// if someone is spectating someone else
@@ -148,6 +152,7 @@ public class SpectateManager extends SSCmdExe {
 	    tostart.sendMessage("Warining:");
 	    tostart.sendMessage("The player you are spectating is spectating another player. This may cause laggy or incomplete results.");
 	}
+	log.info(tostartname + " is now spectating " + tostart.getName());
     }
 
     private void stop(Player tostop) {
@@ -186,6 +191,7 @@ public class SpectateManager extends SSCmdExe {
 	spectating.remove(tostopname);
 	speclist.put(tostopon.getName(), thenew);
 	spectatees.put(tostopon.getName(), false);
+	log.info(tostopname + " is no longer spectating " + tostopon.getName());
     }
 
     public void stopAll() {

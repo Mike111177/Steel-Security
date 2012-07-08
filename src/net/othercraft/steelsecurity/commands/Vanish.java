@@ -2,6 +2,7 @@ package net.othercraft.steelsecurity.commands;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import net.othercraft.steelsecurity.Main;
 import net.othercraft.steelsecurity.listeners.SpectateManager;
@@ -11,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -19,10 +21,12 @@ public class Vanish extends SSCmdExe {
     Main plugin;
 
     SpectateManager spm;
+    Logger log;
 
-    public Vanish(String name, Main instance) {
+    public Vanish(String name, Main instance, Logger log) {
 	super("Vanish", true);
 	plugin = instance;
+	this.log = log;
     }
     public void specGet(){
 	spm = plugin.spm;
@@ -71,10 +75,12 @@ public class Vanish extends SSCmdExe {
 	    if (!player.hasPermission("steelsecurity.commands.vanish.cansee")) {
 		player.showPlayer(tostop);
 	    }
-	    else if (tostop.hasPermission("steelsecurity.commands.vanish")){
+	    else {
 		player.sendMessage(tostop.getName() + " is visable.");
 	    }
 	}
+	tostop.sendMessage("You are now visable.");
+	log.info(tostop.getName() + " is now visable.");
     }
 
     private void start(Player tostart) {
@@ -82,10 +88,12 @@ public class Vanish extends SSCmdExe {
 	    if (!player.hasPermission("steelsecurity.commands.vanish.cansee")) {
 		player.hidePlayer(tostart);
 	    }
-	    else if (tostart.hasPermission("steelsecurity.commands.vanish")){
+	    else {
 		player.sendMessage(tostart.getName() + " has disapeared.");
 	    }
 	}
+	tostart.sendMessage("You are now invisable.");
+	log.info(tostart.getName() + " has gone invisable.");
     }
 
     public void vmCmd(CommandSender sender, String[] args) {
@@ -101,6 +109,15 @@ public class Vanish extends SSCmdExe {
     }
     public void registerAll() {
 	for (Player player : Bukkit.getOnlinePlayers()) isvanished.put(player.getName(), false);
+    }
+    @EventHandler
+    public void onTarget(EntityTargetEvent event){
+	if (event.getTarget() instanceof Player){
+	    Player p = (Player) event.getTarget();
+	    if (isvanished.get(p.getName())){
+		event.setCancelled(true);
+	    }
+	}
     }
     
 }

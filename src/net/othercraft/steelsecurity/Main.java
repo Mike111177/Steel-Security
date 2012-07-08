@@ -14,6 +14,7 @@ import net.othercraft.steelsecurity.data.Violations;
 import net.othercraft.steelsecurity.data.databases.DatabaseManager;
 import net.othercraft.steelsecurity.listeners.BlockBlacklist;
 import net.othercraft.steelsecurity.listeners.ChatFilter;
+import net.othercraft.steelsecurity.listeners.ConsoleCommandMessage;
 import net.othercraft.steelsecurity.listeners.JoinMessage;
 import net.othercraft.steelsecurity.listeners.LoginLimiter;
 import net.othercraft.steelsecurity.listeners.PlayerConfigListener;
@@ -54,6 +55,7 @@ public class Main extends JavaPlugin {
     private ExtraConfigManager data;
     private ExtraConfigManager logc;
     private ExtraConfigManager tickc;
+    private ConsoleCommandMessage cmm;
     private static final Logger log = Logger.getLogger("Minecraft");
     private File dataFolder = null;
 
@@ -74,7 +76,7 @@ public class Main extends JavaPlugin {
 		try {
 		    newVersion = updateCheck(currentVersion);
 		    if (newVersion > currentVersion) {
-			log.warning("Steel Security " + newVersionName + " is out!");
+			log.warning("Steel Security" + newVersionName + " is out!");
 			log.warning("You are running: Steel Security " + versionName);
 			log.warning("Update Steel Security at: http://dev.bukkit.org/server-mods/steel-security");
 		    }
@@ -157,8 +159,9 @@ public class Main extends JavaPlugin {
 	pcl = new PlayerConfigListener(null, this);
 	gmcc = new GameModeCmdCatch(null, this);
 	blbl = new BlockBlacklist(null, this);
-	vm = new Vanish(null, this);
-	spm = new SpectateManager(null, this, vm);
+	vm = new Vanish(null, this, log);
+	cmm = new ConsoleCommandMessage(null, this, log);
+	spm = new SpectateManager(null, this, vm, log);
 	upd = new UpsideDown(null, this, vio);
 	vm.specGet();
     }

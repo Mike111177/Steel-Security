@@ -7,6 +7,9 @@ commands:
   sts:
      description: Base command for Steel Security.
      usage: /sts
+  ticket: 
+     description: Base command for for the ticket request system.
+     usage: /ticket
 permissions:
   steelsecurity.*:
      description: Gives all benificial Steel Security permissions.

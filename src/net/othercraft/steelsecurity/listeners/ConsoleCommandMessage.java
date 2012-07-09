@@ -26,7 +26,5 @@ public class ConsoleCommandMessage extends SSCmdExe {
 	if (event.getMessage().toLowerCase().startsWith("/sts")){
 	    log.info(event.getPlayer().getName() + ": " + event.getMessage());
 	}
-    }
-	
-    
+    }    
 }

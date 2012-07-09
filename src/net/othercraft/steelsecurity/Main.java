@@ -19,6 +19,7 @@ import net.othercraft.steelsecurity.listeners.JoinMessage;
 import net.othercraft.steelsecurity.listeners.LoginLimiter;
 import net.othercraft.steelsecurity.listeners.PlayerConfigListener;
 import net.othercraft.steelsecurity.listeners.SpectateManager;
+import net.othercraft.steelsecurity.ticketsystem.TicketManager;
 import net.othercraft.steelsecurity.utils.ExtraConfigManager;
 import net.othercraft.steelsecurity.utils.FlatFileLogger;
 
@@ -50,11 +51,13 @@ public class Main extends JavaPlugin {
     private Violations vio;
     @SuppressWarnings("unused")
     private UpsideDown upd;
+    @SuppressWarnings("unused")
     private DatabaseManager dbm = new DatabaseManager();
     private ExtraConfigManager anticm;
     private ExtraConfigManager data;
     private ExtraConfigManager logc;
     private ExtraConfigManager tickc;
+    @SuppressWarnings("unused")
     private ConsoleCommandMessage cmm;
     private static final Logger log = Logger.getLogger("Minecraft");
     private File dataFolder = null;
@@ -63,6 +66,7 @@ public class Main extends JavaPlugin {
     private String versionName;
     private String newVersionName;
     private double newVersion;
+    private TicketManager tickm;
     
     
 
@@ -92,6 +96,7 @@ public class Main extends JavaPlugin {
 	registerListeners();
 	commands();
 	playerChecks();
+	tickm.initiate();
     }
     protected ExtraConfigManager dataConfig(){
 	return data;
@@ -149,6 +154,8 @@ public class Main extends JavaPlugin {
     private void commands() {// register commands here
 	base = new Sts("base", this, spm, vm);
 	getCommand("sts").setExecutor(base);
+	tickm = new TicketManager(tickc);
+	getCommand("ticket").setExecutor(tickm);
     }
 
     private void registerListeners() {// register listeners here

@@ -43,15 +43,26 @@ public class TicketManager extends SSCmdExe{
 
     public void initiate() {
 	Set<String> keys = config.getConfig().getConfigurationSection("Tickets").getKeys(false);
-	for (String key : keys) System.out.println(key);
+	Ticket[] list = new Ticket[keys.size()];
 	if (keys.size()!=0){
 	    for (String indexstring : keys){
 		int num = Integer.parseInt(indexstring);
 		Ticket ticket = new Ticket(num, config);
 		ticket.load();
-		tickets.add(num - 1, ticket);
+		list[num - 1] = ticket;
 	    }
+	    for (Ticket ticket : list){
+		tickets.add(ticket);
+	    }
+	    refreshYamlOrder();
 	}
+
+    }
+    private void refreshYamlOrder(){
+	config.getConfig().set("Tickets", null);
+	    for (Ticket tickt : tickets){
+		tickt.save();
+	    }
     }
     private Ticket newTicket(){
 	return new Ticket(tickets.size() + 1, config);

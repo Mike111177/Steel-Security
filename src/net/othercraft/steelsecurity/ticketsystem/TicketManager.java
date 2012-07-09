@@ -79,7 +79,8 @@ public class TicketManager extends SSCmdExe{
     public boolean handleCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	if (args.length==0){
 	    if (sender.hasPermission("steelsecurity.commands.ticket")){
-		
+		sender.sendMessage(ChatColor.GREEN + "Welcome to steel securitys Ticket Request System.");
+		sender.sendMessage(ChatColor.GREEN + "Type /ticket help for a list of commands.");
 	    }
 	    else {
 		sender.sendMessage(noperm);

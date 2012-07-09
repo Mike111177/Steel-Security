@@ -72,6 +72,7 @@ public class TicketManager extends SSCmdExe{
 	message = message.trim();
 	newtick.setMessage(message);
 	newtick.open();
+	newtick.registerTime();
 	newtick.save();
 	tickets.add(newtick);
     }

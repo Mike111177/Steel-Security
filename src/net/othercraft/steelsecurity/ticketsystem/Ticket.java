@@ -24,10 +24,9 @@ public class Ticket {
     private String key;
     
     public Ticket(int index, ExtraConfigManager config){
-	this.index = index;
 	this.config = config;
-	this.key = "Tickets." + index + "";
-	time = System.currentTimeMillis();
+	registerIndex(index);
+	
     }
     
     public void load() {
@@ -98,6 +97,13 @@ public class Ticket {
     }
     public Integer getIndex(){
 	return index;
+    }
+    public void registerTime(){
+	time = System.currentTimeMillis();
+    }
+    public void registerIndex(int index){
+	this.index = index;
+	this.key = "Tickets." + index;
     }
     public void delete() {
 	config.getConfig().set(key, null);

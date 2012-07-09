@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,8 @@ public class TicketManager extends SSCmdExe{
     private Boolean enabled = false;
     private List<Ticket> tickets = new ArrayList<Ticket>();
     private String noperm = ChatColor.RED + "You don't have permission to do this!";
+    private String count = "";
+    private TicketMessageProccessor mp = new TicketMessageProccessor();
     
     public TicketManager(ExtraConfigManager cm){
 	super("TicketManager", false);
@@ -39,17 +42,14 @@ public class TicketManager extends SSCmdExe{
     }
 
     public void initiate() {
-	System.out.println("initiate");
 	Set<String> keys = config.getConfig().getConfigurationSection("Tickets").getKeys(false);
 	for (String key : keys) System.out.println(key);
 	if (keys.size()!=0){
 	    for (String indexstring : keys){
-		System.out.println(indexstring);
 		int num = Integer.parseInt(indexstring);
 		Ticket ticket = new Ticket(num, config);
 		ticket.load();
 		tickets.add(num - 1, ticket);
-		System.out.println(num);
 	    }
 	}
     }
@@ -92,6 +92,7 @@ public class TicketManager extends SSCmdExe{
 		if (sender.hasPermission("steelsecurity.commands.ticket.create")) {
 		    if (args.length>1) {
 			newTicketCmd(sender, args);
+			
 		    }
 		    else {
 			sender.sendMessage("Invalid Arguments!");
@@ -102,8 +103,62 @@ public class TicketManager extends SSCmdExe{
 		    sender.sendMessage(noperm);
 		}
 	    }
+	    if (args[0].equalsIgnoreCase("list")){
+		if (sender.hasPermission("steelsecurity.commands.ticket.list")) {
+		    if (args.length==1) {
+			for (String line : mp.listTickets(tickets)) 
+			    sender.sendMessage(line);
+		    }
+		    else {
+			sender.sendMessage("Invalid Arguments!");
+			sender.sendMessage("Please use /ticket list");
+		    }
+		}
+		else {
+		    sender.sendMessage(noperm);
+		}
+	    }
+	    if (args[0].equalsIgnoreCase("comment")){
+		if (sender.hasPermission("steelsecurity.commands.ticket.comment")) {
+		    if (args.length>2) {
+			if (!(Integer.parseInt(args[1])>tickets.size())){
+			    String message = "";
+			    Boolean skip = true;
+			    Boolean skip2 = true;
+			    for (String word : args){
+				if (!skip){
+				    message = message + word + " ";
+				}
+				if (!skip2){
+				    skip = false;
+				}
+				else {
+				    skip2 = false;
+				}
+			    }
+			    message = message.trim();
+			    if (getTicket(Integer.parseInt(args[1])).getPlayer().equals(Bukkit.getPlayerExact(sender.getName())) 
+				    || getTicket(Integer.parseInt(args[1])).getAsignnee().equals(Bukkit.getPlayer(sender.getName())) 
+				    && sender.hasPermission("steelsecurity.commands.ticket.comment.assigned") 
+				    || sender.hasPermission("steelsecurity.commands.ticket.comment.all")){
+				getTicket(Integer.parseInt(args[1])).addComment(message);
+				getTicket(Integer.parseInt(args[1])).save();
+			    }
+			}
+			else {
+			    sender.sendMessage("There is no ticket with the ID of " + args[1]);
+			}
+		    }
+		    else {
+			sender.sendMessage("Invalid Arguments!");
+			sender.sendMessage("Please use /ticket comment <ID> <message>");
+		    }
+		}
+		else {
+		    sender.sendMessage(noperm);
+		}
+	    }
 	}
 	return true;
     }
-
 }

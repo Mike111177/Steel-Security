@@ -65,7 +65,7 @@ public class Ticket {
     public void setAsignnee(String playername){
 	this.asignnee = playername;
     }
-    public String getMessage(String message){
+    public String getMessage(){
 	return origional;
     }
     public OfflinePlayer getPlayer(){

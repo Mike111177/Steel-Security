@@ -41,26 +41,26 @@ public class TicketManager extends SSCmdExe{
 	}
     }
 
-    public void initiate() {
-	Set<String> keys = config.getConfig().getConfigurationSection("Tickets").getKeys(false);
-	Ticket[] list = new Ticket[keys.size()];
-	if (keys.size()!=0){
+    public void initiate() {//This is used on startup
+	Set<String> keys = config.getConfig().getConfigurationSection("Tickets").getKeys(false);//gets a list of tickets
+	Ticket[] list = new Ticket[keys.size()];//makes an array to be converted to a list
+	if (keys.size()!=0){//skips if there is no tickets
 	    for (String indexstring : keys){
-		int num = Integer.parseInt(indexstring);
-		Ticket ticket = new Ticket(num, config);
-		ticket.load();
-		list[num - 1] = ticket;
+		int num = Integer.parseInt(indexstring);//gets the configured value
+		Ticket ticket = new Ticket(num, config);//creates the object ticket to managment
+		ticket.load();//loads the ticket from the config
+		list[num - 1] = ticket;//saves it to the array
 	    }
 	    for (Ticket ticket : list){
-		tickets.add(ticket);
+		tickets.add(ticket);//converts the array to a list
 	    }
-	    refreshYamlOrder();
+	    refreshYamlOrder();//my method for reordering
 	}
-
+ 
     }
     private void refreshYamlOrder(){
-	config.getConfig().set("Tickets", null);
-	    for (Ticket tickt : tickets){
+	config.getConfig().set("Tickets", null);//deletes all of the tickets
+	    for (Ticket tickt : tickets){//resaves them
 		tickt.save();
 	    }
     }

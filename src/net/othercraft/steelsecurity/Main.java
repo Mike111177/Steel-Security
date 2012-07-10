@@ -174,6 +174,7 @@ public class Main extends JavaPlugin {
     public void onDisable() {
 	spm.stopAll();
 	vm.stopAll();
+	tickm.saveAll();
     }
     public double getLatestVersion() {
 	return newVersion;

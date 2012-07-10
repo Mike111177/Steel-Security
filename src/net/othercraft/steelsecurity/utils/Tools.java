@@ -17,4 +17,15 @@ public abstract class Tools {
 	}
 	return list;
     }
+    public static Boolean isSafeNumber(String toparse){
+	Boolean result;
+	try{
+	    int i = Integer.parseInt(toparse);
+	    result = true;
+	}
+	catch (NumberFormatException e){
+	    result = false;
+	}
+	return result;
+    }
 }

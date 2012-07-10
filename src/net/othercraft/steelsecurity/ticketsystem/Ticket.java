@@ -11,6 +11,10 @@ import org.bukkit.entity.Player;
 
 public class Ticket implements Serializable{
     
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private String origional;
     private String player;
     private String asignnee = null;
@@ -18,7 +22,6 @@ public class Ticket implements Serializable{
     private Long time;
     private int index;
     private List<String> comments = new ArrayList<String>();
-    private String key;
     private String location;
     
     public void setMessage(String message){

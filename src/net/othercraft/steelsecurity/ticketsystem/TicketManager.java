@@ -16,6 +16,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import net.othercraft.steelsecurity.utils.SSCmdExe;
+import net.othercraft.steelsecurity.utils.Tools;
 
 public class TicketManager extends SSCmdExe{
     
@@ -146,7 +147,10 @@ public class TicketManager extends SSCmdExe{
 	if (args.length==0)base(sender);
 	else {
 	    Boolean save = false;
-	    if (args[0].equalsIgnoreCase("new"))newcmd(sender, args);
+	    if (args[0].equalsIgnoreCase("new")){
+		newcmd(sender, args);
+		save = true;
+	    }
 	    else if (args[0].equalsIgnoreCase("list"))list(sender, args);
 	    else if (args[0].equalsIgnoreCase("view"))view(sender, args);
 	    else if (args[0].equalsIgnoreCase("comment")){
@@ -162,7 +166,10 @@ public class TicketManager extends SSCmdExe{
 		save = true;
 	    }
 	    else if (args[0].equalsIgnoreCase("help")) help(sender, args);
-	    else if (args[0].equalsIgnoreCase("clear")) clear(sender, args);
+	    else if (args[0].equalsIgnoreCase("clear")){
+		clear(sender, args);
+		save = true;
+	    }
 	    else if (args[0].equalsIgnoreCase("me")) me(sender, args);
 	    if (save){
 		saveAll();
@@ -213,17 +220,24 @@ public class TicketManager extends SSCmdExe{
 	if (sender.hasPermission("steelsecurity.commands.ticket.veiw") 
 		|| sender.getName().equals(getTicket(Integer.parseInt(args[1])).getPlayerName())) {
 	    if (args.length==2) {
-		if (!(Integer.parseInt(args[1])>tickets.size())){
-		    for (String line : mp.veiwTicket(getTicket(Integer.parseInt(args[1])))) 
-			sender.sendMessage(line);
+		if (Tools.isSafeNumber(args[1])) {
+		    if (getTicket(Integer.parseInt(args[1]))!=null){
+			for (String line : mp.veiwTicket(getTicket(Integer.parseInt(args[1])))) 
+			    sender.sendMessage(line);
+		    }
+		    else {
+			sender.sendMessage("There is no ticket with the ID of " + args[1]);
+		    }
 		}
-		else {
-		    sender.sendMessage("There is no ticket with the ID of " + args[1]);
+		else{
+		    sender.sendMessage("Invalid Arguments!");
+		    sender.sendMessage("The ticket ID must be a number!");
+		    sender.sendMessage("Please use /ticket view <ID>");
 		}
 	    }
 	    else {
 		sender.sendMessage("Invalid Arguments!");
-		sender.sendMessage("Please use /ticket view ID");
+		sender.sendMessage("Please use /ticket view <ID>");
 	    }
 	}
 	else {
@@ -233,31 +247,38 @@ public class TicketManager extends SSCmdExe{
     private void comment(CommandSender sender, String[] args) {
 	if (sender.hasPermission("steelsecurity.commands.ticket.comment")) {
 	    if (args.length>2) {
-		if (!(Integer.parseInt(args[1])>tickets.size())){
-		    String message = "";
-		    Boolean skip = true;
-		    Boolean skip2 = true;
-		    for (String word : args){
-			if (!skip){
-			    message = message + word + " ";
+		if (Tools.isSafeNumber(args[1])){
+		    if (getTicket(Integer.parseInt(args[1]))!=null){
+			String message = "";
+			Boolean skip = true;
+			Boolean skip2 = true;
+			for (String word : args){
+			    if (!skip){
+				message = message + word + " ";
+			    }
+			    if (!skip2){
+				skip = false;
+			    }
+			    else {
+				skip2 = false;
+			    }
 			}
-			if (!skip2){
-			    skip = false;
-			}
-			else {
-			    skip2 = false;
+			message = message.trim();
+			if (sender.getName().equals(getTicket(Integer.parseInt(args[1])).getPlayerName())
+				|| sender.getName().equals(getTicket(Integer.parseInt(args[1])).getAsignneeName())
+				&& sender.hasPermission("steelsecurity.commands.ticket.comment.assigned") 
+				|| sender.hasPermission("steelsecurity.commands.ticket.comment.all")){
+			    getTicket(Integer.parseInt(args[1])).addComment(message);
 			}
 		    }
-		    message = message.trim();
-		    if (sender.getName().equals(getTicket(Integer.parseInt(args[1])).getPlayerName())
-			    || sender.getName().equals(getTicket(Integer.parseInt(args[1])).getAsignneeName())
-			    && sender.hasPermission("steelsecurity.commands.ticket.comment.assigned") 
-			    || sender.hasPermission("steelsecurity.commands.ticket.comment.all")){
-			getTicket(Integer.parseInt(args[1])).addComment(message);
+		    else {
+			sender.sendMessage("There is no ticket with the ID of " + args[1]);
 		    }
 		}
 		else {
-		    sender.sendMessage("There is no ticket with the ID of " + args[1]);
+		    sender.sendMessage("Invalid Arguments!");
+		    sender.sendMessage("The ticket ID must be a number!");
+		    sender.sendMessage("Please use /ticket comment <ID> <message>");
 		}
 	    }
 	    else {
@@ -274,13 +295,19 @@ public class TicketManager extends SSCmdExe{
 		&& sender.getName().equals(getTicket(Integer.parseInt(args[1])).getAsignneeName())
 		|| sender.hasPermission("steelsecurity.commands.ticket.close.all")){
 	    if (args.length==2) {
-		if (!(Integer.parseInt(args[1])>tickets.size())){
-		    getTicket(Integer.parseInt(args[1])).close();
+		if (Tools.isSafeNumber(args[1])) {
+		    if (getTicket(Integer.parseInt(args[1]))!=null){
+			getTicket(Integer.parseInt(args[1])).close();
+		    }
+		    else {
+			sender.sendMessage("There is no ticket with the ID of " + args[1]);
+		    }
 		}
 		else {
-		    sender.sendMessage("There is no ticket with the ID of " + args[1]);
+		    sender.sendMessage("Invalid Arguments!");
+		    sender.sendMessage("The ticket ID must be a number!");
+		    sender.sendMessage("Please use /ticket close <ID>");
 		}
-
 	    }
 	    else {
 		sender.sendMessage("Invalid Arguments!");
@@ -296,11 +323,18 @@ public class TicketManager extends SSCmdExe{
 		&& sender.getName().equals(getTicket(Integer.parseInt(args[1])).getAsignneeName())
 		|| sender.hasPermission("steelsecurity.commands.ticket.open.all")){
 	    if (args.length==2) {
-		if (!(Integer.parseInt(args[1])>tickets.size())){
-		    getTicket(Integer.parseInt(args[1])).open();
+		if (Tools.isSafeNumber(args[1])) {
+		    if (getTicket(Integer.parseInt(args[1]))!=null){
+			getTicket(Integer.parseInt(args[1])).open();
+		    }
+		    else {
+			sender.sendMessage("There is no ticket with the ID of " + args[1]);
+		    }
 		}
 		else {
-		    sender.sendMessage("There is no ticket with the ID of " + args[1]);
+		    sender.sendMessage("Invalid Arguments!");
+		    sender.sendMessage("The ticket ID must be a number!");
+		    sender.sendMessage("Please use /ticket open <ID>");
 		}
 
 	    }
@@ -316,7 +350,7 @@ public class TicketManager extends SSCmdExe{
     private void me(CommandSender sender, String[] args) {
 	if (sender.hasPermission("steelsecurity.commands.ticket.me")){
 	}
-	
+
     }
     private void clear(CommandSender sender, String[] args) {
 	// TODO Auto-generated method stub

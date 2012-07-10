@@ -1,6 +1,6 @@
 package net.othercraft.steelsecurity.antihack.other.derp;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.data.Violations;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
@@ -9,11 +9,11 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 public class UpsideDown extends SSCmdExe {
 
-    Main plugin;
+    SteelSecurity plugin;
 
     Violations vio;
 
-    public UpsideDown(String name, Main instance, Violations viol) {
+    public UpsideDown(String name, SteelSecurity instance, Violations viol) {
 	super("UpsideDown", true);
 	plugin = instance;
 	vio = viol;

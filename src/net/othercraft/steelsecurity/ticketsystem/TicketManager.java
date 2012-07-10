@@ -169,13 +169,13 @@ public class TicketManager extends SSCmdExe{
 	    else if (args[0].equalsIgnoreCase("delete")) delete(sender, args);
 	    else if (args[0].equalsIgnoreCase("deleteall")) deleteAll(sender, args);
 	    else if (args[0].equalsIgnoreCase("me")) me(sender, args);
-	    if (save){
-		saveAll();
-	    }
 	    else {
 		sender.sendMessage("Unkown command subcommand.");
 		sender.sendMessage("For a list of subcommands for /ticket");
 		sender.sendMessage("Please type /ticket help");
+	    }
+	    if (save){
+		saveAll();
 	    }
 	}
 	return true;

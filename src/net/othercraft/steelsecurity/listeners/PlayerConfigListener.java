@@ -2,7 +2,7 @@ package net.othercraft.steelsecurity.listeners;
 
 import java.io.IOException;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
@@ -15,9 +15,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class PlayerConfigListener extends SSCmdExe {
 
-    public Main plugin;
+    public SteelSecurity plugin;
 
-    public PlayerConfigListener(String name, Main instance) {
+    public PlayerConfigListener(String name, SteelSecurity instance) {
 	super("PlayerConfigListener", true);// true only if its a listener,
 					    // false if it isnt
 	this.plugin = instance;

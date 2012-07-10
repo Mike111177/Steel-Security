@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.data.Violations;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 public class ChatFilter extends SSCmdExe {
 
-    public Main plugin;
+    public SteelSecurity plugin;
 
     public Violations vio;
 
@@ -25,7 +25,7 @@ public class ChatFilter extends SSCmdExe {
 								      // of
 								      // chat
 
-    public ChatFilter(String name, Main instance, Violations viol) {
+    public ChatFilter(String name, SteelSecurity instance, Violations viol) {
 	super("ChatFilter", true);// true only if its a listener, false if it
 				  // isnt
 	plugin = instance;

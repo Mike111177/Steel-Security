@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.commands.Vanish;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
@@ -37,13 +37,13 @@ import org.bukkit.inventory.ItemStack;
 
 public class SpectateManager extends SSCmdExe {
 
-    Main plugin;
+    SteelSecurity plugin;
 
     Vanish vm;
     
     Logger log;
 
-    public SpectateManager(String name, Main instance, Vanish vanman, Logger log) {
+    public SpectateManager(String name, SteelSecurity instance, Vanish vanman, Logger log) {
 	super("SpectateManager", true);
 	vm = vanman;
 	plugin = instance;

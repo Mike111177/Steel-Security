@@ -29,9 +29,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class Main extends JavaPlugin {
+public class SteelSecurity extends JavaPlugin {
 
-    public static Main instance;
+    public static SteelSecurity instance;
 
     private Sts base;
 

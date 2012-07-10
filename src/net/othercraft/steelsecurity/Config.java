@@ -12,13 +12,13 @@ import net.othercraft.steelsecurity.utils.ExtraConfigManager;
 
 public class Config {
 
-    private Main plugin;
+    private SteelSecurity plugin;
     private ExtraConfigManager anticm;
     private ExtraConfigManager log;
     private ExtraConfigManager datac;
     private ExtraConfigManager tickc;
 
-    public Config(Main instance, ExtraConfigManager anticom, ExtraConfigManager loge, ExtraConfigManager datace) {
+    public Config(SteelSecurity instance, ExtraConfigManager anticom, ExtraConfigManager loge, ExtraConfigManager datace) {
 	plugin = instance;
 	anticm = anticom;
 	log = loge;

@@ -2,7 +2,7 @@ package net.othercraft.steelsecurity.listeners;
 
 import java.util.List;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.Material;
@@ -11,9 +11,9 @@ import org.bukkit.event.block.BlockPlaceEvent;
 
 public class BlockBlacklist extends SSCmdExe {
 
-    Main plugin;
+    SteelSecurity plugin;
 
-    public BlockBlacklist(String name, Main instance) {
+    public BlockBlacklist(String name, SteelSecurity instance) {
 	super("BlockBlacklist", true);
 	plugin = instance;
     }

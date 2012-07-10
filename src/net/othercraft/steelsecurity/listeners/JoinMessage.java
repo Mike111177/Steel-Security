@@ -2,7 +2,7 @@ package net.othercraft.steelsecurity.listeners;
 
 import java.io.IOException;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.ChatColor;
@@ -13,9 +13,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinMessage extends SSCmdExe implements Listener {
 
-    public Main plugin;
+    public SteelSecurity plugin;
 
-    public JoinMessage(String name, Main instance) {
+    public JoinMessage(String name, SteelSecurity instance) {
 	super("JoinMessage", true);// true only if its a listener, false if it
 				   // isnt
 	this.plugin = instance;

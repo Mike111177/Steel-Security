@@ -5,15 +5,15 @@ import java.util.logging.Logger;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 public class ConsoleCommandMessage extends SSCmdExe {
     
-    Main plugin;
+    SteelSecurity plugin;
     Logger log;
 
-    public ConsoleCommandMessage(String name, Main instance, Logger log) {
+    public ConsoleCommandMessage(String name, SteelSecurity instance, Logger log) {
 	super("ConsoleCommandMessage", true);
 	plugin = instance;
 	this.log = log;

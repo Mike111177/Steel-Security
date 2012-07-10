@@ -11,7 +11,7 @@ package net.othercraft.steelsecurity.utils;
 
 import java.io.IOException;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -33,7 +33,7 @@ public abstract class SSCmdExe extends ExceptionLogger implements CommandExecuto
     public SSCmdExe(String name, Boolean listener) {
 	this.name = name;
 	if (listener) {
-	    Bukkit.getPluginManager().registerEvents(this, Main.instance);
+	    Bukkit.getPluginManager().registerEvents(this, SteelSecurity.instance);
 	}
     }
 

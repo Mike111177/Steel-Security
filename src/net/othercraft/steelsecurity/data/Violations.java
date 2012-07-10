@@ -3,7 +3,7 @@ package net.othercraft.steelsecurity.data;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.Bukkit;
@@ -14,9 +14,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Violations extends SSCmdExe {
 
-    Main plugin;
+    SteelSecurity plugin;
 
-    public Violations(String name, Main instance) {
+    public Violations(String name, SteelSecurity instance) {
 	super("Violations", true);
 	plugin = instance;
     }

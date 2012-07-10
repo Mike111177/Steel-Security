@@ -1,6 +1,6 @@
 package net.othercraft.steelsecurity.commands;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.listeners.SpectateManager;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
@@ -16,13 +16,13 @@ import org.bukkit.entity.Player;
 
 public class Sts extends SSCmdExe {
 
-    Main plugin;
+    SteelSecurity plugin;
 
     SpectateManager spm;
 
     Vanish vm;
 
-    public Sts(String name, Main instance, SpectateManager spminstance, Vanish vanman) {
+    public Sts(String name, SteelSecurity instance, SpectateManager spminstance, Vanish vanman) {
 	super("Sts", false);
 	plugin = instance;
 	spm = spminstance;

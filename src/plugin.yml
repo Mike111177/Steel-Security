@@ -1,6 +1,6 @@
 name: SteelSecurity
 version: 0.9.8-ab45
-main: net.othercraft.steelsecurity.Main
+main: net.othercraft.steelsecurity.SteelSecurity
 authors: [Mike111177, CorrieKay, r0306]
 website: http://othercraft.net
 commands:

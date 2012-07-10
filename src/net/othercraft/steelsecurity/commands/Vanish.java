@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.listeners.SpectateManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
@@ -18,12 +18,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Vanish extends SSCmdExe {
 
-    Main plugin;
+    SteelSecurity plugin;
 
     SpectateManager spm;
     Logger log;
 
-    public Vanish(String name, Main instance, Logger log) {
+    public Vanish(String name, SteelSecurity instance, Logger log) {
 	super("Vanish", true);
 	plugin = instance;
 	this.log = log;

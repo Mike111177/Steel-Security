@@ -3,7 +3,7 @@ package net.othercraft.steelsecurity.commands;
 import java.io.IOException;
 import java.util.Set;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 import net.othercraft.steelsecurity.utils.Tools;
@@ -16,9 +16,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class GameModeCmdCatch extends SSCmdExe {
-    Main plugin;
+    SteelSecurity plugin;
 
-    public GameModeCmdCatch(String name, Main instance) {
+    public GameModeCmdCatch(String name, SteelSecurity instance) {
 	super("GameModeCmdCatch", true);// true only if its a listener, false if it isnt
 	this.plugin = instance;
     }

@@ -3,7 +3,7 @@ package net.othercraft.steelsecurity.listeners;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.othercraft.steelsecurity.Main;
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.event.EventHandler;
@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 
 public class LoginLimiter extends SSCmdExe {
 
-    public Main plugin;
+    public SteelSecurity plugin;
 
     private Map<String, Long> logintimes = new HashMap<String, Long>();// for
 								       // tracking
@@ -21,7 +21,7 @@ public class LoginLimiter extends SSCmdExe {
 								       // of
 								       // chat
 
-    public LoginLimiter(String name, Main instance) {
+    public LoginLimiter(String name, SteelSecurity instance) {
 	super("LoginLimiter", true);// true only if its a listener, false if it
 				    // isnt
 	this.plugin = instance;

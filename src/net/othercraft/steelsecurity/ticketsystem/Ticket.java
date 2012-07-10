@@ -1,5 +1,6 @@
 package net.othercraft.steelsecurity.ticketsystem;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import net.othercraft.steelsecurity.utils.ExtraConfigManager;
 
-
-public class Ticket {
-    
-    private ExtraConfigManager config;
+public class Ticket implements Serializable{
     
     private String origional;
     private String player;
@@ -22,44 +19,24 @@ public class Ticket {
     private int index;
     private List<String> comments = new ArrayList<String>();
     private String key;
+    private String location;
     
-    public Ticket(int index, ExtraConfigManager config){
-	this.config = config;
-	registerIndex(index);
-	
-    }
-    
-    public void load() {
-	open = config.getConfig().getBoolean(key + ".open");
-	player = config.getConfig().getString(key + ".player");
-	asignnee = config.getConfig().getString(key + ".asignnee");
-	origional = config.getConfig().getString(key + ".message");
-	time = config.getConfig().getLong(key + ".time");
-	comments = config.getConfig().getStringList(key + ".comments");
-    }
-    public void save(){
-	config.getConfig().set(key + ".open", open);
-	config.getConfig().set(key + ".player", player);
-	if (asignnee!=null){
-	    config.getConfig().set(key + ".asignnee", asignnee);
-	}
-	config.getConfig().set(key + ".message", origional);
-	config.getConfig().set(key + ".time", time);
-	if (comments.size() != 0){
-	    config.getConfig().set(key + ".comments", comments);
-	}
-	config.saveConfig();
-    }
     public void setMessage(String message){
 	this.origional = message;
     }
     public void setPlayer(Player player){
 	this.player = player.getName();
     }
+    public void setPlayer(OfflinePlayer player){
+	this.player = player.getName();
+    }
     public void setPlayer(String playername){
 	this.player = playername;
     }
     public void setAsignnee(Player player){
+	this.asignnee = player.getName();
+    }
+    public void setAsignnee(OfflinePlayer player){
 	this.asignnee = player.getName();
     }
     public void setAsignnee(String playername){
@@ -72,6 +49,9 @@ public class Ticket {
 	return Bukkit.getOfflinePlayer(player);
     }
     public OfflinePlayer getAsignnee(){
+	if (asignnee==null){
+	    return null;
+	}
 	return Bukkit.getOfflinePlayer(asignnee);
     }
     public Long getTime(){
@@ -101,12 +81,24 @@ public class Ticket {
     public void registerTime(){
 	time = System.currentTimeMillis();
     }
-    public void registerIndex(int index){
-	this.index = index;
-	this.key = "Tickets." + index;
+    public String getAsignneeName() {
+	return asignnee;
     }
-    public void delete() {
-	config.getConfig().set(key, null);
-	config.saveConfig();
+    public String getPlayerName() {
+	return player;
     }
+    public List<String> getComments(){
+	return comments;
+    }
+    public Boolean isAssignned(){
+	return asignnee!=null;
+    }
+    public void setLocation(String loc) {
+	this.location = loc;
+    }
+    public String getLocation() {
+	return location;
+    }
+    
+    
 }

@@ -56,7 +56,6 @@ public class Main extends JavaPlugin {
     private ExtraConfigManager anticm;
     private ExtraConfigManager data;
     private ExtraConfigManager logc;
-    private ExtraConfigManager tickc;
     @SuppressWarnings("unused")
     private ConsoleCommandMessage cmm;
     private static final Logger log = Logger.getLogger("Minecraft");
@@ -91,12 +90,12 @@ public class Main extends JavaPlugin {
 
 	}, 0, 432000);
 	dataFolder = getDataFolder();
+	File ticketDataFolder = new File(dataFolder + File.separator + "Tickets");
 	config();
 	instance = this;
 	registerListeners();
-	commands();
+	commands(ticketDataFolder);
 	playerChecks();
-	tickm.initiate();
     }
     protected ExtraConfigManager dataConfig(){
 	return data;
@@ -119,8 +118,7 @@ public class Main extends JavaPlugin {
 	anticm = new ExtraConfigManager(dataFolder, "AntiHack");
 	logc = new ExtraConfigManager(dataFolder, "Database");
 	data = new ExtraConfigManager(dataFolder, "Logging");
-	tickc = new ExtraConfigManager(dataFolder, "Tickets");
-	new Config(this, anticm, logc, data, tickc).loadConfiguration();
+	new Config(this, anticm, logc, data).loadConfiguration();
     }
 
     private void playerChecks() {
@@ -151,10 +149,10 @@ public class Main extends JavaPlugin {
         return currentVersion;
     }
 
-    private void commands() {// register commands here
+    private void commands(File tickdata) {// register commands here
 	base = new Sts("base", this, spm, vm);
 	getCommand("sts").setExecutor(base);
-	tickm = new TicketManager(tickc);
+	tickm = new TicketManager(tickdata);
 	getCommand("ticket").setExecutor(tickm);
     }
 
@@ -191,5 +189,8 @@ public class Main extends JavaPlugin {
     }
     public Logger getLogger(){
 	return log;
+    }
+    public void registerCommandError() {
+	// TODO Set a class for errored commands go to
     }
 }

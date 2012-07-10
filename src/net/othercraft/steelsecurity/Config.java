@@ -18,12 +18,11 @@ public class Config {
     private ExtraConfigManager datac;
     private ExtraConfigManager tickc;
 
-    public Config(Main instance, ExtraConfigManager anticom, ExtraConfigManager loge, ExtraConfigManager datace, ExtraConfigManager ticksc) {
+    public Config(Main instance, ExtraConfigManager anticom, ExtraConfigManager loge, ExtraConfigManager datace) {
 	plugin = instance;
 	anticm = anticom;
 	log = loge;
 	datac = datace;
-	tickc = ticksc;
     }
 
     public void loadConfiguration() {

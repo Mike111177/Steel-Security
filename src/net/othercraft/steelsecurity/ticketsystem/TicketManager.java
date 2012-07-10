@@ -1,7 +1,13 @@
 package net.othercraft.steelsecurity.ticketsystem;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -27,36 +33,83 @@ public class TicketManager extends SSCmdExe{
 	if (index<1) {
 	    return null;
 	}
-	else if (index>tickets.size()) {
+	else {
+	    for (Ticket tick : tickets){
+		if (tick.getIndex()==index)return tick;
+	    }
 	    return null;
 	}
+    }
+    public Integer getNextFreeIndex() {
+	if (tickets.size()>0){
+	    int index = 0;
+	    for (Ticket tick : tickets){
+		if (tick.getIndex()>index){
+		    index = tick.getIndex();
+		}
+	    }
+	    index++;
+	    return index;
+	}
 	else {
-	    return tickets.get(index-1);
+	    return 1;
 	}
     }
     private void initiate(){
 	loadAll();
+	saveAll();
     }
     public void loadAll() {
+	tickets = new ArrayList<Ticket>();
 	if (!dataFolder.exists()){
 	    dataFolder.mkdir();
 	}
 	File[] files = dataFolder.listFiles();
 	for (File file : files){
 	    System.out.println(file.getName());
+	    System.out.println(file.getPath());
+	    if (file.getName().endsWith(".tick")) {
+		try {
+			FileInputStream fin = new FileInputStream(file);
+			ObjectInputStream in = new ObjectInputStream (fin); 
+			Ticket ticket = (Ticket) in.readObject();
+			tickets.add(ticket);
+			in.close();
+		    } catch (FileNotFoundException e) {
+			e.printStackTrace();
+		    } catch (IOException e) {
+			e.printStackTrace();
+		    } catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		    }
+	    }
 	}
     }
     public void saveAll() {
-	
-    }
-    public void load(int index){
-	
-    }
-    public void save(int index){
-	
+	if (!dataFolder.exists()){
+	    dataFolder.mkdir();
+	}
+	for (File oldfile : dataFolder.listFiles()) {
+	    oldfile.delete();
+	}
+	for (Ticket newfile : tickets){
+	    File tosave = new File(dataFolder, newfile.getIndex() + ".tick");
+	    try {
+		FileOutputStream fout = new FileOutputStream(tosave);
+		ObjectOutputStream out = new ObjectOutputStream(fout);
+		out.writeObject(newfile);
+		out.close();
+	    } catch (FileNotFoundException e) {
+		e.printStackTrace();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	}
     }
     private Ticket newTicket(){
-	return new Ticket();
+	Ticket tick = new Ticket();
+	tick.setIndex(getNextFreeIndex());
+	return tick;
     }
     private void newTicketCmd(CommandSender sender, String[] segments){
 	Ticket newtick = newTicket();
@@ -92,15 +145,28 @@ public class TicketManager extends SSCmdExe{
     public boolean handleCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	if (args.length==0)base(sender);
 	else {
+	    Boolean save = false;
 	    if (args[0].equalsIgnoreCase("new"))newcmd(sender, args);
 	    else if (args[0].equalsIgnoreCase("list"))list(sender, args);
 	    else if (args[0].equalsIgnoreCase("view"))view(sender, args);
-	    else if (args[0].equalsIgnoreCase("comment"))comment(sender, args);
-	    else if (args[0].equalsIgnoreCase("close"))close(sender, args);
-	    else if (args[0].equalsIgnoreCase("open")) open(sender, args);
+	    else if (args[0].equalsIgnoreCase("comment")){
+		comment(sender, args);
+		save = true;
+	    }
+	    else if (args[0].equalsIgnoreCase("close")){
+		close(sender, args);
+		save = true;
+	    }
+	    else if (args[0].equalsIgnoreCase("open")) {
+		open(sender, args);
+		save = true;
+	    }
 	    else if (args[0].equalsIgnoreCase("help")) help(sender, args);
 	    else if (args[0].equalsIgnoreCase("clear")) clear(sender, args);
 	    else if (args[0].equalsIgnoreCase("me")) me(sender, args);
+	    if (save){
+		saveAll();
+	    }
 	}
 	return true;
     }

@@ -99,6 +99,9 @@ public class Ticket implements Serializable{
     public String getLocation() {
 	return location;
     }
+    public void setIndex(Integer index) {
+	this.index = index;
+    }
     
     
 }

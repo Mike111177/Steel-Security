@@ -166,13 +166,16 @@ public class TicketManager extends SSCmdExe{
 		save = true;
 	    }
 	    else if (args[0].equalsIgnoreCase("help")) help(sender, args);
-	    else if (args[0].equalsIgnoreCase("clear")){
-		clear(sender, args);
-		save = true;
-	    }
+	    else if (args[0].equalsIgnoreCase("delete")) delete(sender, args);
+	    else if (args[0].equalsIgnoreCase("deleteall")) deleteAll(sender, args);
 	    else if (args[0].equalsIgnoreCase("me")) me(sender, args);
 	    if (save){
 		saveAll();
+	    }
+	    else {
+		sender.sendMessage("Unkown command subcommand.");
+		sender.sendMessage("For a list of subcommands for /ticket");
+		sender.sendMessage("Please type /ticket help");
 	    }
 	}
 	return true;
@@ -352,9 +355,61 @@ public class TicketManager extends SSCmdExe{
 	}
 
     }
-    private void clear(CommandSender sender, String[] args) {
-	// TODO Auto-generated method stub
+    private void delete(CommandSender sender, String[] args) {
+	if (sender.hasPermission("steelsecurity.commands.ticket.delete")) {
+	    if (args.length==2) {
+		if (Tools.isSafeNumber(args[1])) {
+		    if (getTicket(Integer.parseInt(args[1]))!=null){
+			delete(Integer.parseInt(args[1]));
+		    }
+		    else {
+			sender.sendMessage("There is no ticket with the ID of " + args[1]);
+		    }
+		}
+		else {
+		    sender.sendMessage("Invalid Arguments!");
+		    sender.sendMessage("The ticket ID must be a number!");
+		    sender.sendMessage("Please use /ticket delete <ID>");
+		}
+	    }
+	    else {
+		sender.sendMessage("Invalid Arguments!");
+		sender.sendMessage("Please use /ticket delete <ID>");
+	    }
+	}
+	else {
+	    sender.sendMessage(noperm);
+	}
 	
+    }
+    private void deleteAll(CommandSender sender, String[] args) {
+	if (sender.hasPermission("steelsecurity.commands.ticket.deleteall")) {
+	    if (args.length==2) {
+			deleteAll();
+	    }
+	    else {
+		sender.sendMessage("Invalid Arguments!");
+		sender.sendMessage("Please use /ticket deleteall");
+	    }
+	}
+	else {
+	    sender.sendMessage(noperm);
+	}
+	
+    }
+    private void delete(int index) {
+	for (Ticket tick : tickets){
+	    if (tick.getIndex() == index){
+		tickets.remove(tick);
+	    }
+	}
+	saveAll();
+	loadAll();
+    }
+    private void deleteAll() {
+	tickets = new ArrayList<Ticket>();
+	saveAll();
+	loadAll();
     }
     private void help(CommandSender sender, String[] args) {
 	// TODO Auto-generated method stub

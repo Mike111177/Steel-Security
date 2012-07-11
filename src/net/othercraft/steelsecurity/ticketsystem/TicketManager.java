@@ -1,3 +1,4 @@
+
 package net.othercraft.steelsecurity.ticketsystem;
 
 import java.io.File;
@@ -75,6 +76,9 @@ public class TicketManager extends SSCmdExe{
 	loadAll();
 	saveAll();
     }
+    /**
+     * resets the list of tickets and loads them from the directory
+     */
     public void loadAll() {
 	tickets = new ArrayList<Ticket>();
 	if (!dataFolder.exists()){
@@ -101,6 +105,9 @@ public class TicketManager extends SSCmdExe{
 	    }
 	}
     }
+    /**
+     * Saves all of the tickets
+     */
     public void saveAll() {
 	if (!dataFolder.exists()){
 	    dataFolder.mkdir();

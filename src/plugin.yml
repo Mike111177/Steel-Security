@@ -1,5 +1,5 @@
 name: SteelSecurity
-version: 0.9.8-ab45
+version: 0.9.9-ab47
 main: net.othercraft.steelsecurity.SteelSecurity
 authors: [Mike111177, CorrieKay, r0306]
 website: http://othercraft.net
@@ -7,9 +7,6 @@ commands:
   sts:
      description: Base command for Steel Security.
      usage: /sts
-  ticket: 
-     description: Base command for for the ticket request system.
-     usage: /ticket
 permissions:
   steelsecurity.*:
      description: Gives all benificial Steel Security permissions.

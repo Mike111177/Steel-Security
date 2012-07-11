@@ -26,8 +26,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLevelChangeEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -65,7 +65,7 @@ public class SpectateManager extends SSCmdExe {
     private HashSet<String> spectates = new HashSet<String>();// Who is spectating other people
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
+    public void onJoin(PlayerLoginEvent event) {
 	Player player = event.getPlayer();
 	spectators.put(player.getName(), false);
 	spectatees.put(player.getName(), false);
@@ -348,6 +348,7 @@ public class SpectateManager extends SSCmdExe {
     public void onGmChange(PlayerGameModeChangeEvent event) {
 	if (spectators.get(event.getPlayer().getName())) {
 	    event.setCancelled(true);
+	    game.put(event.getPlayer().getName(), event.getNewGameMode().getValue());
 	}
 	if (spectatees.get(event.getPlayer().getName())) {
 	    Player player = event.getPlayer();

@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,11 +26,21 @@ public class TicketManager extends SSCmdExe{
     private TicketMessageProccessor mp = new TicketMessageProccessor();
     private File dataFolder = null;
     
+    /**
+     * @param datafolder
+     * The folder where tickets will be stored.
+     */
     public TicketManager(File datafolder){
 	super("TicketManager", false);
 	this.dataFolder = datafolder;
 	initiate();
     }
+    /**
+     * @param index
+     * The ID of the ticket you want to recieve
+     * @return
+     * If a ticket with the ID exist, the ticket, else null 
+     */
     public Ticket getTicket(int index){
 	if (index<1) {
 	    return null;
@@ -41,6 +52,10 @@ public class TicketManager extends SSCmdExe{
 	    return null;
 	}
     }
+    /**
+     * @return
+     * The next availible ticket ID
+     */
     public Integer getNextFreeIndex() {
 	if (tickets.size()>0){
 	    int index = 0;
@@ -107,6 +122,10 @@ public class TicketManager extends SSCmdExe{
 	    }
 	}
     }
+    /**
+     * @return
+     * A brand new ticket with a generated ID
+     */
     private Ticket newTicket(){
 	Ticket tick = new Ticket();
 	tick.setIndex(getNextFreeIndex());
@@ -152,6 +171,14 @@ public class TicketManager extends SSCmdExe{
 		save = true;
 	    }
 	    else if (args[0].equalsIgnoreCase("list"))list(sender, args);
+	    else if (args[0].equalsIgnoreCase("claim")){
+		claim(sender, args);
+		save = true;
+	    }
+	    else if (args[0].equalsIgnoreCase("assign")){
+		assign(sender, args);
+		save = true;
+	    }
 	    else if (args[0].equalsIgnoreCase("view"))view(sender, args);
 	    else if (args[0].equalsIgnoreCase("comment")){
 		comment(sender, args);
@@ -180,20 +207,75 @@ public class TicketManager extends SSCmdExe{
 	}
 	return true;
     }
-    private void base(CommandSender sender) {
-	if (sender.hasPermission("steelsecurity.commands.ticket")){
-	sender.sendMessage(ChatColor.GREEN + "Welcome to Steel Security's Ticket Request System.");
-	sender.sendMessage(ChatColor.GREEN + "Type /ticket help for a list of commands.");
+    private void claim(CommandSender sender, String[] args) {
+	if (sender.hasPermission("steelsecurity.commands.ticket.claim")){
+	    if (args.length==2){
+		if (Tools.isSafeNumber(args[1])) {
+		    if (getTicket(Integer.parseInt(args[1]))!=null){
+			Player p = (Player) sender;
+			getTicket(Integer.parseInt(args[1])).setAsignnee(p);
+		    }
+		    else {
+			sender.sendMessage("There is no ticket with the ID of " + args[1]);
+		    }
+		}
+		else {
+		    sender.sendMessage("Invalid Arguments!");
+		    sender.sendMessage("The ticket ID must be a number!");
+		    sender.sendMessage("Please use /ticket claim <ID>");
+		}
+	    }
+	    else {
+		sender.sendMessage("Invalid Arguments!");
+		sender.sendMessage("Please use /ticket claim <ID>");
+	    }
 	}
 	else {
-	sender.sendMessage(noperm);
+	    sender.sendMessage(noperm);
+	}
+
+    }
+    private void assign(CommandSender sender, String[] args) {
+	if (sender.hasPermission("steelsecurity.commands.ticket.assign")){
+	    if (args.length==3){
+		if (Tools.isSafeNumber(args[1])) {
+		    if (getTicket(Integer.parseInt(args[1]))!=null){
+			getTicket(Integer.parseInt(args[1])).setAsignnee(Bukkit.getOfflinePlayer(args[2]).getPlayer());
+		    }
+		    else {
+			sender.sendMessage("There is no ticket with the ID of " + args[1]);
+		    }
+		}
+		else {
+		    sender.sendMessage("Invalid Arguments!");
+		    sender.sendMessage("The ticket ID must be a number!");
+		    sender.sendMessage("Please use /ticket assign <ID> <player>");
+		}
+	    }
+	    else {
+		sender.sendMessage("Invalid Arguments!");
+		sender.sendMessage("Please use /ticket assign <ID> <player>");
+	    }
+	}
+	else {
+	    sender.sendMessage(noperm);
+	}
+
+    }
+    private void base(CommandSender sender) {
+	if (sender.hasPermission("steelsecurity.commands.ticket")){
+	    sender.sendMessage(ChatColor.GREEN + "Welcome to Steel Security's Ticket Request System.");
+	    sender.sendMessage(ChatColor.GREEN + "Type /ticket help for a list of commands.");
+	}
+	else {
+	    sender.sendMessage(noperm);
 	}
     }
     private void newcmd(CommandSender sender, String[] args) {
 	if (sender.hasPermission("steelsecurity.commands.ticket.create")) {
 	    if (args.length>1) {
 		newTicketCmd(sender, args);
-		
+
 	    }
 	    else {
 		sender.sendMessage("Invalid Arguments!");
@@ -384,7 +466,7 @@ public class TicketManager extends SSCmdExe{
     }
     private void deleteAll(CommandSender sender, String[] args) {
 	if (sender.hasPermission("steelsecurity.commands.ticket.deleteall")) {
-	    if (args.length==2) {
+	    if (args.length==1) {
 			deleteAll();
 	    }
 	    else {
@@ -398,10 +480,14 @@ public class TicketManager extends SSCmdExe{
 	
     }
     private void delete(int index) {
+	Ticket todelete = null;
 	for (Ticket tick : tickets){
 	    if (tick.getIndex() == index){
-		tickets.remove(tick);
+		todelete = tick;
 	    }
+	}
+	if (todelete!=null){
+	    tickets.remove(todelete);
 	}
 	saveAll();
 	loadAll();

@@ -7,7 +7,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public abstract class Tools {
-
+    /**
+     * 
+     * @param pname
+     * The string to use
+     * @return
+     * A list of players whos name start with pname and are online.
+     */
     public static Set<Player> safePlayer(String pname) {
 	Set<Player> list = new HashSet<Player>();
 	for (Player scan : Bukkit.getServer().getOnlinePlayers()) {
@@ -17,6 +23,14 @@ public abstract class Tools {
 	}
 	return list;
     }
+    /**
+     * Test if a String is safe to parse to an Integer.
+     * @param toparse
+     * the string to test
+     * @return
+     * weather or not the string is safe to parse into and integer
+     */
+    
     public static Boolean isSafeNumber(String toparse){
 	Boolean result;
 	try{

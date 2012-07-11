@@ -106,7 +106,14 @@ public class SteelSecurity extends JavaPlugin {
     protected ExtraConfigManager antiHackConfig(){
 	return anticm;
     }
-    
+    /**
+     * @param folder
+     * The folder to put the config in
+     * @param name
+     * the name of the config file (".yml" will be added automaticly)
+     * @return
+     * A class that would work just like a normal config file
+     */
     public ExtraConfigManager getNewConfig(File folder, String name){
 	return new ExtraConfigManager(folder, name);
     }

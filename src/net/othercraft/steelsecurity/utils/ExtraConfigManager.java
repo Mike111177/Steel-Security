@@ -1,3 +1,6 @@
+/**
+ * @Class: ExtraConfigManager
+ */
 package net.othercraft.steelsecurity.utils;
 
 import java.io.File;

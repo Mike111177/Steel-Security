@@ -90,10 +90,11 @@ public class SteelSecurity extends JavaPlugin {
 
 	}, 0, 432000);
 	dataFolder = getDataFolder();
+	File ticketDataFolder = new File(dataFolder + File.separator + "Tickets");
 	config();
 	instance = this;
 	registerListeners();
-	commands();
+	commands(ticketDataFolder);
 	playerChecks();
     }
     protected ExtraConfigManager dataConfig(){
@@ -155,9 +156,11 @@ public class SteelSecurity extends JavaPlugin {
         return currentVersion;
     }
 
-    private void commands() {// register commands here
+    private void commands(File tickdata) {// register commands here
 	base = new Sts("base", this, spm, vm);
 	getCommand("sts").setExecutor(base);
+	tickm = new TicketManager(tickdata);
+	getCommand("ticket").setExecutor(tickm);
     }
 
     private void registerListeners() {// register listeners here
@@ -178,6 +181,7 @@ public class SteelSecurity extends JavaPlugin {
     public void onDisable() {
 	spm.stopAll();
 	vm.stopAll();
+	tickm.saveAll();
     }
     public double getLatestVersion() {
 	return newVersion;

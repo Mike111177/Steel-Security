@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import net.othercraft.steelsecurity.utils.Tools;
+
 import org.bukkit.ChatColor;
 
 public class TicketMessageProccessor {
-    
+
     public String[] listTickets(List<Ticket> tickets){
 	int counter = 0;
 	int ticketcount = 0;
@@ -20,7 +22,7 @@ public class TicketMessageProccessor {
 		    counter++;
 		}
 	    }
-	    
+
 	}
 	int display = touse.size();
 	String[] list = new String[1 + display];
@@ -48,11 +50,10 @@ public class TicketMessageProccessor {
 
 
     }
-    public String[] veiwTicket(Ticket ticket){
+    public String[] veiwTicket(Ticket ticket, Integer page){
 	String sep = ChatColor.GRAY + " ";
 	ChatColor b = ChatColor.DARK_GREEN;
 	List<String> comments = ticket.getComments();
-	String[] list = new String[4];
 	String player;
 	String assginee;
 	String open;
@@ -63,7 +64,7 @@ public class TicketMessageProccessor {
 	    player = ChatColor.RED + ticket.getPlayerName();
 	}
 	if (!(ticket.getAsignneeName()==(null))){
-	    if (ticket.getPlayer().isOnline()){
+	    if (ticket.isAsignneeOnline()){
 		assginee = ChatColor.GREEN + ticket.getAsignneeName();
 	    }
 	    else {
@@ -79,12 +80,22 @@ public class TicketMessageProccessor {
 	else {
 	    open = ChatColor.RED + "Closed";
 	}
+	int pagenum = page;
+	int pagenum2 = Tools.getPages(comments, 5);
+	if (pagenum2==0)pagenum = pagenum2;
 	String date = new Date(ticket.getTime()).toString().replace(" EDT", "");
+	List<String> postproccess = Tools.getPage(comments, page, 5);
+	String[] list = new String[5 + postproccess.size()];
 	list[0] = sep + b + "Ticket: " + ChatColor.GOLD + "#" + ticket.getIndex() + sep;
 	list[1] = sep + b + "Player: "+ player + sep + b + "Assignee: " + assginee + sep + b + "Status: " + open + sep ;
 	list[2] = sep + b + "Date: " + ChatColor.YELLOW + date + sep + b + "Location: " + ChatColor.YELLOW + ticket.getLocation() + sep;
 	list[3] = sep + b + "Problem: " + ChatColor.YELLOW + ticket.getMessage();
+	list[4] = sep + ChatColor.GRAY + "Showing page " + pagenum + " out of " + pagenum2 + ".";
+	int counter = 5;
+	for (String comment : postproccess){
+	    list[counter] = sep + "- " + comment;
+	    counter++;   
+	}
 	return list;
     }
-
 }

@@ -309,13 +309,41 @@ public class TicketManager extends SSCmdExe{
 	}
     }
     private void view(CommandSender sender, String[] args) {
-	if (sender.hasPermission("steelsecurity.commands.ticket.veiw") 
+	if (sender.hasPermission("steelsecurity.commands.ticket.veiw")
 		|| sender.getName().equals(getTicket(Integer.parseInt(args[1])).getPlayerName())) {
-	    if (args.length==2) {
+	    if (args.length==3) {
+		if (Tools.isSafeNumber(args[1])) {
+		    if (Tools.isSafeNumber(args[2])) {
+			if (Integer.parseInt(args[2])>0) {
+			    if (getTicket(Integer.parseInt(args[1]))!=null){
+				for (String line : mp.veiwTicket(getTicket(Integer.parseInt(args[1])), Integer.parseInt(args[2]))) sender.sendMessage(line);
+			    }
+			    else {
+				sender.sendMessage("There is no ticket with the ID of " + args[1]);
+			    }
+			}
+			else {
+			    sender.sendMessage("Invalid Arguments!");
+			    sender.sendMessage("The ticket page must be a number greater than 0!");
+			    sender.sendMessage("Please use /ticket view <ID> (page)");
+			}
+		    }
+		    else {
+			sender.sendMessage("Invalid Arguments!");
+			sender.sendMessage("The ticket page must be a number!");
+			sender.sendMessage("Please use /ticket view <ID> (page)");
+		    }
+		}
+		else{
+		    sender.sendMessage("Invalid Arguments!");
+		    sender.sendMessage("The ticket ID must be a number!");
+		    sender.sendMessage("Please use /ticket view <ID> (page)");
+		}
+	    }
+	    else if (args.length==2) {
 		if (Tools.isSafeNumber(args[1])) {
 		    if (getTicket(Integer.parseInt(args[1]))!=null){
-			for (String line : mp.veiwTicket(getTicket(Integer.parseInt(args[1])))) 
-			    sender.sendMessage(line);
+			for (String line : mp.veiwTicket(getTicket(Integer.parseInt(args[1])), 1)) sender.sendMessage(line);
 		    }
 		    else {
 			sender.sendMessage("There is no ticket with the ID of " + args[1]);
@@ -324,25 +352,25 @@ public class TicketManager extends SSCmdExe{
 		else{
 		    sender.sendMessage("Invalid Arguments!");
 		    sender.sendMessage("The ticket ID must be a number!");
-		    sender.sendMessage("Please use /ticket view <ID>");
+		    sender.sendMessage("Please use /ticket view <ID> (page)");
 		}
 	    }
 	    else {
 		sender.sendMessage("Invalid Arguments!");
-		sender.sendMessage("Please use /ticket view <ID>");
+		sender.sendMessage("Please use /ticket view <ID> (page)");
 	    }
 	}
 	else {
 	    sender.sendMessage(noperm);
 	}
     }
-    private void comment(CommandSender sender, String[] args) {
-	if (sender.hasPermission("steelsecurity.commands.ticket.comment")) {
-	    if (args.length>2) {
-		if (Tools.isSafeNumber(args[1])){
-		    if (getTicket(Integer.parseInt(args[1]))!=null){
-			String message = "";
-			Boolean skip = true;
+	private void comment(CommandSender sender, String[] args) {
+	    if (sender.hasPermission("steelsecurity.commands.ticket.comment")) {
+		if (args.length>2) {
+		    if (Tools.isSafeNumber(args[1])){
+			if (getTicket(Integer.parseInt(args[1]))!=null){
+			    String message = "";
+			    Boolean skip = true;
 			Boolean skip2 = true;
 			for (String word : args){
 			    if (!skip){

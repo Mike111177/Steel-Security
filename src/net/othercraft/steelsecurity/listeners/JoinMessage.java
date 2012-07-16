@@ -32,13 +32,12 @@ public class JoinMessage extends SSCmdExe implements Listener {
 		double newVersion = plugin.getLatestVersion();
 		double currentVersion = plugin.getCurrentVersion();
 		if (newVersion > currentVersion) {
-		    player.sendMessage("Steel Security" + plugin.getLatestVersionName() + " is out!"); 
+		    player.sendMessage("Steel Security" + plugin.getLatestVersionName() + " is out!");
 		    player.sendMessage("You are running Steel Security " + plugin.getCurrentVersionName());
 		    player.sendMessage("Update Steel Security at: http://dev.bukkit.org/server-mods/steel-security");
 		}
-	    } 
-	}
-	catch (Exception e) {
+	    }
+	} catch (Exception e) {
 	    try {
 		catchListenerException(e, event.getEventName());
 	    } catch (IOException e1) {

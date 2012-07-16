@@ -58,19 +58,19 @@ public class ChatFilter extends SSCmdExe {
 		    String[] nmlist = mlist;
 		    String nm = "";
 		    int mindex = 0;
-		    for (String cword : mlist){
+		    for (String cword : mlist) {
 			Boolean correct = true;
 			for (String gword : glist) {
-			    if (cword.equalsIgnoreCase(gword)){
+			    if (cword.equalsIgnoreCase(gword)) {
 				correct = false;
 			    }
 			}
 			if (correct) {
-			    for (String bword : blist){
-				if (cword.toLowerCase().contains(bword.toLowerCase())){
+			    for (String bword : blist) {
+				if (cword.toLowerCase().contains(bword.toLowerCase())) {
 				    int bindex = 0;
 				    String nword = "";
-				    while (bindex<bword.length()) {
+				    while (bindex < bword.length()) {
 					nword = nword + "*";
 					bindex++;
 				    }
@@ -80,10 +80,10 @@ public class ChatFilter extends SSCmdExe {
 			}
 			mindex++;
 		    }
-			for (String nnword : nmlist) {
+		    for (String nnword : nmlist) {
 			nm = nm + nnword + " ";
 		    }
-			message = nm;
+		    message = nm;
 		}
 		if (message.length() > plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Minimum_Length")) {//
 		    if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Canceling.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.censor")) {

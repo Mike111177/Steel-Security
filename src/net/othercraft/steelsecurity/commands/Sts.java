@@ -171,7 +171,7 @@ public class Sts extends SSCmdExe {
 	    if (args[0].equalsIgnoreCase("spectateoff")) {
 		if (isplayer) {
 		    if (sender.hasPermission("steelsecurity.commands.spectate")) {
-			String[] nargs = {"spectate"};
+			String[] nargs = { "spectate" };
 			spm.specCmd(sender, nargs);
 		    } else {
 			sender.sendMessage(noperm);

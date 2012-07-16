@@ -28,7 +28,8 @@ public class Vanish extends SSCmdExe {
 	plugin = instance;
 	this.log = log;
     }
-    public void specGet(){
+
+    public void specGet() {
 	spm = plugin.spm;
     }
 
@@ -56,68 +57,83 @@ public class Vanish extends SSCmdExe {
 	return result;
     }
 
-    public void setVanished(Player player, Boolean o) {
+    public void setVanished(Player player, Boolean o, Boolean broadcast) {
 	if (o) {
 	    if (!isVanished(player)) {
-		start(player);
+		start(player, broadcast);
 		isvanished.put(player.getName(), true);
 	    }
 	} else {
 	    if (isVanished(player)) {
-		stop(player);
+		stop(player, broadcast);
 		isvanished.put(player.getName(), false);
 	    }
 	}
     }
 
-    private void stop(Player tostop) {
-	for (Player player : Bukkit.getOnlinePlayers()) {
-	    if (!player.hasPermission("steelsecurity.commands.vanish.cansee")) {
-		player.showPlayer(tostop);
+    private void stop(Player tostop, Boolean notify) {
+	if (isvanished.get(tostop.getName())) {
+	    for (Player player : Bukkit.getOnlinePlayers()) {
+		if (!player.hasPermission("steelsecurity.commands.vanish.cansee")) {
+		    player.showPlayer(tostop);
+		} else if (!player.getName().equals(tostop.getName()) && notify) {
+		    player.sendMessage(tostop.getName() + " is visable.");
+		}
 	    }
-	    else {
-		player.sendMessage(tostop.getName() + " is visable.");
+	    if (notify) {
+		tostop.sendMessage("You are now visable.");
+		log.info(tostop.getName() + " is now visable.");
+	    } else {
+		tostop.sendMessage("You were forced visable either because of a reload or you begun spectating.");
 	    }
 	}
-	tostop.sendMessage("You are now visable.");
-	log.info(tostop.getName() + " is now visable.");
     }
 
-    private void start(Player tostart) {
-	for (Player player : Bukkit.getOnlinePlayers()) {
-	    if (!player.hasPermission("steelsecurity.commands.vanish.cansee")) {
-		player.hidePlayer(tostart);
+    private void start(Player tostart, Boolean notify) {
+	if (!isvanished.get(tostart.getName())) {
+	    for (Player player : Bukkit.getOnlinePlayers()) {
+		if (!player.hasPermission("steelsecurity.commands.vanish.cansee")) {
+		    player.hidePlayer(tostart);
+		} else if (!player.getName().equals(tostart.getName()) && notify) {
+		    player.sendMessage(tostart.getName() + " has disapeared.");
+		}
 	    }
-	    else {
-		player.sendMessage(tostart.getName() + " has disapeared.");
+	    if (notify) {
+		tostart.sendMessage("You are now invisable.");
+		log.info(tostart.getName() + " has gone invisable.");
+	    } else {
+		tostart.sendMessage("You have retruned to being invisible.");
 	    }
 	}
-	tostart.sendMessage("You are now invisable.");
-	log.info(tostart.getName() + " has gone invisable.");
     }
 
     public void vmCmd(CommandSender sender, String[] args) {
 	Player player = Bukkit.getPlayerExact(sender.getName());
 	if (!spm.isSpectating(player)) {
-	    setVanished(player, !isVanished(player));
+	    setVanished(player, !isVanished(player), true);
 	} else {
 	    sender.sendMessage("You can not vanish when you are spectating!");
 	}
     }
-    public void stopAll(){
-	for (Player player : Bukkit.getOnlinePlayers()) stop(player);
+
+    public void stopAll() {
+	for (Player player : Bukkit.getOnlinePlayers())
+	    stop(player, false);
     }
+
     public void registerAll() {
-	for (Player player : Bukkit.getOnlinePlayers()) isvanished.put(player.getName(), false);
+	for (Player player : Bukkit.getOnlinePlayers())
+	    isvanished.put(player.getName(), false);
     }
+
     @EventHandler
-    public void onTarget(EntityTargetEvent event){
-	if (event.getTarget() instanceof Player){
+    public void onTarget(EntityTargetEvent event) {
+	if (event.getTarget() instanceof Player) {
 	    Player p = (Player) event.getTarget();
-	    if (isvanished.get(p.getName())){
+	    if (isvanished.get(p.getName())) {
 		event.setCancelled(true);
 	    }
 	}
     }
-    
+
 }

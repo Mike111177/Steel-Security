@@ -10,13 +10,13 @@ import net.othercraft.steelsecurity.utils.Tools;
 
 import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 
 public class GameModeCmdCatch extends SSCmdExe {
     SteelSecurity plugin;
@@ -25,11 +25,12 @@ public class GameModeCmdCatch extends SSCmdExe {
 	super("GameModeCmdCatch", true);// true only if its a listener, false if it isnt
 	this.plugin = instance;
     }
+
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onGmChange(PlayerGameModeChangeEvent event){
-	if (!event.isCancelled()){
-	    if (plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled")){
-		if (configSet(event.getPlayer(), event.getNewGameMode())){
+    public void onGmChange(PlayerGameModeChangeEvent event) {
+	if (!event.isCancelled()) {
+	    if (plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled")) {
+		if (configSet(event.getPlayer(), event.getNewGameMode())) {
 		    plugin.getLogger().info(event.getPlayer().getName() + "'s gamemode has been changed to " + event.getNewGameMode().name() + " in Steel Security's Config files.");
 		}
 	    }
@@ -67,7 +68,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 		    gm = decodeGM(args[2], sender);
 		    if (gm != null) {
 			if (gmcheck) {
-			    if (!configSet(target, gm)){
+			    if (!configSet(target, gm)) {
 				sender.sendMessage("We could not find a player with that name registered.");
 			    }
 			}
@@ -80,10 +81,9 @@ public class GameModeCmdCatch extends SSCmdExe {
 			gm = decodeGM(args[2], sender);
 			if (gm != null) {
 			    gmn = gm.name();
-			    if (!configSet(target, gm)){
+			    if (!configSet(target, gm)) {
 				sender.sendMessage("We could not find a player with that name registered.");
-			    }
-			    else {
+			    } else {
 				sender.sendMessage(target.getName() + "'s game mode will be set to " + gmn + " next time they log on.");
 			    }
 			}
@@ -140,7 +140,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 	    for (Player scan : list) {
 		nlist = (list + ", " + scan.getName());
 	    }
-	    if (!nlist.equals("")){
+	    if (!nlist.equals("")) {
 		nlist = nlist.replaceFirst(",", "");
 	    }
 	    sender.sendMessage("The players we found are" + nlist + ".");

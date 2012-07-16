@@ -40,7 +40,7 @@ public class SpectateManager extends SSCmdExe {
     SteelSecurity plugin;
 
     Vanish vm;
-    
+
     Logger log;
 
     public SpectateManager(String name, SteelSecurity instance, Vanish vanman, Logger log) {
@@ -98,7 +98,7 @@ public class SpectateManager extends SSCmdExe {
 	spectates.add(tostart.getName());
 	wasvanished.put(tostart.getName(), vm.isVanished(tostart));
 	if (vm.isVanished(tostart)) {
-	    vm.setVanished(tostart, false);
+	    vm.setVanished(tostart, false, false);
 	}
 	spectators.put(tostartname, true);
 	spectating.put(tostartname, tostarton.getName());
@@ -177,7 +177,9 @@ public class SpectateManager extends SSCmdExe {
 	health.remove(tostopname);
 	tostop.setExp(exp.get(tostopname));
 	exp.remove(tostopname);
-	vm.setVanished(tostop, wasvanished.get(tostopname));
+	if (wasvanished.get(tostopname)) {
+	    vm.setVanished(tostop, true, false);
+	}
 	wasvanished.remove(tostopname);
 	tostop.setAllowFlight(wasflying.get(tostopname));
 	wasflying.remove(tostopname);
@@ -248,6 +250,7 @@ public class SpectateManager extends SSCmdExe {
     public Map<String, String> spectateList() {
 	return spectating;
     }
+
     // Beyond here only apllies to when a player is being spectated
     @EventHandler
     public void onFollow(PlayerMoveEvent event) {

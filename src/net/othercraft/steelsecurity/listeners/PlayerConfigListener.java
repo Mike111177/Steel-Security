@@ -67,7 +67,8 @@ public class PlayerConfigListener extends SSCmdExe {
     }
 
     public void checkAll() {
-	for (Player player : Bukkit.getOnlinePlayers()) checkPlayerConfig(player);
+	for (Player player : Bukkit.getOnlinePlayers())
+	    checkPlayerConfig(player);
     }
 
 }

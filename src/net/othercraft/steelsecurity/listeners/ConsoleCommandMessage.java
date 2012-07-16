@@ -2,14 +2,14 @@ package net.othercraft.steelsecurity.listeners;
 
 import java.util.logging.Logger;
 
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-
 import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+
 public class ConsoleCommandMessage extends SSCmdExe {
-    
+
     SteelSecurity plugin;
     Logger log;
 
@@ -18,13 +18,11 @@ public class ConsoleCommandMessage extends SSCmdExe {
 	plugin = instance;
 	this.log = log;
     }
-    
-    
-    
+
     @EventHandler
-    public void onCommand(PlayerCommandPreprocessEvent event){
-	if (event.getMessage().toLowerCase().startsWith("/sts")){
+    public void onCommand(PlayerCommandPreprocessEvent event) {
+	if (event.getMessage().toLowerCase().startsWith("/sts")) {
 	    log.info(event.getPlayer().getName() + ": " + event.getMessage());
 	}
-    }    
+    }
 }

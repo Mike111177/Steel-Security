@@ -66,8 +66,6 @@ public class SteelSecurity extends JavaPlugin {
     private String newVersionName;
     private double newVersion;
     private TicketManager tickm;
-    
-    
 
     public void onEnable() {
 	versionName = getDescription().getVersion().split("-")[0];
@@ -97,30 +95,34 @@ public class SteelSecurity extends JavaPlugin {
 	commands(ticketDataFolder);
 	playerChecks();
     }
-    protected ExtraConfigManager dataConfig(){
+
+    protected ExtraConfigManager dataConfig() {
 	return data;
     }
-    protected ExtraConfigManager logConfig(){
+
+    protected ExtraConfigManager logConfig() {
 	return logc;
     }
-    protected ExtraConfigManager antiHackConfig(){
+
+    protected ExtraConfigManager antiHackConfig() {
 	return anticm;
     }
+
     /**
      * @param folder
-     * The folder to put the config in
+     *            The folder to put the config in
      * @param name
-     * the name of the config file (".yml" will be added automaticly)
-     * @return
-     * A class that would work just like a normal config file
+     *            the name of the config file (".yml" will be added automaticly)
+     * @return A class that would work just like a normal config file
      */
-    public ExtraConfigManager getNewConfig(File folder, String name){
+    public ExtraConfigManager getNewConfig(File folder, String name) {
 	return new ExtraConfigManager(folder, name);
     }
-    public FlatFileLogger getNewLog(File folder, String name){
+
+    public FlatFileLogger getNewLog(File folder, String name) {
 	return new FlatFileLogger(folder, name);
     }
-    
+
     private void config() {
 	anticm = new ExtraConfigManager(dataFolder, "AntiHack");
 	logc = new ExtraConfigManager(dataFolder, "Database");
@@ -134,32 +136,32 @@ public class SteelSecurity extends JavaPlugin {
 	vm.registerAll();
 	vio.engageAll();
     }
+
     public double updateCheck(double currentVersion) throws Exception {
-        String pluginUrlString = "http://dev.bukkit.org/server-mods/steel-security/files.rss";
-        try {
-            URL url = new URL(pluginUrlString);
-            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
-            doc.getDocumentElement().normalize();
-            NodeList nodes = doc.getElementsByTagName("item");
-            Node firstNode = nodes.item(0);
-            if (firstNode.getNodeType() == 1) {
-                Element firstElement = (Element)firstNode;
-                NodeList firstElementTagName = firstElement.getElementsByTagName("title");
-                Element firstNameElement = (Element) firstElementTagName.item(0);
-                NodeList firstNodes = firstNameElement.getChildNodes();
-                newVersionName = firstNodes.item(0).getNodeValue().replace("Steel Security", "");
-                return Double.valueOf(newVersionName.replaceFirst("\\.", "").trim());
-            }
-        }
-        catch (Exception localException) {
-        }
-        return currentVersion;
+	String pluginUrlString = "http://dev.bukkit.org/server-mods/steel-security/files.rss";
+	try {
+	    URL url = new URL(pluginUrlString);
+	    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
+	    doc.getDocumentElement().normalize();
+	    NodeList nodes = doc.getElementsByTagName("item");
+	    Node firstNode = nodes.item(0);
+	    if (firstNode.getNodeType() == 1) {
+		Element firstElement = (Element) firstNode;
+		NodeList firstElementTagName = firstElement.getElementsByTagName("title");
+		Element firstNameElement = (Element) firstElementTagName.item(0);
+		NodeList firstNodes = firstNameElement.getChildNodes();
+		newVersionName = firstNodes.item(0).getNodeValue().replace("Steel Security", "");
+		return Double.valueOf(newVersionName.replaceFirst("\\.", "").trim());
+	    }
+	} catch (Exception localException) {
+	}
+	return currentVersion;
     }
 
     private void commands(File tickdata) {// register commands here
 	base = new Sts("base", this, spm, vm);
 	getCommand("sts").setExecutor(base);
-	tickm = new TicketManager(tickdata);
+	tickm = new TicketManager(tickdata, log);
 	getCommand("ticket").setExecutor(tickm);
     }
 
@@ -183,21 +185,27 @@ public class SteelSecurity extends JavaPlugin {
 	vm.stopAll();
 	tickm.saveAll();
     }
+
     public double getLatestVersion() {
 	return newVersion;
     }
+
     public double getCurrentVersion() {
 	return currentVersion;
     }
+
     public String getLatestVersionName() {
 	return newVersionName;
     }
+
     public String getCurrentVersionName() {
 	return versionName;
     }
-    public Logger getLogger(){
+
+    public Logger getLogger() {
 	return log;
     }
+
     public void registerCommandError() {
 	// TODO Set a class for errored commands go to
     }

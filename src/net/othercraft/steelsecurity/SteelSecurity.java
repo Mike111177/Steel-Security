@@ -42,7 +42,6 @@ public class SteelSecurity extends JavaPlugin {
     @SuppressWarnings("unused")
     private LoginLimiter ll;
     private PlayerConfigListener pcl;
-    @SuppressWarnings("unused")
     private GameModeCmdCatch gmcc;
     @SuppressWarnings("unused")
     private BlockBlacklist blbl;
@@ -58,6 +57,7 @@ public class SteelSecurity extends JavaPlugin {
     private ExtraConfigManager logc;
     @SuppressWarnings("unused")
     private ConsoleCommandMessage cmm;
+    private Config config;
     private static final Logger log = Logger.getLogger("Minecraft");
     private File dataFolder = null;
 
@@ -127,7 +127,8 @@ public class SteelSecurity extends JavaPlugin {
 	anticm = new ExtraConfigManager(dataFolder, "AntiHack");
 	logc = new ExtraConfigManager(dataFolder, "Database");
 	data = new ExtraConfigManager(dataFolder, "Logging");
-	new Config(this, anticm, logc, data).loadConfiguration();
+	config = new Config(this, anticm, logc, data);
+	config.loadConfiguration();
     }
 
     private void playerChecks() {
@@ -159,7 +160,7 @@ public class SteelSecurity extends JavaPlugin {
     }
 
     private void commands(File tickdata) {// register commands here
-	base = new Sts("base", this, spm, vm);
+	base = new Sts("base", this, spm, vm, gmcc);
 	getCommand("sts").setExecutor(base);
 	tickm = new TicketManager(tickdata, log);
 	getCommand("ticket").setExecutor(tickm);
@@ -185,7 +186,10 @@ public class SteelSecurity extends JavaPlugin {
 	vm.stopAll();
 	tickm.saveAll();
     }
-
+    /**
+     * 
+     * @return
+     */
     public double getLatestVersion() {
 	return newVersion;
     }

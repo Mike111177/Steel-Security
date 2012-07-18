@@ -1,9 +1,13 @@
 package net.othercraft.steelsecurity.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.listeners.SpectateManager;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
+import net.othercraft.steelsecurity.utils.Tools;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,14 +23,17 @@ public class Sts extends SSCmdExe {
     SteelSecurity plugin;
 
     SpectateManager spm;
+    
+    GameModeCmdCatch gmcatch;
 
     Vanish vm;
 
-    public Sts(String name, SteelSecurity instance, SpectateManager spminstance, Vanish vanman) {
+    public Sts(String name, SteelSecurity instance, SpectateManager spminstance, Vanish vanman, GameModeCmdCatch gmcc) {
 	super("Sts", false);
 	plugin = instance;
 	spm = spminstance;
 	vm = vanman;
+	gmcatch = gmcc;
     }
 
     // Defines Chat Colors
@@ -51,7 +58,7 @@ public class Sts extends SSCmdExe {
 	    }
 	} else if (args.length > 0) {
 	    if (args[0].equalsIgnoreCase("help")) {
-		if (sender.hasPermission("steelsecurity.commands.help")) {
+		if (sender.hasPermission("steelsecurity.commands.stshelp")) {
 		    if (args.length == 1) {
 			p1(sender);
 		    } else if (args.length == 2) {
@@ -65,40 +72,7 @@ public class Sts extends SSCmdExe {
 		    sender.sendMessage(noperm);
 		}
 	    }
-	    if (args[0].equalsIgnoreCase("checkperm")) {
-		if (sender.hasPermission("steelsecurity.commands.checkperm")) {
-		    if (args.length < 3) {
-			sender.sendMessage("Not enough arguments!");
-			sender.sendMessage("Usage: /sts checkperm <player> <permission>");
-		    } else if (args.length > 4) {
-			sender.sendMessage("Too many arguments!");
-			sender.sendMessage("Usage: /sts checkperm <player> <permission>");
-		    } else {
-			String targetname = args[1];
-			OfflinePlayer target = Bukkit.getOfflinePlayer(targetname);
-			String perm = args[2];
-			String yes = (g + target.getName() + " has the permission " + perm);
-			String no = (r + target.getName() + " does not have the permission " + perm);
-			if (target.isOnline()) {
-			    if (args.length == 2) {
-				if (target.getPlayer().hasPermission(perm)) {
-				    sender.sendMessage(yes);
-				} else {
-				    sender.sendMessage(no);
-				}
-			    } else {
-				sender.sendMessage("Incoorect Arguments!");
-				sender.sendMessage("Use /sts checkperm <player>");
-			    }
-			} else {
-			    sender.sendMessage("Were sorry, we could not find a player named " + targetname);
-			}
-		    }
-		} else {
-		    sender.sendMessage(noperm);
-		}
-	    }
-	    if (args[0].equalsIgnoreCase("listop")) {
+	    else if (args[0].equalsIgnoreCase("listop")) {
 		if (sender.hasPermission("steelsecurity.commands.listop")) {
 		    String list = "";
 		    int total = 0;
@@ -132,14 +106,14 @@ public class Sts extends SSCmdExe {
 		    sender.sendMessage(noperm);
 		}
 	    }
-	    if (args[0].equalsIgnoreCase("gamemode")) {
+	    else if (args[0].equalsIgnoreCase("gamemode")) {
 		if (sender.hasPermission("steelsecurity.commands.gamemode")) {
-		    new GameModeCmdCatch(noperm, plugin).stsgamemode(sender, args);
+		    gmcatch.stsgamemode(sender, args);
 		} else {
 		    sender.sendMessage(noperm);
 		}
 	    }
-	    if (args[0].equalsIgnoreCase("checkgm")) {
+	    else if (args[0].equalsIgnoreCase("checkgm")) {
 		if (sender.hasPermission("steelsecurity.commands.checkgm")) {
 		    if (args.length == 2) {
 			String target = Bukkit.getServer().getPlayer(args[2]).getName();
@@ -149,7 +123,7 @@ public class Sts extends SSCmdExe {
 		    }
 		}
 	    }
-	    if (args[0].equalsIgnoreCase("reload")) {
+	    else if (args[0].equalsIgnoreCase("reload")) {
 		if (sender.hasPermission("steelsecurity.commands.reload")) {
 		    plugin.reloadConfig();
 		    sender.sendMessage(g + plugin.getConfig().getString("General.Prefix") + ": Config Reloaded.");
@@ -157,7 +131,7 @@ public class Sts extends SSCmdExe {
 		    sender.sendMessage(noperm);
 		}
 	    }
-	    if (args[0].equalsIgnoreCase("spectate")) {
+	    else if (args[0].equalsIgnoreCase("spectate")) {
 		if (isplayer) {
 		    if (sender.hasPermission("steelsecurity.commands.spectate")) {
 			spm.specCmd(sender, args);
@@ -168,7 +142,7 @@ public class Sts extends SSCmdExe {
 		    sender.sendMessage(playeronly);
 		}
 	    }
-	    if (args[0].equalsIgnoreCase("spectateoff")) {
+	    else if (args[0].equalsIgnoreCase("spectateoff")) {
 		if (isplayer) {
 		    if (sender.hasPermission("steelsecurity.commands.spectate")) {
 			String[] nargs = { "spectate" };
@@ -180,7 +154,7 @@ public class Sts extends SSCmdExe {
 		    sender.sendMessage(playeronly);
 		}
 	    }
-	    if (args[0].equalsIgnoreCase("vanish")) {
+	    else if (args[0].equalsIgnoreCase("vanish")) {
 		if (isplayer) {
 		    if (sender.hasPermission("steelsecurity.commands.vanish")) {
 			vm.vmCmd(sender, args);
@@ -193,38 +167,46 @@ public class Sts extends SSCmdExe {
 	    }
 	}
     }
-
-    private void p1(CommandSender sender) {
+    
+    private void p1(CommandSender sender){
+	p1(sender, 1);
+    }
+    private void p1(CommandSender sender, int page) {
+	List<String> allowcmds = new ArrayList<String>();
 	if (sender.hasPermission("steelsecurity.commands.sts")) {
-	    sender.sendMessage(g + "/sts:" + y + " Base Command");
+	    allowcmds.add(g + "/sts:" + y + " Base Command");
 	}
-	if (sender.hasPermission("steelsecurity.commands.help")) {
-	    sender.sendMessage(g + "/sts help:" + y + " Displays this help screen.");
-	}
-	if (sender.hasPermission("steelsecurity.commands.checkperm")) {
-	    sender.sendMessage(g + "/sts checkperm:" + y + " Checks a permmision for another player.");
+	if (sender.hasPermission("steelsecurity.commands.stshelp")) {
+	    allowcmds.add(g + "/sts help:" + y + " Displays this help screen.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.spectate")) {
-	    sender.sendMessage(g + "/sts spectate:" + y + " Shows you the world from the eyes of another player.");
+	    allowcmds.add(g + "/sts spectate:" + y + " Shows you the world from the eyes of another player.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.spectate")) {
-	    sender.sendMessage(g + "/sts spectateoff:" + y + " Stops spectating.");
+	    allowcmds.add(g + "/sts spectateoff:" + y + " Stops spectating.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.vanish")) {
-	    sender.sendMessage(g + "/sts vanish:" + y + " Makes you disapear.");
+	    allowcmds.add(g + "/sts vanish:" + y + " Makes you disapear.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.listop")) {
-	    sender.sendMessage(g + "/sts listop:" + y + " List ops.");
+	    allowcmds.add(g + "/sts listop:" + y + " List ops.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.gamemode")) {
-	    sender.sendMessage(g + "/sts gamemode:" + y + " Changes the gamemode of another player.");
+	    allowcmds.add(g + "/sts gamemode:" + y + " Changes the gamemode of another player.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.checkgm")) {
-	    sender.sendMessage(g + "/sts checkgm:" + y + " Checks what Game Mode a player is in.");
+	    allowcmds.add(g + "/sts checkgm:" + y + " Checks what Game Mode a player is in.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.reload")) {
-	    sender.sendMessage(g + "/sts reload:" + y + " Reloads config.");
+	    allowcmds.add(g + "/sts reload:" + y + " Reloads config.");
 	}
+	int pages = Tools.getPages(allowcmds, 6);
+	allowcmds = Tools.getPage(allowcmds, page, 6);
+	sender.sendMessage("Displaying page " + page + " of " + pages + ":");
+	for (String line : allowcmds){
+	    sender.sendMessage(line);
+	}
+	
     }
 
     @Override

@@ -193,6 +193,7 @@ public class SpectateManager extends SSCmdExe {
 	spectating.remove(tostopname);
 	speclist.put(tostopon.getName(), thenew);
 	spectatees.put(tostopon.getName(), false);
+	tostop.sendMessage("You are no longer spectating " + tostopon.getName());
 	log.info(tostopname + " is no longer spectating " + tostopon.getName());
     }
 
@@ -210,27 +211,25 @@ public class SpectateManager extends SSCmdExe {
 
     public void specCmd(CommandSender sender, String[] args) {
 	Player player = Bukkit.getPlayerExact(sender.getName());
-	if (!(args.length > 2)) {
+	if (args.length == 2) {
 	    if (spectators.get(player.getName())) {
 		stop(player);
-		sender.sendMessage("You have stopped spectating.");
 	    }
-	    if (args.length == 2) {
-		Player tostarton = Bukkit.getPlayer(args[1]);
-		if (player != tostarton) {
-		    if (tostarton != null) {
-			start(player, tostarton);
-			sender.sendMessage("You have begun spectating " + tostarton.getName() + ".");
-		    } else {
-			sender.sendMessage("We could not find anybody by the name of " + args[1] + ".");
-		    }
+	    Player tostarton = Bukkit.getPlayer(args[1]);
+	    if (player != tostarton) {
+		if (tostarton != null) {
+		    start(player, tostarton);
+		    sender.sendMessage("You have begun spectating " + tostarton.getName() + ".");
 		} else {
-		    sender.sendMessage("You can't spectate your self!");
+		    sender.sendMessage("We could not find anybody by the name of " + args[1] + ".");
 		}
-	    } else if (args.length > 2) {
-		player.sendMessage("Too many arguments!");
-		player.sendMessage("Usage: /sts spectate <player>");
+	    } else {
+		sender.sendMessage("You can't spectate your self!");
 	    }
+	} 
+	else {
+	    player.sendMessage("Invailed Arguments!");
+	    player.sendMessage("Usage: /sts spectate <player>");
 	}
     }
 

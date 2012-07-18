@@ -2,7 +2,7 @@ name: SteelSecurity
 version: 0.9.9-ab48
 main: net.othercraft.steelsecurity.SteelSecurity
 authors: [Mike111177, CorrieKay, r0306]
-website: http://othercraft.net
+website: dev.bukkit.org/server-mods/steelsecurity
 commands:
   sts:
      description: Base command for Steel Security.
@@ -12,39 +12,90 @@ commands:
      usage: /ticket
 permissions:
   steelsecurity.*:
-     description: Gives all benificial Steel Security permissions.
-     children: 
-        steelsecurity.commands.*: true
-        steelsecurity.bypass.*: true
-        steelsecurity.commands.vanish.cansee: true
-        steelsecurity.notifications.*: true
-  steelsecurity.bypass.*: 
-     description: Gives permission to bypass all of Steel securitys checks.
-     default: op
-     children: 
-        steelsecurity.bypass.anticaps: true
-        steelsecurity.bypass.antiflood: true
-        steelsecurity.bypass.loginlimiter: true
-        steelsecurity.bypass.censor: true
-        steelsecurity.bypass.blockblackist: true
-  steelsecurity.commands.*: 
-     description: Gives access to all Steel Security commands.
-     default: op
-     children: 
-        steelsecurity.commands.sts: true
-        steelsecurity.commands.help: true
-        steelsecurity.commands.checkperm: true
-        steelsecurity.commands.spectate: true
-        steelsecurity.commands.listop: true
-        steelsecurity.commands.checkgm: true
-        steelsecurity.commands.reload: true
-        steelsecurity.commands.vanish: true
-  steelsecurity.commands.vanish.cansee:
-     description: Gives access to see vanished people.
-     default: op
-  steelsecurity.notifications.*:
-     description: Gives the player the ability to recieve all notifications from this plugin.
-     default: op
-     children: 
-        steelsecurity.notifications.update: true
-        
+    description: Gives all permissions for steelsecurity
+    default: op
+    children:
+      steelsecurity.commands.*:
+        description: Allows the player to use any command form this plugin
+        children:
+          steelsecurity.commands.sts:
+             description: Allows the player to use the /sts command
+          steelsecurity.commands.stshelp:
+             description: Allows the player to use the /sts help command
+          steelsecurity.commands.listop: 
+             description: Allows the player to use the /sts listop command
+          steelsecurity.commands.gamemode:
+             description: Allows the player to use the /gm command
+          steelsecurity.commands.checkgm:
+             description: Allows the player to use the /sts checkgm command
+          steelsecurity.commands.spectate:
+             description: Allows the player to spectate other players
+          steelsecurity.commands.reload:
+             description: Allows the player to reload the config
+          steelsecurity.commands.vanish.*:
+            description: Allows the player to do everything vanish related
+            children:
+               steelsecurity.commands.vanish:
+                  description: Allows the player to vanish
+               steelsecurity.commands.vanish.cansee:
+                  description: Allows the player to see other vanished players
+          steelsecurity.commands.ticket.*:
+            description: Allows the player to remove items from other peoples inventory
+            children:
+               steelsecurity.commands.ticket:
+                  description: Allows the player to use the /ticket command
+               steelsecurity.commands.ticket.create: 
+                  description: Allows the player to create a new ticket
+               steelsecurity.commands.ticket.claim:
+                  description: Allows the player to assign a ticket to themself
+               steelsecurity.commands.ticket.assign:
+                  description: Allows the player to assign a ticket to another player
+               steelsecurity.commands.ticket.list:
+                  description: Allows the player to list all open tickets
+               steelsecurity.commands.ticket.veiw:
+                  description: Allows the player to veiw a ticket that is not their own
+               steelsecurity.commands.ticket.comment: 
+                  description: Allows the player to comment on a ticket
+               steelsecurity.commands.ticket.close.*:
+                  description: Allows a player to close any ticket
+                  children:
+                     steelsecurity.commands.ticket.close.assigned:
+                        description: Allows the player to close a ticket that he is assigned too.
+                     steelsecurity.commands.ticket.close.all: 
+                        description: Allows a player to close any ticket
+               steelsecurity.commands.ticket.open.*:
+                  description: Allows a player to open any ticket
+                  children:
+                     steelsecurity.commands.ticket.open.assigned:
+                        description: Allows the player to open a ticket that he is assigned too.
+                     steelsecurity.commands.ticket.open.all: 
+                        description: Allows a player to open any ticket
+               steelsecurity.commands.ticket.delete:
+                  description: Allows the player to delete tickets
+      steelsecurity.bypass.*: 
+         description: Allows the player to bypass the various checks that the plugin does
+         children:
+           steelsecurity.bypass.censor:
+              description: Allows a player to bypass the Censoring
+           steelsecurity.bypass.antiflood:
+              description: Allows a player to bypass the Anti Flood
+           steelsecurity.bypass.anticaps:
+              description: Allows a player to bypass the Anti Caps
+           steelsecurity.bypass.loginlimiter:
+              description: Allows a player to bypass the Login Limiter
+           steelsecurity.bypass.blockblacklist:
+              description: Allows a player to bypass the Block Blacklist
+      steelsecurity.notifications.*:
+         description: Notifies the player in any event with this plugin
+         children:
+           steelsecurity.notifications.update:
+              description: Informs the player when there is an update for the plugin
+           steelsecurity.notifications.ticket.*:
+              description: Informs the player about all ticket related event
+              children: 
+                 steelsecurity.notifications.ticket.new:
+                    description: Informs the player when there is a new ticket
+                 steelsecurity.notifications.ticket.comment:
+                    description: Informs the player when someone leaves a comment on a ticket
+                 steelsecurity.notifications.ticket.close:
+                    description: Informs the player when a ticket is closed

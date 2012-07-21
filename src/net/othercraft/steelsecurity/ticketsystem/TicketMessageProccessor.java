@@ -111,29 +111,6 @@ public class TicketMessageProccessor {
 	}
 	return null;
     }
-
-    private List<String> ticketsList(List<Ticket> touse, int page, int pagel) {
-	List<String> list = new ArrayList<String>();
-	for (Ticket ticket : touse) {
-	    String index = ticket.getIndex().toString();
-	    String player;
-	    if (ticket.isPlayerOnline()) {
-		player = ChatColor.GREEN + ticket.getPlayer().getName() + ChatColor.YELLOW + ":";
-	    } else {
-		player = ChatColor.RED + ticket.getPlayer().getName() + ChatColor.YELLOW + ":";
-	    }
-	    String message = ChatColor.YELLOW + ticket.getMessage();
-	    String line = ChatColor.GOLD + "#" + index + " " + player + " " + message;
-	    if (line.length() > 52) {
-		line = line.substring(0, 52);
-		line = line + "...";
-	    }
-	    list.add(line);
-	}
-	list = Tools.getPage(list, page, pagel);
-	return list;
-    }
-
     private List<String> ticketsList(List<Ticket> touse) {
 	List<String> list = new ArrayList<String>();
 	for (Ticket ticket : touse) {

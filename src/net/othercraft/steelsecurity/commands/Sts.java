@@ -37,17 +37,17 @@ public class Sts extends SSCmdExe {
     }
 
     // Defines Chat Colors
-    protected ChatColor r = ChatColor.RED;
-    protected ChatColor g = ChatColor.GREEN;
-    protected ChatColor y = ChatColor.YELLOW;
-    protected ChatColor w = ChatColor.WHITE;
-    protected ChatColor b = ChatColor.BLUE;
+    private static final ChatColor r = ChatColor.RED;
+    private static final ChatColor g = ChatColor.GREEN;
+    private static final ChatColor y = ChatColor.YELLOW;
+    private static final ChatColor w = ChatColor.WHITE;
+    private static final ChatColor b = ChatColor.BLUE;
     // Defines No Permission String
-    protected String noperm = (r + "You don't have permission to do this!");
-    protected String playeronly = (r + "This command can only be done by a player!");
+    private static final String noperm = (r + "You don't have permission to do this!");
+    private static final String playeronly = (r + "This command can only be done by a player!");
 
     // Receives command and takes actions.
-    public void command(CommandSender sender, String[] args) {
+    private void command(CommandSender sender, String[] args) {
 	Boolean isplayer = sender instanceof Player;
 	if (args.length == 0) {
 	    if (sender.hasPermission("steelsecurity.commands.sts")) {
@@ -62,8 +62,12 @@ public class Sts extends SSCmdExe {
 		    if (args.length == 1) {
 			p1(sender);
 		    } else if (args.length == 2) {
-			if (args[1].equalsIgnoreCase("1")) {
-			    p1(sender);
+			if (Tools.isSafeNumber(args[1])) {
+			    int page = Integer.parseInt(args[1]);
+			    p1(sender, page);
+			}
+			else {
+			    sender.sendMessage("Page must be a number!");
 			}
 		    } else {
 			sender.sendMessage(r + "Too many arguments!");

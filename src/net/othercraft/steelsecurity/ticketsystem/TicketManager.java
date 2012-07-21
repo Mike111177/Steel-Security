@@ -28,6 +28,9 @@ public class TicketManager extends SSCmdExe {
     private String noperm = ChatColor.RED + "You don't have permission to do this!";
     private TicketMessageProccessor mp = new TicketMessageProccessor(this);
     private File dataFolder = null;
+    private static final ChatColor g = ChatColor.GREEN;
+    private static final ChatColor y = ChatColor.YELLOW;
+    private static final ChatColor r = ChatColor.RED;
 
     /**
      * @param datafolder
@@ -90,8 +93,6 @@ public class TicketManager extends SSCmdExe {
 	}
 	File[] files = dataFolder.listFiles();
 	for (File file : files) {
-	    System.out.println(file.getName());
-	    System.out.println(file.getPath());
 	    if (file.getName().endsWith(".tick")) {
 		try {
 		    FileInputStream fin = new FileInputStream(file);
@@ -208,8 +209,25 @@ public class TicketManager extends SSCmdExe {
 	    } else if (args[0].equalsIgnoreCase("open")) {
 		open(sender, args);
 		save = true;
-	    } else if (args[0].equalsIgnoreCase("help"))
-		help(sender, args);
+	    } else if (args[0].equalsIgnoreCase("help")){
+		if (sender.hasPermission("steelsecurity.commands.ticket.help")) {
+		    if (args.length == 1) {
+			help(sender);
+		    } else if (args.length == 2) {
+			if (Tools.isSafeNumber(args[1])) {
+			    help(sender, Integer.parseInt(args[1]));
+			}
+			else {
+			    sender.sendMessage("Page must be a number!");
+			}
+		    } else {
+			sender.sendMessage(r + "Too many arguments!");
+		    }
+		} else {
+		    sender.sendMessage(noperm);
+		}
+	    }
+
 	    else if (args[0].equalsIgnoreCase("delete"))
 		delete(sender, args);
 	    else if (args[0].equalsIgnoreCase("deleteall"))
@@ -560,10 +578,51 @@ public class TicketManager extends SSCmdExe {
 	saveAll();
 	loadAll();
     }
+    
+    private void help(CommandSender sender){
+	help(sender, 1);
+    }
 
-    private void help(CommandSender sender, String[] args) {
-	// TODO Auto-generated method stub
-
+    private void help(CommandSender sender, int page) {
+	List<String> allowcmds = new ArrayList<String>();
+	if (sender.hasPermission("steelsecurity.commands.ticket")) {
+	    allowcmds.add(g + "/ticket:" + y + " Base Command");
+	}
+	if (sender.hasPermission("steelsecurity.commands.ticket.help")) {
+	    allowcmds.add(g + "/ticket help:" + y + " Displays this help screen.");
+	}
+	if (sender.hasPermission("steelsecurity.commands.ticket.create")) {
+	    allowcmds.add(g + "/ticket new:" + y + " Creates a new ticket.");
+	}
+	if (sender.hasPermission("steelsecurity.commands.ticket.open.assigned") || sender.hasPermission("steelsecurity.commands.ticket.open.all")) {
+	allowcmds.add(g + "/ticket open:" + y + " Re-opens a ticket");
+	}
+	allowcmds.add(g + "/ticket close:" + y + " Closes a ticket.");
+	if (sender.hasPermission("steelsecurity.commands.ticket.delete")) {
+	    allowcmds.add(g + "/ticket delete:" + y + " Deletes a ticket.");
+	    allowcmds.add(g + "/ticket deleteall:" + y + " Deletes all tickets.");
+	}
+	if (sender.hasPermission("steelsecurity.commands.ticket.comment")) {
+	    allowcmds.add(g + "/ticket comment:" + y + " Leaves a comment on a ticket.");
+	}
+	if (sender.hasPermission("steelsecurity.commands.ticket.claim")) {
+	    allowcmds.add(g + "/ticket claim:" + y + " Claims a ticket for yourself.");
+	}
+	if (sender.hasPermission("steelsecurity.commands.ticket.list")) {
+	    allowcmds.add(g + "/ticket list:" + y + " List the tickets.");
+	}
+	if (sender.hasPermission("steelsecurity.commands.ticket.view")) {
+	    allowcmds.add(g + "/ticket view:" + y + " Veiw a ticket.");
+	}
+	if (sender.hasPermission("steelsecurity.commands.ticket.assign")) {
+	    allowcmds.add(g + "/ticket assign:" + y + " Assign a ticket to a player.");
+	}
+	int pages = Tools.getPages(allowcmds, 6);
+	allowcmds = Tools.getPage(allowcmds, page, 6);
+	sender.sendMessage("Displaying page " + page + " of " + pages + ":");
+	for (String line : allowcmds){
+	    sender.sendMessage(line);
+	}
     }
 
     protected List<Ticket> getTickets() {

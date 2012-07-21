@@ -1,5 +1,5 @@
 name: SteelSecurity
-version: 0.9.9-ab48
+version: 1.0.0-bb56
 main: net.othercraft.steelsecurity.SteelSecurity
 authors: [Mike111177, CorrieKay, r0306]
 website: dev.bukkit.org/server-mods/steelsecurity
@@ -17,14 +17,14 @@ permissions:
     children:
       steelsecurity.commands.*:
         description: Allows the player to use any command form this plugin
-        children:
+        children: 
           steelsecurity.commands.sts:
              description: Allows the player to use the /sts command
           steelsecurity.commands.stshelp:
              description: Allows the player to use the /sts help command
           steelsecurity.commands.listop: 
              description: Allows the player to use the /sts listop command
-          steelsecurity.commands.gamemode:
+          steelsecurity.commands.gamemode: 
              description: Allows the player to use the /gm command
           steelsecurity.commands.checkgm:
              description: Allows the player to use the /sts checkgm command
@@ -42,6 +42,8 @@ permissions:
           steelsecurity.commands.ticket.*:
             description: Allows the player to remove items from other peoples inventory
             children:
+               steelsecurity.commands.ticket.help:
+                  description: Allows the player to use the /ticket help command
                steelsecurity.commands.ticket:
                   description: Allows the player to use the /ticket command
                steelsecurity.commands.ticket.create: 
@@ -99,3 +101,5 @@ permissions:
                     description: Informs the player when someone leaves a comment on a ticket
                  steelsecurity.notifications.ticket.close:
                     description: Informs the player when a ticket is closed
+                 steelsecurity.notifications.ticket.open:
+                    description: Informs the player when a ticket is opened

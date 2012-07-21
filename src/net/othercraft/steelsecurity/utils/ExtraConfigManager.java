@@ -43,7 +43,6 @@ public class ExtraConfigManager {
 	try {
 	    getConfig().save(configFile);
 	} catch (IOException ex) {
-	    System.out.println("failed");
 	}
     }
 

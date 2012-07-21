@@ -58,7 +58,7 @@ public class SteelSecurity extends JavaPlugin {
     @SuppressWarnings("unused")
     private ConsoleCommandMessage cmm;
     private Config config;
-    private static final Logger log = Logger.getLogger("Minecraft");
+    private static final Logger LOG = Logger.getLogger("Minecraft");
     private File dataFolder = null;
 
     private Double currentVersion;
@@ -77,9 +77,9 @@ public class SteelSecurity extends JavaPlugin {
 		try {
 		    newVersion = updateCheck(currentVersion);
 		    if (newVersion > currentVersion) {
-			log.warning("Steel Security" + newVersionName + " is out!");
-			log.warning("You are running: Steel Security " + versionName);
-			log.warning("Update Steel Security at: http://dev.bukkit.org/server-mods/steel-security");
+			LOG.warning("Steel Security" + newVersionName + " is out!");
+			LOG.warning("You are running: Steel Security " + versionName);
+			LOG.warning("Update Steel Security at: http://dev.bukkit.org/server-mods/steel-security");
 		    }
 		} catch (Exception e) {
 		    // ignore exceptions
@@ -162,7 +162,7 @@ public class SteelSecurity extends JavaPlugin {
     private void commands(File tickdata) {// register commands here
 	base = new Sts("base", this, spm, vm, gmcc);
 	getCommand("sts").setExecutor(base);
-	tickm = new TicketManager(tickdata, log);
+	tickm = new TicketManager(tickdata, LOG);
 	getCommand("ticket").setExecutor(tickm);
     }
 
@@ -174,9 +174,9 @@ public class SteelSecurity extends JavaPlugin {
 	pcl = new PlayerConfigListener(null, this);
 	gmcc = new GameModeCmdCatch(null, this);
 	blbl = new BlockBlacklist(null, this);
-	vm = new Vanish(null, this, log);
-	cmm = new ConsoleCommandMessage(null, this, log);
-	spm = new SpectateManager(null, this, vm, log);
+	vm = new Vanish(null, this, LOG);
+	cmm = new ConsoleCommandMessage(null, this, LOG);
+	spm = new SpectateManager(null, this, vm, LOG);
 	upd = new UpsideDown(null, this, vio);
 	vm.specGet();
     }
@@ -187,8 +187,8 @@ public class SteelSecurity extends JavaPlugin {
 	tickm.saveAll();
     }
     /**
-     * 
-     * @return
+     * Get the lastest verison
+     * @return the lastest version
      */
     public double getLatestVersion() {
 	return newVersion;
@@ -207,7 +207,7 @@ public class SteelSecurity extends JavaPlugin {
     }
 
     public Logger getLogger() {
-	return log;
+	return LOG;
     }
 
     public void registerCommandError() {

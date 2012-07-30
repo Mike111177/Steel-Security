@@ -23,7 +23,7 @@ public class Sts extends SSCmdExe {
     SteelSecurity plugin;
 
     SpectateManager spm;
-    
+
     GameModeCmdCatch gmcatch;
 
     Vanish vm;
@@ -65,8 +65,7 @@ public class Sts extends SSCmdExe {
 			if (Tools.isSafeNumber(args[1])) {
 			    int page = Integer.parseInt(args[1]);
 			    p1(sender, page);
-			}
-			else {
+			} else {
 			    sender.sendMessage("Page must be a number!");
 			}
 		    } else {
@@ -75,8 +74,7 @@ public class Sts extends SSCmdExe {
 		} else {
 		    sender.sendMessage(noperm);
 		}
-	    }
-	    else if (args[0].equalsIgnoreCase("listop")) {
+	    } else if (args[0].equalsIgnoreCase("listop")) {
 		if (sender.hasPermission("steelsecurity.commands.listop")) {
 		    String list = "";
 		    int total = 0;
@@ -109,15 +107,13 @@ public class Sts extends SSCmdExe {
 		} else {
 		    sender.sendMessage(noperm);
 		}
-	    }
-	    else if (args[0].equalsIgnoreCase("gamemode")) {
+	    } else if (args[0].equalsIgnoreCase("gamemode")) {
 		if (sender.hasPermission("steelsecurity.commands.gamemode")) {
 		    gmcatch.stsgamemode(sender, args);
 		} else {
 		    sender.sendMessage(noperm);
 		}
-	    }
-	    else if (args[0].equalsIgnoreCase("checkgm")) {
+	    } else if (args[0].equalsIgnoreCase("checkgm")) {
 		if (sender.hasPermission("steelsecurity.commands.checkgm")) {
 		    if (args.length == 2) {
 			String target = Bukkit.getServer().getPlayer(args[2]).getName();
@@ -126,16 +122,14 @@ public class Sts extends SSCmdExe {
 			sender.sendMessage(target + " is in" + GameMode.getByValue(gm).name() + "mode.");
 		    }
 		}
-	    }
-	    else if (args[0].equalsIgnoreCase("reload")) {
+	    } else if (args[0].equalsIgnoreCase("reload")) {
 		if (sender.hasPermission("steelsecurity.commands.reload")) {
 		    plugin.reloadConfig();
 		    sender.sendMessage(g + plugin.getConfig().getString("General.Prefix") + ": Config Reloaded.");
 		} else {
 		    sender.sendMessage(noperm);
 		}
-	    }
-	    else if (args[0].equalsIgnoreCase("spectate")) {
+	    } else if (args[0].equalsIgnoreCase("spectate")) {
 		if (isplayer) {
 		    if (sender.hasPermission("steelsecurity.commands.spectate")) {
 			spm.specCmd(sender, args);
@@ -145,8 +139,7 @@ public class Sts extends SSCmdExe {
 		} else {
 		    sender.sendMessage(playeronly);
 		}
-	    }
-	    else if (args[0].equalsIgnoreCase("spectateoff")) {
+	    } else if (args[0].equalsIgnoreCase("spectateoff")) {
 		if (isplayer) {
 		    if (sender.hasPermission("steelsecurity.commands.spectate")) {
 			String[] nargs = { "spectate" };
@@ -157,8 +150,7 @@ public class Sts extends SSCmdExe {
 		} else {
 		    sender.sendMessage(playeronly);
 		}
-	    }
-	    else if (args[0].equalsIgnoreCase("vanish")) {
+	    } else if (args[0].equalsIgnoreCase("vanish")) {
 		if (isplayer) {
 		    if (sender.hasPermission("steelsecurity.commands.vanish")) {
 			vm.vmCmd(sender, args);
@@ -171,10 +163,11 @@ public class Sts extends SSCmdExe {
 	    }
 	}
     }
-    
-    private void p1(CommandSender sender){
+
+    private void p1(CommandSender sender) {
 	p1(sender, 1);
     }
+
     private void p1(CommandSender sender, int page) {
 	List<String> allowcmds = new ArrayList<String>();
 	if (sender.hasPermission("steelsecurity.commands.sts")) {
@@ -207,10 +200,10 @@ public class Sts extends SSCmdExe {
 	int pages = Tools.getPages(allowcmds, 6);
 	allowcmds = Tools.getPage(allowcmds, page, 6);
 	sender.sendMessage("Displaying page " + page + " of " + pages + ":");
-	for (String line : allowcmds){
+	for (String line : allowcmds) {
 	    sender.sendMessage(line);
 	}
-	
+
     }
 
     @Override

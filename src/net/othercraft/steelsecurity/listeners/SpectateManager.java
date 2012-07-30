@@ -226,8 +226,7 @@ public class SpectateManager extends SSCmdExe {
 	    } else {
 		sender.sendMessage("You can't spectate your self!");
 	    }
-	} 
-	else {
+	} else {
 	    player.sendMessage("Invailed Arguments!");
 	    player.sendMessage("Usage: /sts spectate <player>");
 	}

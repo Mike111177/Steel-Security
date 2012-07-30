@@ -57,7 +57,7 @@ public class Ticket implements Serializable {
      *            the player to assign the ticket to
      */
     public void setAsignnee(Player player) {
-	this.asignnee = player.getName();
+	this.asignnee = player.getName().toString();
     }
 
     /**

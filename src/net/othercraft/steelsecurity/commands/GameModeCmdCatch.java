@@ -37,10 +37,10 @@ public class GameModeCmdCatch extends SSCmdExe {
 	}
     }
 
-    @EventHandler (priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onGmChangeCmd(PlayerCommandPreprocessEvent event) {
 	String message = event.getMessage();
-	if (!event.isCancelled()){
+	if (!event.isCancelled()) {
 	    if (message.toLowerCase().startsWith("/gm") || message.toLowerCase().startsWith("/gamemode")) {
 		if (message.toLowerCase().startsWith("/gm")) {
 		    message = message.toLowerCase().replaceAll("/gm", "/sts gamemode");

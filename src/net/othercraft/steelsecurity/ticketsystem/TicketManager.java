@@ -209,15 +209,14 @@ public class TicketManager extends SSCmdExe {
 	    } else if (args[0].equalsIgnoreCase("open")) {
 		open(sender, args);
 		save = true;
-	    } else if (args[0].equalsIgnoreCase("help")){
+	    } else if (args[0].equalsIgnoreCase("help")) {
 		if (sender.hasPermission("steelsecurity.commands.ticket.help")) {
 		    if (args.length == 1) {
 			help(sender);
 		    } else if (args.length == 2) {
 			if (Tools.isSafeNumber(args[1])) {
 			    help(sender, Integer.parseInt(args[1]));
-			}
-			else {
+			} else {
 			    sender.sendMessage("Page must be a number!");
 			}
 		    } else {
@@ -279,7 +278,7 @@ public class TicketManager extends SSCmdExe {
 		    if (getTicket(Integer.parseInt(args[1])) != null) {
 			OfflinePlayer p = Bukkit.getOfflinePlayer(args[2]).getPlayer();
 			getTicket(Integer.parseInt(args[1])).setAsignnee(p);
-			if (p.isOnline()){
+			if (p.isOnline()) {
 			    p.getPlayer().sendMessage("You have been assigned to ticket #" + args[1]);
 			}
 			sender.sendMessage(p.getName() + " is now assigned to ticket #" + args[1]);
@@ -354,7 +353,7 @@ public class TicketManager extends SSCmdExe {
 		    if (Tools.isSafeNumber(args[2])) {
 			if (Integer.parseInt(args[2]) > 0) {
 			    if (getTicket(Integer.parseInt(args[1])) != null) {
-				    sender.sendMessage(mp.veiwTicket(getTicket(Integer.parseInt(args[1])), Integer.parseInt(args[2])));
+				sender.sendMessage(mp.veiwTicket(getTicket(Integer.parseInt(args[1])), Integer.parseInt(args[2])));
 			    } else {
 				sender.sendMessage("There is no ticket with the ID of " + args[1]);
 			    }
@@ -376,7 +375,7 @@ public class TicketManager extends SSCmdExe {
 	    } else if (args.length == 2) {
 		if (Tools.isSafeNumber(args[1])) {
 		    if (getTicket(Integer.parseInt(args[1])) != null) {
-			    sender.sendMessage(mp.veiwTicket(getTicket(Integer.parseInt(args[1])), 1));
+			sender.sendMessage(mp.veiwTicket(getTicket(Integer.parseInt(args[1])), 1));
 		    } else {
 			sender.sendMessage("There is no ticket with the ID of " + args[1]);
 		    }
@@ -413,18 +412,23 @@ public class TicketManager extends SSCmdExe {
 			    }
 			}
 			message = message.trim();
-			    Ticket t = getTicket(Integer.parseInt(args[1]));
-			    t.addComment("(" + sender.getName() + ") " + message);
-			    for (Player p : Bukkit.getOnlinePlayers()){
-				Boolean send = false;
-				if (p.hasPermission("steelsecurity.notifications.ticket.comment")) send = true;
-				if (t.isAssignned()){
-				    if (t.getAsignneeName().equals(p.getName())) send = true;
-				}
-				if (t.getPlayerName().equals(p.getName())) send = true;
-				if (p.getName().equals(sender.getName())) send = false;
-				if (send) p.sendMessage(sender.getName() + " just left a comment on ticket #" + t.getIndex());
+			Ticket t = getTicket(Integer.parseInt(args[1]));
+			t.addComment("(" + sender.getName() + ") " + message);
+			for (Player p : Bukkit.getOnlinePlayers()) {
+			    Boolean send = false;
+			    if (p.hasPermission("steelsecurity.notifications.ticket.comment"))
+				send = true;
+			    if (t.isAssignned()) {
+				if (t.getAsignneeName().equals(p.getName()))
+				    send = true;
 			    }
+			    if (t.getPlayerName().equals(p.getName()))
+				send = true;
+			    if (p.getName().equals(sender.getName()))
+				send = false;
+			    if (send)
+				p.sendMessage(sender.getName() + " just left a comment on ticket #" + t.getIndex());
+			}
 		    } else {
 			sender.sendMessage("There is no ticket with the ID of " + args[1]);
 		    }
@@ -450,16 +454,21 @@ public class TicketManager extends SSCmdExe {
 			Ticket t = getTicket(Integer.parseInt(args[1]));
 			t.close();
 			sender.sendMessage("You have just closed ticket #" + t.getIndex());
-			for (Player p : Bukkit.getOnlinePlayers()){
-				Boolean send = false;
-				if (p.hasPermission("steelsecurity.notifications.ticket.close")) send = true;
-				if (t.isAssignned()){
-				    if (t.getAsignneeName().equals(p.getName())) send = true;
-				}
-				if (t.getPlayerName().equals(p.getName())) send = true;
-				if (p.getName().equals(sender.getName())) send = false;
-				if (send) p.sendMessage(sender.getName() + " just closed ticket #" + t.getIndex());
+			for (Player p : Bukkit.getOnlinePlayers()) {
+			    Boolean send = false;
+			    if (p.hasPermission("steelsecurity.notifications.ticket.close"))
+				send = true;
+			    if (t.isAssignned()) {
+				if (t.getAsignneeName().equals(p.getName()))
+				    send = true;
 			    }
+			    if (t.getPlayerName().equals(p.getName()))
+				send = true;
+			    if (p.getName().equals(sender.getName()))
+				send = false;
+			    if (send)
+				p.sendMessage(sender.getName() + " just closed ticket #" + t.getIndex());
+			}
 		    } else {
 			sender.sendMessage("There is no ticket with the ID of " + args[1]);
 		    }
@@ -485,16 +494,21 @@ public class TicketManager extends SSCmdExe {
 			Ticket t = getTicket(Integer.parseInt(args[1]));
 			t.open();
 			sender.sendMessage("You have just opened ticket #" + t.getIndex());
-			for (Player p : Bukkit.getOnlinePlayers()){
-				Boolean send = false;
-				if (p.hasPermission("steelsecurity.notifications.ticket.open")) send = true;
-				if (t.isAssignned()){
-				    if (t.getAsignneeName().equals(p.getName())) send = true;
-				}
-				if (t.getPlayerName().equals(p.getName())) send = true;
-				if (p.getName().equals(sender.getName())) send = false;
-				if (send) p.sendMessage(sender.getName() + " just opened ticket #" + t.getIndex());
+			for (Player p : Bukkit.getOnlinePlayers()) {
+			    Boolean send = false;
+			    if (p.hasPermission("steelsecurity.notifications.ticket.open"))
+				send = true;
+			    if (t.isAssignned()) {
+				if (t.getAsignneeName().equals(p.getName()))
+				    send = true;
 			    }
+			    if (t.getPlayerName().equals(p.getName()))
+				send = true;
+			    if (p.getName().equals(sender.getName()))
+				send = false;
+			    if (send)
+				p.sendMessage(sender.getName() + " just opened ticket #" + t.getIndex());
+			}
 		    } else {
 			sender.sendMessage("There is no ticket with the ID of " + args[1]);
 		    }
@@ -578,8 +592,8 @@ public class TicketManager extends SSCmdExe {
 	saveAll();
 	loadAll();
     }
-    
-    private void help(CommandSender sender){
+
+    private void help(CommandSender sender) {
 	help(sender, 1);
     }
 
@@ -595,7 +609,7 @@ public class TicketManager extends SSCmdExe {
 	    allowcmds.add(g + "/ticket new:" + y + " Creates a new ticket.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.ticket.open.assigned") || sender.hasPermission("steelsecurity.commands.ticket.open.all")) {
-	allowcmds.add(g + "/ticket open:" + y + " Re-opens a ticket");
+	    allowcmds.add(g + "/ticket open:" + y + " Re-opens a ticket");
 	}
 	allowcmds.add(g + "/ticket close:" + y + " Closes a ticket.");
 	if (sender.hasPermission("steelsecurity.commands.ticket.delete")) {
@@ -620,7 +634,7 @@ public class TicketManager extends SSCmdExe {
 	int pages = Tools.getPages(allowcmds, 6);
 	allowcmds = Tools.getPage(allowcmds, page, 6);
 	sender.sendMessage("Displaying page " + page + " of " + pages + ":");
-	for (String line : allowcmds){
+	for (String line : allowcmds) {
 	    sender.sendMessage(line);
 	}
     }

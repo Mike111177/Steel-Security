@@ -12,6 +12,7 @@ import net.othercraft.steelsecurity.commands.Sts;
 import net.othercraft.steelsecurity.commands.Vanish;
 import net.othercraft.steelsecurity.data.Violations;
 import net.othercraft.steelsecurity.data.databases.DatabaseManager;
+import net.othercraft.steelsecurity.hooks.Spout;
 import net.othercraft.steelsecurity.listeners.BlockBlacklist;
 import net.othercraft.steelsecurity.listeners.ChatFilter;
 import net.othercraft.steelsecurity.listeners.ConsoleCommandMessage;
@@ -24,6 +25,7 @@ import net.othercraft.steelsecurity.utils.ExtraConfigManager;
 import net.othercraft.steelsecurity.utils.FlatFileLogger;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -32,6 +34,8 @@ import org.w3c.dom.NodeList;
 public class SteelSecurity extends JavaPlugin {
 
     public static SteelSecurity instance;
+
+    public static boolean spoutEnabled;
 
     private Sts base;
 
@@ -70,7 +74,8 @@ public class SteelSecurity extends JavaPlugin {
     public void onEnable() {
 	versionName = getDescription().getVersion().split("-")[0];
 	currentVersion = Double.valueOf(versionName.replaceFirst("\\.", ""));
-	this.getServer().getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
+	BukkitScheduler sch = getServer().getScheduler();
+	sch.scheduleAsyncRepeatingTask(this, new Runnable() {
 
 	    @Override
 	    public void run() {
@@ -87,6 +92,7 @@ public class SteelSecurity extends JavaPlugin {
 	    }
 
 	}, 0, 432000);
+	sch.scheduleSyncDelayedTask(this, new Spout(this), 20);
 	dataFolder = getDataFolder();
 	File ticketDataFolder = new File(dataFolder + File.separator + "Tickets");
 	config();
@@ -186,8 +192,10 @@ public class SteelSecurity extends JavaPlugin {
 	vm.stopAll();
 	tickm.saveAll();
     }
+
     /**
      * Get the lastest verison
+     * 
      * @return the lastest version
      */
     public double getLatestVersion() {

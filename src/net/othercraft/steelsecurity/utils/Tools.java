@@ -1,5 +1,12 @@
 package net.othercraft.steelsecurity.utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -98,5 +105,38 @@ public abstract class Tools {
 	} else {
 	    return 0;
 	}
+    }
+    /**
+     * Retreives an object from a file.
+     * @param file the location of the object
+     * @return the object within the file
+     */
+    public static Object grabObject(File file){
+	Object object = null;
+	try {
+	    FileInputStream fin = new FileInputStream(file);
+	    ObjectInputStream in = new ObjectInputStream(fin);
+	    object = in.readObject();
+	    in.close();
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	} catch (ClassNotFoundException e) {
+	    e.printStackTrace();
+	}
+	return object;
+    }
+    public static void saveObject(File file, Object object){
+	try {
+		FileOutputStream fout = new FileOutputStream(file);
+		ObjectOutputStream out = new ObjectOutputStream(fout);
+		out.writeObject(object);
+		out.close();
+	    } catch (FileNotFoundException e) {
+		e.printStackTrace();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
     }
 }

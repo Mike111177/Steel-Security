@@ -11,7 +11,6 @@ import net.othercraft.steelsecurity.commands.GameModeCmdCatch;
 import net.othercraft.steelsecurity.commands.Sts;
 import net.othercraft.steelsecurity.commands.Vanish;
 import net.othercraft.steelsecurity.data.Violations;
-import net.othercraft.steelsecurity.data.databases.DatabaseManager;
 import net.othercraft.steelsecurity.hooks.Spout;
 import net.othercraft.steelsecurity.listeners.BlockBlacklist;
 import net.othercraft.steelsecurity.listeners.ChatFilter;
@@ -36,6 +35,9 @@ public class SteelSecurity extends JavaPlugin {
     public static SteelSecurity instance;
 
     public static boolean spoutEnabled;
+    public static boolean weEnabled;
+    public static boolean vaultEnabled;
+    public static boolean mcBansEnabled;
 
     private Sts base;
 
@@ -54,8 +56,6 @@ public class SteelSecurity extends JavaPlugin {
     private Violations vio;
     @SuppressWarnings("unused")
     private UpsideDown upd;
-    @SuppressWarnings("unused")
-    private DatabaseManager dbm = new DatabaseManager();
     private ExtraConfigManager anticm;
     private ExtraConfigManager data;
     private ExtraConfigManager logc;
@@ -92,7 +92,7 @@ public class SteelSecurity extends JavaPlugin {
 	    }
 
 	}, 0, 432000);
-	sch.scheduleSyncDelayedTask(this, new Spout(this), 20);
+	sch.scheduleSyncDelayedTask(this, new Spout(), 20);
 	dataFolder = getDataFolder();
 	File ticketDataFolder = new File(dataFolder + File.separator + "Tickets");
 	config();

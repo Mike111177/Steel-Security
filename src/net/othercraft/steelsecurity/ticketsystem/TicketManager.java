@@ -1,12 +1,6 @@
 package net.othercraft.steelsecurity.ticketsystem;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -94,18 +88,10 @@ public class TicketManager extends SSCmdExe {
 	File[] files = dataFolder.listFiles();
 	for (File file : files) {
 	    if (file.getName().endsWith(".tick")) {
-		try {
-		    FileInputStream fin = new FileInputStream(file);
-		    ObjectInputStream in = new ObjectInputStream(fin);
-		    Ticket ticket = (Ticket) in.readObject();
+		Ticket ticket = null;
+		ticket = (Ticket) Tools.grabObject(file);
+		if (ticket!=null){
 		    tickets.add(ticket);
-		    in.close();
-		} catch (FileNotFoundException e) {
-		    e.printStackTrace();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-		    e.printStackTrace();
 		}
 	    }
 	}
@@ -123,16 +109,7 @@ public class TicketManager extends SSCmdExe {
 	}
 	for (Ticket newfile : tickets) {
 	    File tosave = new File(dataFolder, newfile.getIndex() + ".tick");
-	    try {
-		FileOutputStream fout = new FileOutputStream(tosave);
-		ObjectOutputStream out = new ObjectOutputStream(fout);
-		out.writeObject(newfile);
-		out.close();
-	    } catch (FileNotFoundException e) {
-		e.printStackTrace();
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	    Tools.saveObject(tosave, newfile);
 	}
     }
 

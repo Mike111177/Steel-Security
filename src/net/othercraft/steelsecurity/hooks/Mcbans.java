@@ -1,5 +1,16 @@
 package net.othercraft.steelsecurity.hooks;
 
-public class Mcbans {
-    // TODO Mcbans hook
+import net.othercraft.steelsecurity.SteelSecurity;
+
+public class Mcbans extends Hook {
+
+    @Override
+    public void run() {
+	if (plugin.getServer().getPluginManager().getPlugin("mcbans") != null) {
+	    SteelSecurity.mcBansEnabled = true;
+	} else {
+	    SteelSecurity.mcBansEnabled = false;
+	}
+
+    }
 }

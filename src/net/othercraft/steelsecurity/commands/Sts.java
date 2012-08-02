@@ -188,9 +188,6 @@ public class Sts extends SSCmdExe {
 	if (sender.hasPermission("steelsecurity.commands.listop")) {
 	    allowcmds.add(g + "/sts listop:" + y + " List ops.");
 	}
-	if (sender.hasPermission("steelsecurity.commands.gamemode")) {
-	    allowcmds.add(g + "/sts gamemode:" + y + " Changes the gamemode of another player.");
-	}
 	if (sender.hasPermission("steelsecurity.commands.checkgm")) {
 	    allowcmds.add(g + "/sts checkgm:" + y + " Checks what Game Mode a player is in.");
 	}

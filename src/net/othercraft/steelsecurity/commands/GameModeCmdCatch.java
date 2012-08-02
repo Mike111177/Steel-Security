@@ -56,7 +56,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 	GameMode gm;
 	String gmn;
 	Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
-	String usage = "/sts gamemode <player> <Game Mode>|/gm <player> <Game Mode>|/gamemode <player> <Game Mode>";
+	String usage = "/gm <player> <Game Mode>|/gamemode <player> <Game Mode>";
 	if (args.length < 3) {
 	    sender.sendMessage("Not enough arguments!");
 	    sender.sendMessage(usage);
@@ -67,7 +67,7 @@ public class GameModeCmdCatch extends SSCmdExe {
 	    Player target = decodePlayer(args[1], sender);
 	    if (target != null) {
 		if (target.isOnline()) {
-		    gm = decodeGM(args[2], sender);
+		    gm = decodeGM(args[2]);
 		    if (gm != null) {
 			if (gmcheck) {
 			    if (!configSet(target, gm)) {
@@ -78,9 +78,12 @@ public class GameModeCmdCatch extends SSCmdExe {
 			target.setGameMode(gm);
 			sender.sendMessage(target.getName() + "'s game mode has been set to " + gmn + ".");
 		    }
+		    else {
+			sender.sendMessage("Please set Offline_GameMode_Changer.Enabled to true in the config in order to change the gamemode of an offline player.");
+		    }
 		} else {
 		    if (gmcheck) {
-			gm = decodeGM(args[2], sender);
+			gm = decodeGM(args[2]);
 			if (gm != null) {
 			    gmn = gm.name();
 			    if (!configSet(target, gm)) {
@@ -88,6 +91,9 @@ public class GameModeCmdCatch extends SSCmdExe {
 			    } else {
 				sender.sendMessage(target.getName() + "'s game mode will be set to " + gmn + " next time they log on.");
 			    }
+			}
+			else {
+			    sender.sendMessage("Unkown gamemode: " + args[2]);
 			}
 		    } else {
 			sender.sendMessage("Please set Offline_GameMode_Changer.Enabled to true in the config in order to change the gamemode of an offline player.");
@@ -112,16 +118,16 @@ public class GameModeCmdCatch extends SSCmdExe {
 	}
     }
 
-    private GameMode decodeGM(String pregm, CommandSender sender) {
-	GameMode gm = null;
+    private GameMode decodeGM(String pregm) {
 	if (pregm.equalsIgnoreCase("creative") || pregm.equalsIgnoreCase("1")) {
-	    gm = (GameMode.getByValue(1));
+	    return (GameMode.CREATIVE);
 	} else if (pregm.equalsIgnoreCase("survival") || pregm.equalsIgnoreCase("0")) {
-	    gm = (GameMode.getByValue(0));
+	    return (GameMode.SURVIVAL);
+	} else if (pregm.equalsIgnoreCase("adventure") || pregm.equalsIgnoreCase("2")){
+	    return GameMode.ADVENTURE;
 	} else {
-	    sender.sendMessage("Unknown game mode: " + pregm);
+	 return null;   
 	}
-	return gm;
     }
 
     private Player decodePlayer(String pname, CommandSender sender) {

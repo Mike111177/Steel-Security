@@ -2,13 +2,7 @@ package net.othercraft.steelsecurity.hooks;
 
 import net.othercraft.steelsecurity.SteelSecurity;
 
-public class Spout implements Runnable {
-
-    private final SteelSecurity plugin;
-
-    public Spout(final SteelSecurity plugin) {
-	this.plugin = plugin;
-    }
+public class Spout extends Hook {
 
     @Override
     public void run() {

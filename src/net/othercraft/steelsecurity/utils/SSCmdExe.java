@@ -19,7 +19,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
-public abstract class SSCmdExe extends ExceptionLogger implements CommandExecutor, Listener, SSCmdExeInterface {
+public abstract class SSCmdExe extends ExceptionLogger implements CommandExecutor, Listener, SSCmdExeInterface{
 
     public final String name;
 

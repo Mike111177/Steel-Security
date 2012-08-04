@@ -92,7 +92,7 @@ public class SteelSecurity extends JavaPlugin {
 	    }
 
 	}, 0, 432000);
-	sch.scheduleSyncDelayedTask(this, new Spout(), 20);
+	sch.scheduleSyncDelayedTask(this, new Spout(this), 20);
 	dataFolder = getDataFolder();
 	File ticketDataFolder = new File(dataFolder + File.separator + "Tickets");
 	config();
@@ -191,6 +191,7 @@ public class SteelSecurity extends JavaPlugin {
 	spm.stopAll();
 	vm.stopAll();
 	tickm.saveAll();
+	this.getServer().getScheduler().cancelTasks(this);
     }
 
     /**

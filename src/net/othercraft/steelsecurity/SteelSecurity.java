@@ -191,7 +191,6 @@ public class SteelSecurity extends JavaPlugin {
 	spm.stopAll();
 	vm.stopAll();
 	tickm.saveAll();
-	this.getServer().getScheduler().cancelTasks(this);
     }
 
     /**

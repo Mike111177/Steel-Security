@@ -10,7 +10,7 @@ import net.othercraft.steelsecurity.data.Violations;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatFilter extends SSCmdExe {
 
@@ -33,7 +33,7 @@ public class ChatFilter extends SSCmdExe {
     }
 
     @EventHandler
-    public void onPlayerChat(PlayerChatEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
 	try {
 	    int speed = plugin.getConfig().getInt("AntiSpam.AntiFlood.Speed");
 	    Boolean spam = true;// if this is true at the end cancel the event

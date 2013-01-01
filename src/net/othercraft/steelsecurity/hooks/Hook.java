@@ -1,16 +1,13 @@
 package net.othercraft.steelsecurity.hooks;
 
-import net.othercraft.steelsecurity.SteelSecurity;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class Hook implements Runnable {
+public abstract class Hook implements Runnable {
     
-    public static SteelSecurity plugin;
-    public Hook(SteelSecurity instance){
+    public static JavaPlugin plugin;
+    public Hook(JavaPlugin instance){
 	plugin = instance;
     }
     @Override
-    public void run() {
-	//Use this to operate the hook
-	
-    }
+    public abstract void run();
 }

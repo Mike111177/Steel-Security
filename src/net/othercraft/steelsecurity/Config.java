@@ -8,17 +8,19 @@ package net.othercraft.steelsecurity;
 
 import java.util.Arrays;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import net.othercraft.steelsecurity.utils.ExtraConfigManager;
+@SuppressWarnings("unused")
+public final class Config {
 
-public class Config {
-
-    private SteelSecurity plugin;
-    private ExtraConfigManager anticm;
-    private ExtraConfigManager log;
-    private ExtraConfigManager datac;
+    private final transient JavaPlugin plugin;
+    private final transient ExtraConfigManager anticm;
+    private final transient ExtraConfigManager log;
+    private final transient ExtraConfigManager datac;
     private ExtraConfigManager tickc;
 
-    public Config(SteelSecurity instance, ExtraConfigManager anticom, ExtraConfigManager loge, ExtraConfigManager datace) {
+    public Config(final JavaPlugin instance,final ExtraConfigManager anticom,final ExtraConfigManager loge,final ExtraConfigManager datace) {
 	plugin = instance;
 	anticm = anticom;
 	log = loge;

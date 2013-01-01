@@ -1,10 +1,12 @@
 package net.othercraft.steelsecurity.hooks;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import net.othercraft.steelsecurity.SteelSecurity;
 
 public class Mcbans extends Hook {
 
-    public Mcbans(SteelSecurity instance) {
+    public Mcbans(JavaPlugin instance) {
 	super(instance);
     }
 

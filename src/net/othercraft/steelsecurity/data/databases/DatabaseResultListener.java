@@ -3,6 +3,7 @@ package net.othercraft.steelsecurity.data.databases;
 import java.sql.ResultSet;
 import java.util.HashMap;
 
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 public abstract class DatabaseResultListener extends SSCmdExe {
@@ -10,29 +11,29 @@ public abstract class DatabaseResultListener extends SSCmdExe {
     private Boolean enabled;
     
     private long nextID = 0;
-    private Database database;
-    private HashMap<Long, ResultAction> queue = new HashMap<Long, ResultAction>();
-    public DatabaseResultListener(String name, Boolean listener, Database database, Boolean databaseEnabled) {
-	super(name, listener);
+    private final Database database;
+    private final HashMap<Long, ResultAction> queue = new HashMap<Long, ResultAction>();
+    public DatabaseResultListener(String name, Boolean listener, Database database, Boolean databaseEnabled,final SteelSecurity instance) {
+	super(name, listener, instance);
 	this.database = database;
 	this.setEnabled(databaseEnabled);
     }
-    public void result(ResultSet result, long id) {
+    public final void result(ResultSet result, long id) {
 	ResultAction action = queue.get(id);
 	queue.remove(id);
 	action.result = result;
 	action.run();
     }
-    public void addToQueue(String query, ResultAction runnable) {
+    public final void addToQueue(String query, ResultAction runnable) {
 	nextID++;
 	QueueSegment segment = new QueueSegment(nextID, this, query);
 	queue.put(segment.getId(), runnable);
 	database.addToQueue(segment);
     }
-    public Boolean getEnabled() {
+    public final Boolean getEnabled() {
 	return enabled;
     }
-    public void setEnabled(Boolean enabled) {
+    public final void setEnabled(Boolean enabled) {
 	this.enabled = enabled;
     }
 }

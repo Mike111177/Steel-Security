@@ -11,6 +11,7 @@ import net.othercraft.steelsecurity.commands.GameModeCmdCatch;
 import net.othercraft.steelsecurity.commands.Sts;
 import net.othercraft.steelsecurity.commands.Vanish;
 import net.othercraft.steelsecurity.data.Violations;
+import net.othercraft.steelsecurity.data.logging.ChatLogger;
 import net.othercraft.steelsecurity.hooks.Spout;
 import net.othercraft.steelsecurity.listeners.BlockBlacklist;
 import net.othercraft.steelsecurity.listeners.ChatFilter;
@@ -29,54 +30,50 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
+@SuppressWarnings("unused")
 public class SteelSecurity extends JavaPlugin {
 
-    public static SteelSecurity instance;
+    public static JavaPlugin instance;
 
     public static boolean spoutEnabled;
     public static boolean weEnabled;
     public static boolean vaultEnabled;
     public static boolean mcBansEnabled;
 
-    private Sts base;
+    private static Sts base;
 
-    @SuppressWarnings("unused")
-    private ChatFilter cf;
-    @SuppressWarnings("unused")
-    private JoinMessage jm;
-    @SuppressWarnings("unused")
-    private LoginLimiter ll;
-    private PlayerConfigListener pcl;
-    private GameModeCmdCatch gmcc;
-    @SuppressWarnings("unused")
-    private BlockBlacklist blbl;
-    public SpectateManager spm;
-    private Vanish vm;
-    private Violations vio;
-    @SuppressWarnings("unused")
-    private UpsideDown upd;
-    private ExtraConfigManager anticm;
-    private ExtraConfigManager data;
-    private ExtraConfigManager logc;
-    @SuppressWarnings("unused")
-    private ConsoleCommandMessage cmm;
-    private Config config;
-    private static final Logger LOG = Logger.getLogger("Minecraft");
-    private File dataFolder = null;
+    private static ChatFilter chatFilter;
+    private static JoinMessage joinMessage;
+    private static LoginLimiter loginLimiter;
+    private static PlayerConfigListener pcl;
+    private static GameModeCmdCatch gmcc;
+    private static BlockBlacklist blockBlacklist;
+    public static SpectateManager spectateManager;
+    private static Vanish vanishManager;
+    private static Violations vio;
+    private static UpsideDown upd;
+    private static ExtraConfigManager anticm;
+    private static ExtraConfigManager data;
+    private static ExtraConfigManager logc;
+    private static ConsoleCommandMessage cmm;
+    private static Config config;
+    private static ChatLogger logger;
+    public static transient final Logger LOG = Logger.getLogger("Minecraft");
+    private static File dataFolder = null;
+    final transient public BukkitScheduler sch = getServer().getScheduler();
 
-    private Double currentVersion;
-    private String versionName;
-    private String newVersionName;
-    private double newVersion;
-    private TicketManager tickm;
+    private static Double currentVersion;
+    private static String versionName;
+    private static String newVersionName;
+    private static double newVersion;
+    private static TicketManager tickm;
+    
+    private static final String PLUGINURLSTRING = "http://dev.bukkit.org/server-mods/steel-security/files.rss";
 
     public void onEnable() {
 	versionName = getDescription().getVersion().split("-")[0];
 	currentVersion = Double.valueOf(versionName.replaceFirst("\\.", ""));
-	BukkitScheduler sch = getServer().getScheduler();
 	sch.scheduleAsyncRepeatingTask(this, new Runnable() {
-
 	    @Override
 	    public void run() {
 		try {
@@ -94,8 +91,8 @@ public class SteelSecurity extends JavaPlugin {
 	}, 0, 432000);
 	sch.scheduleSyncDelayedTask(this, new Spout(this), 20);
 	dataFolder = getDataFolder();
-	File ticketDataFolder = new File(dataFolder + File.separator + "Tickets");
-	config();
+	final File ticketDataFolder = new File(dataFolder + File.separator + "Tickets");
+	initConfig();
 	instance = this;
 	registerListeners();
 	commands(ticketDataFolder);
@@ -121,15 +118,15 @@ public class SteelSecurity extends JavaPlugin {
      *            the name of the config file (".yml" will be added automaticly)
      * @return A class that would work just like a normal config file
      */
-    public ExtraConfigManager getNewConfig(File folder, String name) {
+    public final ExtraConfigManager getNewConfig(final File folder, final String name) {
 	return new ExtraConfigManager(folder, name);
     }
 
-    public FlatFileLogger getNewLog(File folder, String name) {
+    public final FlatFileLogger getNewLog(final File folder,final String name) {
 	return new FlatFileLogger(folder, name);
     }
 
-    private void config() {
+    private void initConfig() {
 	anticm = new ExtraConfigManager(dataFolder, "AntiHack");
 	logc = new ExtraConfigManager(dataFolder, "Database");
 	data = new ExtraConfigManager(dataFolder, "Logging");
@@ -139,57 +136,59 @@ public class SteelSecurity extends JavaPlugin {
 
     private void playerChecks() {
 	pcl.checkAll();
-	spm.registerAll();
-	vm.registerAll();
+	spectateManager.registerAll();
+	vanishManager.registerAll();
 	vio.engageAll();
     }
 
-    public double updateCheck(double currentVersion) throws Exception {
-	String pluginUrlString = "http://dev.bukkit.org/server-mods/steel-security/files.rss";
+    public final double updateCheck(final double currentVersion) {
+	Double result = 0.0;
 	try {
-	    URL url = new URL(pluginUrlString);
-	    Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
+	    final URL url = new URL(PLUGINURLSTRING);
+	    final Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(url.openConnection().getInputStream());
 	    doc.getDocumentElement().normalize();
-	    NodeList nodes = doc.getElementsByTagName("item");
-	    Node firstNode = nodes.item(0);
+	    final NodeList nodes = doc.getElementsByTagName("item");
+	    final Node firstNode = nodes.item(0);
 	    if (firstNode.getNodeType() == 1) {
-		Element firstElement = (Element) firstNode;
-		NodeList firstElementTagName = firstElement.getElementsByTagName("title");
-		Element firstNameElement = (Element) firstElementTagName.item(0);
-		NodeList firstNodes = firstNameElement.getChildNodes();
+		final Element firstElement = (Element) firstNode;
+		final NodeList firstTagName = firstElement.getElementsByTagName("title");
+		final Element firstNameElement = (Element) firstTagName.item(0);
+		final NodeList firstNodes = firstNameElement.getChildNodes();
 		newVersionName = firstNodes.item(0).getNodeValue().replace("Steel Security", "");
-		return Double.valueOf(newVersionName.replaceFirst("\\.", "").trim());
+		result = Double.valueOf(newVersionName.replaceFirst("\\.", "").trim());
 	    }
 	} catch (Exception localException) {
+	    result = currentVersion;
 	}
-	return currentVersion;
+	return result;
     }
 
-    private void commands(File tickdata) {// register commands here
-	base = new Sts("base", this, spm, vm, gmcc);
+    private final void commands(final File tickdata) {// register commands here
+	base = new Sts(this, spectateManager, vanishManager, gmcc);
 	getCommand("sts").setExecutor(base);
-	tickm = new TicketManager(tickdata, LOG);
+	tickm = new TicketManager(tickdata,this);
 	getCommand("ticket").setExecutor(tickm);
     }
 
     private void registerListeners() {// register listeners here
-	vio = new Violations(null, this);
-	cf = new ChatFilter(null, this, vio);
-	jm = new JoinMessage(null, this);
-	ll = new LoginLimiter(null, this);
-	pcl = new PlayerConfigListener(null, this);
-	gmcc = new GameModeCmdCatch(null, this);
-	blbl = new BlockBlacklist(null, this);
-	vm = new Vanish(null, this, LOG);
-	cmm = new ConsoleCommandMessage(null, this, LOG);
-	spm = new SpectateManager(null, this, vm, LOG);
-	upd = new UpsideDown(null, this, vio);
-	vm.specGet();
+	vio = new Violations(this);
+	chatFilter = new ChatFilter(this, vio);
+	joinMessage = new JoinMessage(this);
+	loginLimiter = new LoginLimiter(this);
+	pcl = new PlayerConfigListener(this);
+	gmcc = new GameModeCmdCatch(this);
+	blockBlacklist = new BlockBlacklist(this);
+	vanishManager = new Vanish(this);
+	cmm = new ConsoleCommandMessage(this);
+	spectateManager = new SpectateManager(this, vanishManager);
+	upd = new UpsideDown(vio,this);
+	vanishManager.specGet();
+	logger = new ChatLogger(this);
     }
 
     public void onDisable() {
-	spm.stopAll();
-	vm.stopAll();
+	spectateManager.stopAll();
+	vanishManager.stopAll();
 	tickm.saveAll();
     }
 
@@ -213,11 +212,6 @@ public class SteelSecurity extends JavaPlugin {
     public String getCurrentVersionName() {
 	return versionName;
     }
-
-    public Logger getLogger() {
-	return LOG;
-    }
-
     public void registerCommandError() {
 	// TODO Set a class for errored commands go to
     }

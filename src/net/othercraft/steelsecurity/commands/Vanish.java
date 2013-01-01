@@ -16,62 +16,58 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-public class Vanish extends SSCmdExe {
+public final class Vanish extends SSCmdExe {
 
-    SteelSecurity plugin;
+    private transient SpectateManager spm;
+    private static transient final Logger LOG = Logger.getLogger("Minecraft");
 
-    SpectateManager spm;
-    Logger log;
-
-    public Vanish(String name, SteelSecurity instance, Logger log) {
-	super("Vanish", true);
-	plugin = instance;
-	this.log = log;
+    public Vanish(final SteelSecurity instance) {
+	super("Vanish", true, instance);
     }
 
     public void specGet() {
-	spm = plugin.spm;
+	spm = SteelSecurity.spectateManager;
     }
 
-    private Map<String, Boolean> isvanished = new HashMap<String, Boolean>();
+    private transient final Map<String, Boolean> isvanished = new HashMap<String, Boolean>();
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-	Player player = event.getPlayer();
+    public void onJoin(final PlayerJoinEvent event) {
+	final Player player = event.getPlayer();
 	isvanished.put(player.getName(), false);
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-	Player player = event.getPlayer();
+    public void onQuit(final PlayerQuitEvent event) {
+	final Player player = event.getPlayer();
 	isvanished.remove(player.getName());
     }
 
-    public Boolean isVanished(Player player) {
+    public Boolean isPlayerVanished(final Player player) {
 	Boolean result;
-	if (isvanished.get(player.getName()) != null) {
-	    result = isvanished.get(player.getName());
-	} else {
+	if (isvanished.get(player.getName())==null) {
 	    result = false;
+	} else {
+	    result = isvanished.get(player.getName());
 	}
 	return result;
     }
 
-    public void setVanished(Player player, Boolean o, Boolean broadcast) {
-	if (o) {
-	    if (!isVanished(player)) {
+    public void setVanished(final Player player,final Boolean finalVanished,final Boolean broadcast) {
+	if (finalVanished) {
+	    if (!isPlayerVanished(player)) {
 		start(player, broadcast);
 		isvanished.put(player.getName(), true);
 	    }
 	} else {
-	    if (isVanished(player)) {
+	    if (isPlayerVanished(player)) {
 		stop(player, broadcast);
 		isvanished.put(player.getName(), false);
 	    }
 	}
     }
 
-    private void stop(Player tostop, Boolean notify) {
+    private void stop(final Player tostop,final Boolean notify) {
 	if (isvanished.get(tostop.getName())) {
 	    for (Player player : Bukkit.getOnlinePlayers()) {
 		if (!player.hasPermission("steelsecurity.commands.vanish.cansee")) {
@@ -82,14 +78,14 @@ public class Vanish extends SSCmdExe {
 	    }
 	    if (notify) {
 		tostop.sendMessage("You are now visable.");
-		log.info(tostop.getName() + " is now visable.");
+		LOG.info(tostop.getName() + " is now visable.");
 	    } else {
 		tostop.sendMessage("You were forced visable either because of a reload or you begun spectating.");
 	    }
 	}
     }
 
-    private void start(Player tostart, Boolean notify) {
+    private void start(final Player tostart,final Boolean notify) {
 	if (!isvanished.get(tostart.getName())) {
 	    for (Player player : Bukkit.getOnlinePlayers()) {
 		if (!player.hasPermission("steelsecurity.commands.vanish.cansee")) {
@@ -100,37 +96,39 @@ public class Vanish extends SSCmdExe {
 	    }
 	    if (notify) {
 		tostart.sendMessage("You are now invisable.");
-		log.info(tostart.getName() + " has gone invisable.");
+		LOG.info(tostart.getName() + " has gone invisable.");
 	    } else {
 		tostart.sendMessage("You have retruned to being invisible.");
 	    }
 	}
     }
 
-    public void vmCmd(CommandSender sender, String[] args) {
-	Player player = Bukkit.getPlayerExact(sender.getName());
-	if (!spm.isSpectating(player)) {
-	    setVanished(player, !isVanished(player), true);
-	} else {
+    public void vmCmd(final CommandSender sender,final String[] args) {
+	final Player player = Bukkit.getPlayerExact(sender.getName());
+	if (spm.isSpectating(player)) {
 	    sender.sendMessage("You can not vanish when you are spectating!");
+	} else {
+	    setVanished(player, !isPlayerVanished(player), true);
 	}
     }
 
     public void stopAll() {
-	for (Player player : Bukkit.getOnlinePlayers())
+	for (Player player : Bukkit.getOnlinePlayers()){
 	    stop(player, false);
+	}
     }
 
     public void registerAll() {
-	for (Player player : Bukkit.getOnlinePlayers())
+	for (Player player : Bukkit.getOnlinePlayers()){
 	    isvanished.put(player.getName(), false);
+	}
     }
 
     @EventHandler
-    public void onTarget(EntityTargetEvent event) {
+    public void onTarget(final EntityTargetEvent event) {
 	if (event.getTarget() instanceof Player) {
-	    Player p = (Player) event.getTarget();
-	    if (isvanished.get(p.getName())) {
+	    final Player player = (Player) event.getTarget();
+	    if (isvanished.get(player.getName())) {
 		event.setCancelled(true);
 	    }
 	}

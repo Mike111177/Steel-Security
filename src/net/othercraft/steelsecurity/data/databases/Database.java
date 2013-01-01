@@ -9,16 +9,17 @@ import java.sql.SQLException;
 import java.util.PriorityQueue;
 import java.util.logging.Logger;
 
-import net.othercraft.steelsecurity.SteelSecurity;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class Database {
+
+public final class Database {
     
-    private PriorityQueue<QueueSegment> queue = new PriorityQueue<QueueSegment>();
+    private final PriorityQueue<QueueSegment> queue = new PriorityQueue<QueueSegment>();
 
     private final DatabaseType type;
-    private final SteelSecurity plugin;
+    private final JavaPlugin plugin;
     private final String url;
-    private Logger log;
+    private final Logger log;
 
     /**
      * Connect to a MySQL database
@@ -34,7 +35,7 @@ public class Database {
      * @param password
      *            MySQL access password
      */
-    public Database(final SteelSecurity plugin, final String host, final String database, final String user, final String password) {
+    public Database(final JavaPlugin plugin, final String host, final String database, final String user, final String password) {
 	this.plugin = plugin;
 	url = "jdbc:mysql://" + host + "/" + database + "?user=" + user + "&password=" + password;
 	log = plugin.getServer().getLogger();
@@ -54,7 +55,7 @@ public class Database {
      * @param filePath
      *            database storage path/name.extension
      */
-    public Database(final SteelSecurity plugin, final String filePath) {
+    public Database(final JavaPlugin plugin, final String filePath) {
 	this.plugin = plugin;
 	url = "jdbc:sqlite:" + new File(filePath).getAbsolutePath();
 	log = plugin.getServer().getLogger();

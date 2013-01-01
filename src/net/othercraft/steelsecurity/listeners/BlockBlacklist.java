@@ -9,27 +9,25 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-public class BlockBlacklist extends SSCmdExe {
+public final class BlockBlacklist extends SSCmdExe {
 
-    SteelSecurity plugin;
-
-    public BlockBlacklist(String name, SteelSecurity instance) {
-	super("BlockBlacklist", true);
-	plugin = instance;
+    public BlockBlacklist(final SteelSecurity instance) {
+	super("BlockBlacklist", true, instance);
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent event) {
+    public void onBlockPlace(final BlockPlaceEvent event) {
 	if (!event.getPlayer().hasPermission("steelsecurity.bypass.blockblackist") || !plugin.getConfig().getBoolean("Block_Blacklist.Enabled")) {
 	    Boolean cancel = false;
-	    Material block = event.getBlockPlaced().getType();
-	    List<?> config = plugin.getConfig().getStringList("Block_Blacklist.Blocks");
-	    String[] list = config.toArray(new String[config.size()]);
-	    int count = config.size();
+	    final Material block = event.getBlockPlaced().getType();
+	    final List<?> config = plugin.getConfig().getStringList("Block_Blacklist.Blocks");
+	    final String[] list = config.toArray(new String[config.size()]);
+	    final int count = config.size();
 	    int counter = 0;
 	    while (count > counter) {
-		if (Material.getMaterial(Integer.parseInt(list[counter])) == block)
+		if (Material.getMaterial(Integer.parseInt(list[counter])) == block){
 		    cancel = true;
+		}
 		counter++;
 	    }
 	    event.setCancelled(cancel);

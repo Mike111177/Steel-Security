@@ -1,5 +1,5 @@
 name: SteelSecurity
-version: 1.1.0-bb67
+version: 1.2.0-bb68
 main: net.othercraft.steelsecurity.SteelSecurity
 authors: [Mike111177]
 website: dev.bukkit.org/server-mods/steelsecurity

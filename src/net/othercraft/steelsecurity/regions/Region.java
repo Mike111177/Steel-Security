@@ -1,31 +1,64 @@
 package net.othercraft.steelsecurity.regions;
 
-import org.bukkit.Location;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.entity.Player;
 
-public abstract class Region {
+import com.google.common.collect.Maps;
+
+public abstract class Region<Block> {
     
-    public final Player player;
+    public final transient Player player;
    
     
-    public final RegionShape shape;
+    public final transient RegionShape shape;
     
-    public Region(RegionShape shape, Player player){
+    public Region(final RegionShape shape,final Player player){
 	this.shape = shape;
 	this.player = player;
     }
     
-    public abstract void displayRegion();
+    public final void displayRegion(){
+	List<Block> blocks = getBorder();
+	//TODO make it flash these blocks
+    }
     
     public abstract int getArea();
     
-    public abstract Location[] getContainedBlocks();
+    public abstract List<Block> getContainedBlocks();
     
-    public Player getPlayer(){
+    public abstract List<Block> getBorder();
+    
+    public abstract List<Block> getSurface();
+    
+    public final Player getPlayer(){
 	return player;
     } 
 
 }
 enum RegionShape{
-    CUBOID,SPHERE,CYLINDER,HGON,NGON,VGON,ELIPSEOID
+    CUBOID("Cuboid"),
+    SPHERE("Sphere"),
+    CYLINDER("Cylinder"),
+    HGON("Hgon"),
+    NGON("Ngon"),
+    VGON("Vgon"),
+    ELIPSEOID("Elipseoid");
+    private final String value;
+    private final static Map<String, RegionShape> BY_ID = Maps.newHashMap();
+    private RegionShape(final String shape){
+	this.value = shape;
+    }
+    public String getValue(){
+	return value;
+    }
+    public static RegionShape getByValue(final String shape) {
+	return BY_ID.get(shape);
+    }
+    static{
+	for (RegionShape shape : values()) {
+	    BY_ID.put(shape.getValue(), shape);
+	}
+    }
 }

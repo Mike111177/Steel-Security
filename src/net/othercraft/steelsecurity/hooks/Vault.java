@@ -1,10 +1,12 @@
 package net.othercraft.steelsecurity.hooks;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import net.othercraft.steelsecurity.SteelSecurity;
 
 public class Vault extends Hook {
 
-    public Vault(SteelSecurity instance) {
+    public Vault(JavaPlugin instance) {
 	super(instance);
     }
 

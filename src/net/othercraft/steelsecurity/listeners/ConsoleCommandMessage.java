@@ -8,21 +8,18 @@ import net.othercraft.steelsecurity.utils.SSCmdExe;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class ConsoleCommandMessage extends SSCmdExe {
+public final class ConsoleCommandMessage extends SSCmdExe {
+  
+    private static transient final Logger LOG = Logger.getLogger("Minecraft");
 
-    SteelSecurity plugin;
-    Logger log;
-
-    public ConsoleCommandMessage(String name, SteelSecurity instance, Logger log) {
-	super("ConsoleCommandMessage", true);
-	plugin = instance;
-	this.log = log;
+    public ConsoleCommandMessage(final SteelSecurity instance) {
+	super("ConsoleCommandMessage", true, instance);
     }
 
     @EventHandler
-    public void onCommand(PlayerCommandPreprocessEvent event) {
+    public void onCommand(final PlayerCommandPreprocessEvent event) {
 	if (event.getMessage().toLowerCase().startsWith("/sts")) {
-	    log.info(event.getPlayer().getName() + ": " + event.getMessage());
+	    LOG.info(event.getPlayer().getName() + ": " + event.getMessage());
 	}
     }
 }

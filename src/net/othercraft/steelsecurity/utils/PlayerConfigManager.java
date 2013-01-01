@@ -10,7 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public abstract class PlayerConfigManager {
 
-    public static FileConfiguration getConfig(String playername) {
+    public static FileConfiguration getConfig(final String playername) {
 	File directory = new File(SteelSecurity.instance.getDataFolder() + File.separator + "Players");
 	if (!directory.isDirectory()) {
 	    return null;// the directory doesnt exist, so the file doesnt exist.
@@ -26,7 +26,7 @@ public abstract class PlayerConfigManager {
 	return config;
     }
 
-    public static boolean createConfig(String playername) throws IOException {
+    public static boolean createConfig(final String playername) throws IOException {
 	File directory = new File(SteelSecurity.instance.getDataFolder() + File.separator + "Players");
 	if (!directory.isDirectory()) {
 	    directory.mkdirs();
@@ -40,7 +40,7 @@ public abstract class PlayerConfigManager {
 	return true; // config file successfully created
     }
 
-    public static void saveConfig(FileConfiguration config, String playername) throws IOException {
+    public static void saveConfig(final FileConfiguration config,final String playername) throws IOException {
 	File file = new File(SteelSecurity.instance.getDataFolder() + File.separator + "Players", playername + ".yml");
 	if (!file.exists()) {
 	    file.createNewFile();

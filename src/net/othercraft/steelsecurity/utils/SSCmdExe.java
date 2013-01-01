@@ -10,6 +10,7 @@
 package net.othercraft.steelsecurity.utils;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import net.othercraft.steelsecurity.SteelSecurity;
 
@@ -20,6 +21,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.Listener;
 
 public abstract class SSCmdExe extends ExceptionLogger implements CommandExecutor, Listener, SSCmdExeInterface{
+    
+    public final transient SteelSecurity plugin;
+    final public static transient Logger LOG = SteelSecurity.LOG;
 
     public final String name;
 
@@ -30,8 +34,9 @@ public abstract class SSCmdExe extends ExceptionLogger implements CommandExecuto
      * @param listener
      *            If the subclass requires it to be registered as a listener, this needs to be true, or else your events wont be utilized.
      */
-    public SSCmdExe(String name, Boolean listener) {
+    public SSCmdExe(final String name,final Boolean listener,final SteelSecurity instance) {
 	this.name = name;
+	this.plugin = instance;
 	if (listener) {
 	    Bukkit.getPluginManager().registerEvents(this, SteelSecurity.instance);
 	}
@@ -39,7 +44,7 @@ public abstract class SSCmdExe extends ExceptionLogger implements CommandExecuto
 
     @Override
     // This is our supermethod for dealing with commands. We dont touch this.
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public final boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	try {
 	    boolean command = handleCommand(sender, cmd, label, args);
 	    return command;
@@ -67,11 +72,11 @@ public abstract class SSCmdExe extends ExceptionLogger implements CommandExecuto
      *            the arguments
      * @return return true if the command was successful, false if there was an error.
      */
-    public boolean handleCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean handleCommand(final CommandSender sender,final Command cmd,final String label,final String[] args) {
 	return true;
     }
 
-    public void catchListenerException(Exception e, String l) throws IOException {
+    public final void catchListenerException(final Exception e,final String l) throws IOException {
 	listenerException(e, l, "plugins/SteelSecurity");
     }
 }

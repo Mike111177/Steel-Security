@@ -17,7 +17,7 @@ public class Ticket implements Serializable {
     private Boolean open;
     private Long time;
     private int index;
-    private List<String> comments = new ArrayList<String>(0);
+    private final List<String> comments = new ArrayList<String>(0);
     private String location;
 
     /**

@@ -11,18 +11,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class Violations extends SSCmdExe {
 
-    SteelSecurity plugin;
+    JavaPlugin plugin;
 
-    public Violations(String name, SteelSecurity instance) {
-	super("Violations", true);
+    public Violations(final SteelSecurity instance) {
+	super("Violations", true, instance);
 	plugin = instance;
     }
 
-    private Map<String, Integer> flood = new HashMap<String, Integer>();
-    private Map<String, Integer> derp = new HashMap<String, Integer>();
+    private final Map<String, Integer> flood = new HashMap<String, Integer>();
+    private final Map<String, Integer> derp = new HashMap<String, Integer>();
 
     public void addFlood(Player player) {
 	int n = flood.get(player.getName());

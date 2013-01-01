@@ -3,6 +3,7 @@ package net.othercraft.steelsecurity.commands;
 import java.io.IOException;
 import java.util.Set;
 
+
 import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.PlayerConfigManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
@@ -18,16 +19,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 
-public class GameModeCmdCatch extends SSCmdExe {
-    SteelSecurity plugin;
+public final class GameModeCmdCatch extends SSCmdExe {
+    
+    private final static String USAGE = "/gm <player> <Game Mode>|/gamemode <player> <Game Mode>";
 
-    public GameModeCmdCatch(String name, SteelSecurity instance) {
-	super("GameModeCmdCatch", true);// true only if its a listener, false if it isnt
-	this.plugin = instance;
+    public GameModeCmdCatch(final SteelSecurity instance) {
+	super("GameModeCmdCatch", true, instance);// true only if its a listener, false if it isnt
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onGmChange(PlayerGameModeChangeEvent event) {
+    public void onGmChange(final PlayerGameModeChangeEvent event) {
 	if (!event.isCancelled()) {
 	    if (plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled")) {
 		if (configSet(event.getPlayer(), event.getNewGameMode())) {
@@ -38,7 +39,7 @@ public class GameModeCmdCatch extends SSCmdExe {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onGmChangeCmd(PlayerCommandPreprocessEvent event) {
+    public void onGmChangeCmd(final PlayerCommandPreprocessEvent event) {
 	String message = event.getMessage();
 	if (!event.isCancelled()) {
 	    if (message.toLowerCase().startsWith("/gm") || message.toLowerCase().startsWith("/gamemode")) {
@@ -52,30 +53,29 @@ public class GameModeCmdCatch extends SSCmdExe {
 	}
     }
 
-    public void stsgamemode(CommandSender sender, String[] args) {
-	GameMode gm;
+    public void stsgamemode(final CommandSender sender, final String[] args) {
+	GameMode gameMode;
 	String gmn;
-	Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
-	String usage = "/gm <player> <Game Mode>|/gamemode <player> <Game Mode>";
+	final Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
 	if (args.length < 3) {
 	    sender.sendMessage("Not enough arguments!");
-	    sender.sendMessage(usage);
+	    sender.sendMessage(USAGE);
 	} else if (args.length > 3) {
 	    sender.sendMessage("Too many arguments!");
-	    sender.sendMessage(usage);
+	    sender.sendMessage(USAGE);
 	} else {
-	    Player target = decodePlayer(args[1], sender);
+	    final Player target = decodePlayer(args[1], sender);
 	    if (target != null) {
 		if (target.isOnline()) {
-		    gm = decodeGM(args[2]);
-		    if (gm != null) {
+		    gameMode = decodeGM(args[2]);
+		    if (gameMode != null) {
 			if (gmcheck) {
-			    if (!configSet(target, gm)) {
+			    if (!configSet(target, gameMode)) {
 				sender.sendMessage("We could not find a player with that name registered.");
 			    }
 			}
-			gmn = gm.name();
-			target.setGameMode(gm);
+			gmn = gameMode.name();
+			target.setGameMode(gameMode);
 			sender.sendMessage(target.getName() + "'s game mode has been set to " + gmn + ".");
 		    }
 		    else {
@@ -83,10 +83,10 @@ public class GameModeCmdCatch extends SSCmdExe {
 		    }
 		} else {
 		    if (gmcheck) {
-			gm = decodeGM(args[2]);
-			if (gm != null) {
-			    gmn = gm.name();
-			    if (!configSet(target, gm)) {
+			gameMode = decodeGM(args[2]);
+			if (gameMode != null) {
+			    gmn = gameMode.name();
+			    if (!configSet(target, gameMode)) {
 				sender.sendMessage("We could not find a player with that name registered.");
 			    } else {
 				sender.sendMessage(target.getName() + "'s game mode will be set to " + gmn + " next time they log on.");
@@ -103,22 +103,22 @@ public class GameModeCmdCatch extends SSCmdExe {
 	}
     }
 
-    private Boolean configSet(OfflinePlayer target, GameMode gm) {
-	FileConfiguration config = PlayerConfigManager.getConfig(target.getName());
+    private Boolean configSet(final OfflinePlayer target,final GameMode gameMode) {
+	final FileConfiguration config = PlayerConfigManager.getConfig(target.getName());
+	Boolean result = false;
 	if (config != null) {
-	    config.set("GameMode", gm.getValue());
+	    config.set("GameMode", gameMode.getValue());
 	    try {
 		PlayerConfigManager.saveConfig(config, target.getName());
 	    } catch (IOException e) {
 		e.printStackTrace();
 	    }
-	    return true;
-	} else {
-	    return false;
+	    result = true;
 	}
+	return result;
     }
 
-    private GameMode decodeGM(String pregm) {
+    private GameMode decodeGM(final String pregm) {
 	if (pregm.equalsIgnoreCase("creative") || pregm.equalsIgnoreCase("1")) {
 	    return (GameMode.CREATIVE);
 	} else if (pregm.equalsIgnoreCase("survival") || pregm.equalsIgnoreCase("0")) {
@@ -130,29 +130,25 @@ public class GameModeCmdCatch extends SSCmdExe {
 	}
     }
 
-    private Player decodePlayer(String pname, CommandSender sender) {
-	Set<Player> list = Tools.safePlayer(pname);
+    private Player decodePlayer(final String pname,final CommandSender sender) {
+	final Set<Player> list = Tools.safePlayer(pname);
+	Player result = null;
 	switch (list.size()) {
 	case 1:
-	    Player r = null;
-	    for (Player p : list) {
-		r = p;
-	    }
-	    return r;
+	    result = (Player) list.toArray()[1];
 	case 0:
 	    sender.sendMessage("Were sorry, we could not find anyone with the name of " + pname);
-	    return null;
 	default:
 	    sender.sendMessage("We found " + list.size() + " that match your criteria. Please be more specific.");
 	    String nlist = "";
 	    for (Player scan : list) {
 		nlist = (list + ", " + scan.getName());
 	    }
-	    if (!nlist.equals("")) {
+	    if (!("").equals(nlist)) {
 		nlist = nlist.replaceFirst(",", "");
 	    }
 	    sender.sendMessage("The players we found are" + nlist + ".");
-	    return null;
 	}
+	return result;
     }
 }

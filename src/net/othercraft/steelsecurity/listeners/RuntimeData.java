@@ -1,15 +1,15 @@
 package net.othercraft.steelsecurity.listeners;
 
-public class RuntimeData{
+public final class RuntimeData{
     
-    private static final Runtime runtime = Runtime.getRuntime();
-    private static final long maxmemory = runtime.maxMemory();
-    private static final int proccessors = runtime.availableProcessors();
-    private static long freememory = runtime.freeMemory();
-    private static long totalmemory = runtime.totalMemory();
+    private static final Runtime RUNTIME = Runtime.getRuntime();
+    private static final long MAXMEMORY = RUNTIME.maxMemory();
+    private static final int PROCCESSORS = RUNTIME.availableProcessors();
+    private static long freememory = RUNTIME.freeMemory();
+    private static long totalmemory = RUNTIME.totalMemory();
 
     public static long getMaxmemory() {
-	return maxmemory;
+	return MAXMEMORY;
     }
 
     public static long getFreememory() {
@@ -17,6 +17,6 @@ public class RuntimeData{
     }
 
     public static int getProccessors() {
-	return proccessors;
+	return PROCCESSORS;
     }
 }

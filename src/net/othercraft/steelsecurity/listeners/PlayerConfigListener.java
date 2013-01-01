@@ -13,18 +13,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
-public class PlayerConfigListener extends SSCmdExe {
+public final class PlayerConfigListener extends SSCmdExe {
 
-    public SteelSecurity plugin;
-
-    public PlayerConfigListener(String name, SteelSecurity instance) {
-	super("PlayerConfigListener", true);// true only if its a listener,
-					    // false if it isnt
-	this.plugin = instance;
+    public PlayerConfigListener(final SteelSecurity instance) {
+	super("PlayerConfigListener", true, instance);
     }
 
     @EventHandler
-    public void loadConfig(PlayerJoinEvent event) throws Exception {
+    public void loadConfig(final PlayerJoinEvent event) {
 	try {
 	    checkPlayerConfig(event.getPlayer());
 	} catch (Exception e) {
@@ -36,17 +32,17 @@ public class PlayerConfigListener extends SSCmdExe {
 	}
     }
 
-    public void checkPlayerConfig(Player player) {
-	Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
-	String playername = player.getName();
+    public void checkPlayerConfig(final Player player) {
+	final Boolean gmcheck = plugin.getConfig().getBoolean("Offline_GameMode_Changer.Enabled");
+	final String playername = player.getName();
 	FileConfiguration config = PlayerConfigManager.getConfig(playername);
 	if (config == null) {
 	    try {
 		if (PlayerConfigManager.createConfig(playername)) {
 		    config = PlayerConfigManager.getConfig(playername);
 		} else {
-		    IOException e = new IOException();
-		    throw e;
+		    final IOException exeption = new IOException();
+		    throw exeption;
 		}
 	    } catch (IOException e) {
 		e.printStackTrace();
@@ -67,8 +63,9 @@ public class PlayerConfigListener extends SSCmdExe {
     }
 
     public void checkAll() {
-	for (Player player : Bukkit.getOnlinePlayers())
+	for (Player player : Bukkit.getOnlinePlayers()){
 	    checkPlayerConfig(player);
+	}
     }
 
 }

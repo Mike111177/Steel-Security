@@ -9,11 +9,11 @@ import net.othercraft.steelsecurity.utils.Tools;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
-public class TicketMessageProccessor {
+public final class TicketMessageProccessor {
 
-    private TicketManager tickm;
+    private final TicketManager tickm;
 
-    public TicketMessageProccessor(TicketManager tickm) {
+    public TicketMessageProccessor(final TicketManager tickm) {
 	this.tickm = tickm;
     }
 

@@ -12,37 +12,30 @@ import net.othercraft.steelsecurity.utils.SSCmdExe;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class ChatFilter extends SSCmdExe {
+public final class ChatFilter extends SSCmdExe {
 
-    public SteelSecurity plugin;
+    private transient final Violations vio;
 
-    public Violations vio;
+    private final transient Map<String, Long> chattimes = new HashMap<String, Long>();// for tracking the speed of chat
 
-    private Map<String, Long> chattimes = new HashMap<String, Long>();// for
-								      // tracking
-								      // the
-								      // speed
-								      // of
-								      // chat
-
-    public ChatFilter(String name, SteelSecurity instance, Violations viol) {
-	super("ChatFilter", true);// true only if its a listener, false if it
-				  // isnt
-	plugin = instance;
+    public ChatFilter(final SteelSecurity instance, final Violations viol) {
+	super("ChatFilter", true, instance);// true only if its a listener, false if it isnt
 	vio = viol;
     }
 
+    @SuppressWarnings("unchecked")
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
+    public void onPlayerChat(final AsyncPlayerChatEvent event) {
 	try {
-	    int speed = plugin.getConfig().getInt("AntiSpam.AntiFlood.Speed");
+	    final int speed = plugin.getConfig().getInt("AntiSpam.AntiFlood.Speed");
 	    Boolean spam = true;// if this is true at the end cancel the event
-	    String name = event.getPlayer().getName();// name of the player for use in the hashmap
-	    Long time = System.currentTimeMillis();// current time
+	    final String name = event.getPlayer().getName();// name of the player for use in the hashmap
+	    final Long time = System.currentTimeMillis();// current time
 	    Long lasttime = chattimes.get(name);
-	    if (lasttime == null)
+	    if (lasttime == null){
 		lasttime = Long.valueOf(time - (speed + 1));
-	    int check = (time.intValue() - lasttime.intValue());
+	    }
+	    final int check = (time.intValue() - lasttime.intValue());
 	    chattimes.put(name, time);// overwrites the old time with the one
 	    if (check > speed || !plugin.getConfig().getBoolean("AntiSpam.AntiFlood.Enabled") || !event.getPlayer().hasPermission("steelsecurity.bypass.antiflood")) {
 		spam = false;// sets spam to false
@@ -50,11 +43,9 @@ public class ChatFilter extends SSCmdExe {
 	    String message = event.getMessage();// prepairs message for editing
 	    if ((!spam)) {
 		if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.censor")) {
-		    @SuppressWarnings("unchecked")
-		    List<String> blist = (List<String>) plugin.getConfig().getList("AntiSpam.Censoring.Block_Words");
-		    @SuppressWarnings("unchecked")
-		    List<String> glist = (List<String>) plugin.getConfig().getList("AntiSpam.Censoring.Allowed_Words");
-		    String[] mlist = message.split(" ");
+		    final List<String> blist = (List<String>) plugin.getConfig().getList("AntiSpam.Censoring.Block_Words");
+		    final List<String> glist = (List<String>) plugin.getConfig().getList("AntiSpam.Censoring.Allowed_Words");
+		    final String[] mlist = message.split(" ");
 		    String[] nmlist = mlist;
 		    String nm = "";
 		    int mindex = 0;
@@ -88,7 +79,7 @@ public class ChatFilter extends SSCmdExe {
 		if (message.length() > plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Minimum_Length")) {//
 		    if (plugin.getConfig().getBoolean("AntiSpam.Censoring.Canceling.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.censor")) {
 			double percent = plugin.getConfig().getInt("AntiSpam.Censoring.Canceling.Percent");
-			int capcount = message.length();
+			final int capcount = message.length();
 			int capcounter = 0;
 			Double uppercase = 0.0;
 			Double lowercase = 0.0;
@@ -100,8 +91,8 @@ public class ChatFilter extends SSCmdExe {
 			    }
 			    ++capcounter;
 			}
-			double total = uppercase + lowercase;
-			double result = uppercase / total;
+			final double total = uppercase + lowercase;
+			final double result = uppercase / total;
 			percent = percent / 100;
 			if (percent < result) {
 			    spam = true;
@@ -111,7 +102,7 @@ public class ChatFilter extends SSCmdExe {
 		if (message.length() > plugin.getConfig().getInt("AntiSpam.AntiCaps.Minimum_Length")) {//
 		    if (plugin.getConfig().getBoolean("AntiSpam.AntiCaps.Enabled") && !event.getPlayer().hasPermission("steelsecurity.bypass.anticaps")) {
 			double percent = plugin.getConfig().getInt("AntiSpam.AntiCaps.Percent");
-			int capcount = message.length();
+			final int capcount = message.length();
 			int capcounter = 0;
 			Double uppercase = 0.0;
 			Double lowercase = 0.0;
@@ -123,8 +114,8 @@ public class ChatFilter extends SSCmdExe {
 			    }
 			    ++capcounter;
 			}
-			double total = uppercase + lowercase;
-			double result = uppercase / total;
+			final double total = uppercase + lowercase;
+			final double result = uppercase / total;
 			percent = percent / 100;
 			if (percent < result) {
 			    message = message.toLowerCase();

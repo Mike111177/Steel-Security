@@ -11,9 +11,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ExtraConfigManager {
 
-    private FileConfiguration newConfig = null;
-    private File configFile = null;
-    private File dataFolder = null;
+    private transient FileConfiguration newConfig = null;
+    private transient final File configFile;
+    public transient final File dataFolder;
 
     /**
      * 
@@ -22,8 +22,7 @@ public class ExtraConfigManager {
      * @param configname
      *            the name of the config file (".yml" will automaticly be added)
      */
-    public ExtraConfigManager(File dataFolder, String configname) {
-
+    public ExtraConfigManager(final File dataFolder,final String configname) {
 	this.dataFolder = dataFolder;
 	this.configFile = new File(dataFolder, configname + ".yml");
     }

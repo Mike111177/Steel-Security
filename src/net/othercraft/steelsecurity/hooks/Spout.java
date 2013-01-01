@@ -1,10 +1,12 @@
 package net.othercraft.steelsecurity.hooks;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import net.othercraft.steelsecurity.SteelSecurity;
 
 public class Spout extends Hook {
 
-    public Spout(SteelSecurity instance) {
+    public Spout(JavaPlugin instance) {
 	super(instance);
     }
 

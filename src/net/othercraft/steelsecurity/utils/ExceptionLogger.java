@@ -19,32 +19,32 @@ import org.bukkit.command.CommandSender;
 
 public abstract class ExceptionLogger {
 
-    public void commandException(Exception e, String directoryString, CommandSender s, Command c, String[] args) throws IOException {
+    public void commandException(final Exception e,final String directoryString,final CommandSender s,final Command c,final String[] args) throws IOException {
 	createFile(directoryString, "Exceptions.log");
-	Logger logger = Logger.getLogger(directoryString);
-	String date = Calendar.getInstance().getTime().toString();
+	final Logger logger = Logger.getLogger(directoryString);
+	final String date = Calendar.getInstance().getTime().toString();
 	logger.log(Level.SEVERE, date + " Command " + cmdToString(c, args) + " used by " + s.getName() + " generated an exception.", e);
     }
 
-    public void listenerException(Exception e, String name, String path) throws IOException {
+    public void listenerException(final Exception e,final String name,final String path) throws IOException {
 	createFile(path, "Exceptions.log");
-	Logger logger = Logger.getLogger(path);
-	String date = Calendar.getInstance().getTime().toString();
+	final Logger logger = Logger.getLogger(path);
+	final String date = Calendar.getInstance().getTime().toString();
 	logger.log(Level.SEVERE, date + " Event " + name + " generated an exception.", e);
     }
 
-    public void createFile(String directoryName, String fileName) throws IOException {
-	File dir = new File(directoryName);
+    public void createFile(final String directoryName,final String fileName) throws IOException {
+	final File dir = new File(directoryName);
 	if (!dir.exists()) {
 	    dir.mkdirs();
 	}
-	File file = new File(directoryName + "/" + fileName);
+	final File file = new File(directoryName + "/" + fileName);
 	if (!file.exists()) {
 	    file.createNewFile();
 	}
     }
 
-    public String cmdToString(Command c, String[] args) {
+    public String cmdToString(final Command c,final String[] args) {
 	String command = "";
 	command += "/" + c.getName() + " ";
 	if (args != null) {

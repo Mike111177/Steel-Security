@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 import net.othercraft.steelsecurity.utils.Tools;
 
@@ -15,26 +16,23 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class TicketManager extends SSCmdExe {
-
-    private Logger log;
+public final class TicketManager extends SSCmdExe {
     private List<Ticket> tickets;
-    private String noperm = ChatColor.RED + "You don't have permission to do this!";
-    private TicketMessageProccessor mp = new TicketMessageProccessor(this);
-    private File dataFolder = null;
-    private static final ChatColor g = ChatColor.GREEN;
-    private static final ChatColor y = ChatColor.YELLOW;
-    private static final ChatColor r = ChatColor.RED;
+    private static final String NOPERM = ChatColor.RED + "You don't have permission to do this!";
+    private final TicketMessageProccessor mp = new TicketMessageProccessor(this);
+    private final File dataFolder;
+    private static final ChatColor GREEN = ChatColor.GREEN;
+    private static final ChatColor YELLOW = ChatColor.YELLOW;
+    private static final ChatColor RED = ChatColor.RED;
 
     /**
      * @param datafolder
      *            The folder where tickets will be stored.
      */
-    public TicketManager(File datafolder, Logger log) {
-	super("TicketManager", false);
+    public TicketManager(File datafolder, SteelSecurity instance) {
+	super("TicketManager", false, instance);
 	this.dataFolder = datafolder;
 	initiate();
-	this.log = log;
     }
 
     /**
@@ -42,7 +40,7 @@ public class TicketManager extends SSCmdExe {
      *            The ID of the ticket you want to recieve
      * @return If a ticket with the ID exist, the ticket, else null
      */
-    public Ticket getTicket(int index) {
+    public Ticket getTicket(final int index) {
 	if (index < 1) {
 	    return null;
 	} else {
@@ -122,7 +120,7 @@ public class TicketManager extends SSCmdExe {
 	return tick;
     }
 
-    private void newTicketCmd(CommandSender sender, String[] segments) {
+    private void newTicketCmd(final CommandSender sender,final String[] segments) {
 	Ticket newtick = newTicket();
 	newtick.setPlayer(sender.getName());
 	String message = "";
@@ -136,7 +134,7 @@ public class TicketManager extends SSCmdExe {
 	    }
 	}
 	if (sender instanceof Player) {
-	    Player player = (Player) sender;
+	    final Player player = (Player) sender;
 	    loc = Math.round(player.getLocation().getX()) + ":" + Math.round(player.getLocation().getY()) + ":" + Math.round(player.getLocation().getZ());
 	} else {
 	    loc = "N/A";
@@ -155,11 +153,11 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage(sender.getName() + " has made a new ticket.");
 	    }
 	}
-	log.info(sender.getName() + " has made a new ticket.");
+	LOG.info(sender.getName() + " has made a new ticket.");
     }
 
     @Override
-    public boolean handleCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean handleCommand(final CommandSender sender,final Command cmd,final String label,final String[] args) {
 	if (args.length == 0)
 	    base(sender);
 	else {
@@ -197,10 +195,10 @@ public class TicketManager extends SSCmdExe {
 			    sender.sendMessage("Page must be a number!");
 			}
 		    } else {
-			sender.sendMessage(r + "Too many arguments!");
+			sender.sendMessage(RED + "Too many arguments!");
 		    }
 		} else {
-		    sender.sendMessage(noperm);
+		    sender.sendMessage(NOPERM);
 		}
 	    }
 
@@ -222,12 +220,12 @@ public class TicketManager extends SSCmdExe {
 	return true;
     }
 
-    private void claim(CommandSender sender, String[] args) {
+    private void claim(final CommandSender sender,final String[] args) {
 	if (sender.hasPermission("steelsecurity.commands.ticket.claim")) {
 	    if (args.length == 2) {
 		if (Tools.isSafeNumber(args[1])) {
 		    if (getTicket(Integer.parseInt(args[1])) != null) {
-			Player p = (Player) sender;
+			final Player p = (Player) sender;
 			getTicket(Integer.parseInt(args[1])).setAsignnee(p);
 			p.sendMessage("You have been assigned to ticket #" + args[1]);
 		    } else {
@@ -243,17 +241,17 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage("Please use /ticket claim <ID>");
 	    }
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
 
     }
 
-    private void assign(CommandSender sender, String[] args) {
+    private void assign(final CommandSender sender,final String[] args) {
 	if (sender.hasPermission("steelsecurity.commands.ticket.assign")) {
 	    if (args.length == 3) {
 		if (Tools.isSafeNumber(args[1])) {
 		    if (getTicket(Integer.parseInt(args[1])) != null) {
-			OfflinePlayer p = Bukkit.getOfflinePlayer(args[2]).getPlayer();
+			final OfflinePlayer p = Bukkit.getOfflinePlayer(args[2]).getPlayer();
 			getTicket(Integer.parseInt(args[1])).setAsignnee(p);
 			if (p.isOnline()) {
 			    p.getPlayer().sendMessage("You have been assigned to ticket #" + args[1]);
@@ -272,17 +270,17 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage("Please use /ticket assign <ID> <player>");
 	    }
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
 
     }
 
-    private void base(CommandSender sender) {
+    private void base(final CommandSender sender) {
 	if (sender.hasPermission("steelsecurity.commands.ticket")) {
 	    sender.sendMessage(ChatColor.GREEN + "Welcome to Steel Security's Ticket Request System.");
 	    sender.sendMessage(ChatColor.GREEN + "Type /ticket help for a list of commands.");
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
     }
 
@@ -296,7 +294,7 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage("Please use /ticket new <message>");
 	    }
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
     }
 
@@ -319,7 +317,7 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage("Please use /ticket list (page)");
 	    }
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
     }
 
@@ -366,7 +364,7 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage("Please use /ticket view <ID> (page)");
 	    }
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
     }
 
@@ -419,7 +417,7 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage("Please use /ticket comment <ID> <message>");
 	    }
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
     }
 
@@ -459,7 +457,7 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage("Please use /ticket close <ID>");
 	    }
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
     }
 
@@ -500,7 +498,7 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage("Please use /ticket open <ID>");
 	    }
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
     }
 
@@ -530,7 +528,7 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage("Please use /ticket delete <ID>");
 	    }
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
 
     }
@@ -545,7 +543,7 @@ public class TicketManager extends SSCmdExe {
 		sender.sendMessage("Please use /ticket deleteall");
 	    }
 	} else {
-	    sender.sendMessage(noperm);
+	    sender.sendMessage(NOPERM);
 	}
 
     }
@@ -577,36 +575,36 @@ public class TicketManager extends SSCmdExe {
     private void help(CommandSender sender, int page) {
 	List<String> allowcmds = new ArrayList<String>();
 	if (sender.hasPermission("steelsecurity.commands.ticket")) {
-	    allowcmds.add(g + "/ticket:" + y + " Base Command");
+	    allowcmds.add(GREEN + "/ticket:" + YELLOW + " Base Command");
 	}
 	if (sender.hasPermission("steelsecurity.commands.ticket.help")) {
-	    allowcmds.add(g + "/ticket help:" + y + " Displays this help screen.");
+	    allowcmds.add(GREEN + "/ticket help:" + YELLOW + " Displays this help screen.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.ticket.create")) {
-	    allowcmds.add(g + "/ticket new:" + y + " Creates a new ticket.");
+	    allowcmds.add(GREEN + "/ticket new:" + YELLOW + " Creates a new ticket.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.ticket.open.assigned") || sender.hasPermission("steelsecurity.commands.ticket.open.all")) {
-	    allowcmds.add(g + "/ticket open:" + y + " Re-opens a ticket");
+	    allowcmds.add(GREEN + "/ticket open:" + YELLOW + " Re-opens a ticket");
 	}
-	allowcmds.add(g + "/ticket close:" + y + " Closes a ticket.");
+	allowcmds.add(GREEN + "/ticket close:" + YELLOW + " Closes a ticket.");
 	if (sender.hasPermission("steelsecurity.commands.ticket.delete")) {
-	    allowcmds.add(g + "/ticket delete:" + y + " Deletes a ticket.");
-	    allowcmds.add(g + "/ticket deleteall:" + y + " Deletes all tickets.");
+	    allowcmds.add(GREEN + "/ticket delete:" + YELLOW + " Deletes a ticket.");
+	    allowcmds.add(GREEN + "/ticket deleteall:" + YELLOW + " Deletes all tickets.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.ticket.comment")) {
-	    allowcmds.add(g + "/ticket comment:" + y + " Leaves a comment on a ticket.");
+	    allowcmds.add(GREEN + "/ticket comment:" + YELLOW + " Leaves a comment on a ticket.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.ticket.claim")) {
-	    allowcmds.add(g + "/ticket claim:" + y + " Claims a ticket for yourself.");
+	    allowcmds.add(GREEN + "/ticket claim:" + YELLOW + " Claims a ticket for yourself.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.ticket.list")) {
-	    allowcmds.add(g + "/ticket list:" + y + " List the tickets.");
+	    allowcmds.add(GREEN + "/ticket list:" + YELLOW + " List the tickets.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.ticket.view")) {
-	    allowcmds.add(g + "/ticket view:" + y + " Veiw a ticket.");
+	    allowcmds.add(GREEN + "/ticket view:" + YELLOW + " Veiw a ticket.");
 	}
 	if (sender.hasPermission("steelsecurity.commands.ticket.assign")) {
-	    allowcmds.add(g + "/ticket assign:" + y + " Assign a ticket to a player.");
+	    allowcmds.add(GREEN + "/ticket assign:" + YELLOW + " Assign a ticket to a player.");
 	}
 	int pages = Tools.getPages(allowcmds, 6);
 	allowcmds = Tools.getPage(allowcmds, page, 6);

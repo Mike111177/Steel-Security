@@ -3,7 +3,7 @@ package net.othercraft.steelsecurity.listeners;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.logging.Logger;
+import java.util.Set;
 
 import net.othercraft.steelsecurity.SteelSecurity;
 import net.othercraft.steelsecurity.commands.Vanish;
@@ -14,59 +14,39 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerLevelChangeEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerVelocityEvent;
+import org.bukkit.event.block.*;
+import org.bukkit.event.*;
+import org.bukkit.event.player.*;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.ItemStack;
 
-public class SpectateManager extends SSCmdExe {
+public final class SpectateManager extends SSCmdExe {
 
-    SteelSecurity plugin;
+    private transient final Vanish vanishManager;
 
-    Vanish vm;
-
-    Logger log;
-
-    public SpectateManager(String name, SteelSecurity instance, Vanish vanman, Logger log) {
-	super("SpectateManager", true);
-	vm = vanman;
-	plugin = instance;
-	this.log = log;
+    public SpectateManager(final SteelSecurity instance,final Vanish vanman) {
+	super("SpectateManager", true, instance);
+	vanishManager = vanman;
     }
 
-    private Map<String, Boolean> spectators = new HashMap<String, Boolean>();// if someone is spectating someone else
-    private Map<String, Boolean> spectatees = new HashMap<String, Boolean>();// if someone is being spectated
-    private Map<String, String> spectating = new HashMap<String, String>();// Who a player is spectating
-    private Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();// Who a player is being spectated by.
-    private Map<String, Location> origion = new HashMap<String, Location>();// Where a player was before begining spectate
-    private Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();// The players inventory before spectating
-    private Map<String, Integer> health = new HashMap<String, Integer>();
-    private Map<String, Integer> food = new HashMap<String, Integer>();
-    private Map<String, Float> exp = new HashMap<String, Float>();
-    private Map<String, Integer> game = new HashMap<String, Integer>();
-    private Map<String, Boolean> wasvanished = new HashMap<String, Boolean>();
-    private Map<String, Boolean> wasflying = new HashMap<String, Boolean>();
-    private HashSet<String> spectates = new HashSet<String>();// Who is spectating other people
+    private transient final Map<String, Boolean> spectators = new HashMap<String, Boolean>();// if someone is spectating someone else
+    private transient final Map<String, Boolean> spectatees = new HashMap<String, Boolean>();// if someone is being spectated
+    private transient final Map<String, String> spectating = new HashMap<String, String>();// Who a player is spectating
+    private transient final Map<String, HashSet<String>> speclist = new HashMap<String, HashSet<String>>();// Who a player is being spectated by.
+    private transient final Map<String, Location> origion = new HashMap<String, Location>();// Where a player was before begining spectate
+    private transient final Map<String, ItemStack[]> inventory = new HashMap<String, ItemStack[]>();// The players inventory before spectating
+    private transient final Map<String, Integer> health = new HashMap<String, Integer>();
+    private transient final Map<String, Integer> food = new HashMap<String, Integer>();
+    private transient final Map<String, Float> exp = new HashMap<String, Float>();
+    private transient final Map<String, Integer> game = new HashMap<String, Integer>();
+    private transient final Map<String, Boolean> wasvanished = new HashMap<String, Boolean>();
+    private transient final Map<String, Boolean> wasflying = new HashMap<String, Boolean>();
+    private transient final Set<String> spectates = new HashSet<String>();// Who is spectating other people
 
     @EventHandler
-    public void onJoin(PlayerLoginEvent event) {
-	Player player = event.getPlayer();
+    public void onJoin(final PlayerLoginEvent event) {
+	final Player player = event.getPlayer();
 	spectators.put(player.getName(), false);
 	spectatees.put(player.getName(), false);
 	speclist.put(player.getName(), new HashSet<String>());
@@ -76,10 +56,10 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
-	Player player = event.getPlayer();
+    public void onQuit(final PlayerQuitEvent event) {
+	final Player player = event.getPlayer();
 	if (spectatees.get(player.getName())) {
-	    HashSet<String> tostops = speclist.get(player.getName());
+	    final HashSet<String> tostops = speclist.get(player.getName());
 	    for (String tostop : tostops) {
 		stop(Bukkit.getPlayerExact(tostop));
 		Bukkit.getPlayerExact(tostop).sendMessage("Spectating ended because player logged off.");
@@ -93,12 +73,12 @@ public class SpectateManager extends SSCmdExe {
 	spectatees.remove(player.getName());
     }
 
-    private void start(Player tostart, Player tostarton) {
-	String tostartname = tostart.getName();
+    private void start(final Player tostart,final Player tostarton) {
+	final String tostartname = tostart.getName();
 	spectates.add(tostart.getName());
-	wasvanished.put(tostart.getName(), vm.isVanished(tostart));
-	if (vm.isVanished(tostart)) {
-	    vm.setVanished(tostart, false, false);
+	wasvanished.put(tostart.getName(), vanishManager.isPlayerVanished(tostart));
+	if (vanishManager.isPlayerVanished(tostart)) {
+	    vanishManager.setVanished(tostart, false, false);
 	}
 	spectators.put(tostartname, true);
 	spectating.put(tostartname, tostarton.getName());
@@ -110,7 +90,7 @@ public class SpectateManager extends SSCmdExe {
 	game.put(tostartname, tostart.getGameMode().getValue());
 	tostart.setGameMode(tostarton.getGameMode());
 	tostart.getInventory().setContents(tostarton.getInventory().getContents());
-	HashSet<String> thenew = speclist.get(tostarton.getName());
+	final HashSet<String> thenew = speclist.get(tostarton.getName());
 	thenew.add(tostartname);
 	speclist.put(tostarton.getName(), thenew);
 	for (Player player : Bukkit.getOnlinePlayers()) {
@@ -152,19 +132,19 @@ public class SpectateManager extends SSCmdExe {
 	    tostart.sendMessage("Warining:");
 	    tostart.sendMessage("The player you are spectating is spectating another player. This may cause laggy or incomplete results.");
 	}
-	log.info(tostartname + " is now spectating " + tostart.getName());
+	LOG.info(tostartname + " is now spectating " + tostart.getName());
     }
 
-    private void stop(Player tostop) {
-	String tostopname = tostop.getName();
-	Player tostopon = Bukkit.getPlayerExact(spectating.get(tostopname));
+    private void stop(final Player tostop) {
+	final String tostopname = tostop.getName();
+	final Player tostopon = Bukkit.getPlayerExact(spectating.get(tostopname));
 	for (Player player : Bukkit.getOnlinePlayers()) {
 	    player.showPlayer(tostop);
 	}
 	tostop.showPlayer(tostopon);
-	HashSet<String> thenew = speclist.get(tostopon.getName());
+	final HashSet<String> thenew = speclist.get(tostopon.getName());
 	thenew.remove(tostopname);
-	Location loc = origion.get(tostopname);
+	final Location loc = origion.get(tostopname);
 	tostop.teleport(loc);
 	origion.remove(tostopname);
 	tostop.setGameMode(GameMode.getByValue(game.get(tostopname)));
@@ -178,7 +158,7 @@ public class SpectateManager extends SSCmdExe {
 	tostop.setExp(exp.get(tostopname));
 	exp.remove(tostopname);
 	if (wasvanished.get(tostopname)) {
-	    vm.setVanished(tostop, true, false);
+	    vanishManager.setVanished(tostop, true, false);
 	}
 	wasvanished.remove(tostopname);
 	tostop.setAllowFlight(wasflying.get(tostopname));
@@ -194,7 +174,7 @@ public class SpectateManager extends SSCmdExe {
 	speclist.put(tostopon.getName(), thenew);
 	spectatees.put(tostopon.getName(), false);
 	tostop.sendMessage("You are no longer spectating " + tostopon.getName());
-	log.info(tostopname + " is no longer spectating " + tostopon.getName());
+	LOG.info(tostopname + " is no longer spectating " + tostopon.getName());
     }
 
     public void stopAll() {
@@ -203,19 +183,19 @@ public class SpectateManager extends SSCmdExe {
 	}
     }
 
-    public void restart(Player torestart) {
-	Player torestarton = Bukkit.getPlayerExact(spectating.get(torestart.getName()));
+    public void restart(final Player torestart) {
+	final Player torestarton = Bukkit.getPlayerExact(spectating.get(torestart.getName()));
 	stop(torestart);
 	start(torestart, torestarton);
     }
 
-    public void specCmd(CommandSender sender, String[] args) {
-	Player player = Bukkit.getPlayerExact(sender.getName());
+    public void specCmd(final CommandSender sender,final String[] args) {
+	final Player player = Bukkit.getPlayerExact(sender.getName());
 	if (args.length == 2) {
 	    if (spectators.get(player.getName())) {
 		stop(player);
 	    }
-	    Player tostarton = Bukkit.getPlayer(args[1]);
+	    final Player tostarton = Bukkit.getPlayer(args[1]);
 	    if (player != tostarton) {
 		if (tostarton != null) {
 		    start(player, tostarton);
@@ -240,9 +220,8 @@ public class SpectateManager extends SSCmdExe {
 	}
     }
 
-    public Boolean isSpectating(Player player) {
-	Boolean result = spectators.get(player.getName());
-	return result;
+    public Boolean isSpectating(final Player player) {
+	return spectators.get(player.getName());
     }
 
     public Map<String, String> spectateList() {
@@ -251,8 +230,8 @@ public class SpectateManager extends SSCmdExe {
 
     // Beyond here only apllies to when a player is being spectated
     @EventHandler
-    public void onFollow(PlayerMoveEvent event) {
-	Player player = event.getPlayer();
+    public void onFollow(final PlayerMoveEvent event) {
+	final Player player = event.getPlayer();
 	if (spectators.get(player.getName())) {
 	    event.getPlayer().teleport(Bukkit.getPlayerExact(spectating.get(event.getPlayer().getName())));
 	}
@@ -265,7 +244,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onVelocity(PlayerVelocityEvent event) {
+    public void onVelocity(final PlayerVelocityEvent event) {
 	if (spectatees.get(event.getPlayer().getName())) {
 	    for (String playername : speclist.get(event.getPlayer().getName())) {
 		Bukkit.getPlayerExact(playername).setVelocity(event.getVelocity());
@@ -274,7 +253,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onBreak(BlockBreakEvent event) {
+    public void onBreak(final BlockBreakEvent event) {
 	if (spectators.get(event.getPlayer().getName())) {
 	    event.setCancelled(true);
 	}
@@ -285,7 +264,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onPlace(BlockPlaceEvent event) {
+    public void onPlace(final BlockPlaceEvent event) {
 	if (spectators.get(event.getPlayer().getName())) {
 	    event.setCancelled(true);
 	}
@@ -296,7 +275,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onDrop(PlayerDropItemEvent event) {
+    public void onDrop(final PlayerDropItemEvent event) {
 	if (spectators.get(event.getPlayer().getName())) {
 	    event.setCancelled(true);
 	}
@@ -307,7 +286,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onPickup(PlayerPickupItemEvent event) {
+    public void onPickup(final PlayerPickupItemEvent event) {
 	if (spectators.get(event.getPlayer().getName())) {
 	    event.setCancelled(true);
 	}
@@ -318,14 +297,14 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
+    public void onInteract(final PlayerInteractEvent event) {
 	if (spectators.get(event.getPlayer().getName())) {
 	    event.setCancelled(true);
 	}
     }
 
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
+    public void onInventoryClick(final InventoryClickEvent event) {
 	if (spectators.get(event.getWhoClicked().getName())) {
 	    event.setCancelled(true);
 	}
@@ -336,7 +315,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onTarget(EntityTargetEvent event) {
+    public void onTarget(final EntityTargetEvent event) {
 	if (event.getTarget() instanceof Player) {
 	    Player player = (Player) event.getTarget();
 	    if (spectators.get(player.getName())) {
@@ -346,7 +325,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onGmChange(PlayerGameModeChangeEvent event) {
+    public void onGmChange(final PlayerGameModeChangeEvent event) {
 	if (spectators.get(event.getPlayer().getName())) {
 	    event.setCancelled(true);
 	    game.put(event.getPlayer().getName(), event.getNewGameMode().getValue());
@@ -358,7 +337,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onLvlChange(PlayerLevelChangeEvent event) {
+    public void onLvlChange(final PlayerLevelChangeEvent event) {
 	if (spectatees.get(event.getPlayer().getName())) {
 	    Player player = event.getPlayer();
 	    expUpdate(player);
@@ -366,7 +345,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onDamage(EntityDamageEvent event) {
+    public void onDamage(final EntityDamageEvent event) {
 	if (event.getEntity() instanceof Player) {
 	    Player player = (Player) event.getEntity();
 	    if (spectators.get(player.getName())) {
@@ -379,7 +358,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onHeal(EntityRegainHealthEvent event) {
+    public void onHeal(final EntityRegainHealthEvent event) {
 	if (event.getEntity() instanceof Player) {
 	    Player player = (Player) event.getEntity();
 	    if (spectators.get(player.getName())) {
@@ -392,7 +371,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onFoodChange(FoodLevelChangeEvent event) {
+    public void onFoodChange(final FoodLevelChangeEvent event) {
 	if (event.getEntity() instanceof Player) {
 	    Player player = (Player) event.getEntity();
 	    if (spectators.get(player.getName())) {
@@ -405,7 +384,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onDeath(PlayerDeathEvent event) {
+    public void onDeath(final PlayerDeathEvent event) {
 	Player player = (Player) event.getEntity();
 	if (spectatees.get(player.getName())) {
 	    HashSet<String> list = speclist.get(player.getName());
@@ -416,7 +395,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onRespawn(PlayerRespawnEvent event) {
+    public void onRespawn(final PlayerRespawnEvent event) {
 	Player player = event.getPlayer();
 	if (spectatees.get(player.getName())) {
 	    inventoryUpdate(player);
@@ -429,7 +408,7 @@ public class SpectateManager extends SSCmdExe {
     }
 
     @EventHandler
-    public void onEat(PlayerLevelChangeEvent event) {
+    public void onEat(final PlayerLevelChangeEvent event) {
 	if (spectatees.get(event.getPlayer().getName())) {
 	    Player player = event.getPlayer();
 	    expUpdate(player);

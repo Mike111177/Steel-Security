@@ -1,9 +1,11 @@
 package net.othercraft.steelsecurity.hooks;
 
+import org.bukkit.plugin.java.JavaPlugin;
+
 import net.othercraft.steelsecurity.SteelSecurity;
 
 public class WorldEdit extends Hook{
-    public WorldEdit(SteelSecurity instance) {
+    public WorldEdit(JavaPlugin instance) {
 	super(instance);
     }
 

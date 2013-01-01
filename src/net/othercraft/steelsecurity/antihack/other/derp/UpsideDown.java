@@ -7,20 +7,17 @@ import net.othercraft.steelsecurity.utils.SSCmdExe;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-public class UpsideDown extends SSCmdExe {
+public final class UpsideDown extends SSCmdExe {
 
-    SteelSecurity plugin;
+    private final transient Violations vio;
 
-    Violations vio;
-
-    public UpsideDown(String name, SteelSecurity instance, Violations viol) {
-	super("UpsideDown", true);
-	plugin = instance;
+    public UpsideDown(final Violations viol, final SteelSecurity instance) {
+	super("UpsideDown", true, instance);
 	vio = viol;
     }
 
     @EventHandler
-    public void onMove(PlayerMoveEvent event) {
+    public void onMove(final PlayerMoveEvent event) {
 	if (event.getPlayer().getLocation().getPitch() == 180.0) {
 	    vio.addDerp(event.getPlayer());
 	}

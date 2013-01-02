@@ -1,5 +1,6 @@
 package net.othercraft.steelsecurity.listeners;
-
+//FIXME make the swear catcher less tarded.
+//TODO organize this class
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;

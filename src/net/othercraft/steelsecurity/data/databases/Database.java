@@ -66,7 +66,7 @@ public final class Database {
 
     private void initQueue() {
 	System.out.println("Schedular initiated");
-	plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+	plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Runnable() {
 	    @Override
 	    public void run() {
 		proccessQueue();

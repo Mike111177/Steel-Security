@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.othercraft.steelsecurity.SteelSecurity;
-import net.othercraft.steelsecurity.data.Violations;
+import net.othercraft.steelsecurity.data.violations.ViolationsManager;
 import net.othercraft.steelsecurity.utils.SSCmdExe;
 
 import org.bukkit.event.EventHandler;
@@ -14,11 +14,11 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public final class ChatFilter extends SSCmdExe {
 
-    private transient final Violations vio;
+    private transient final ViolationsManager vio;
 
     private final transient Map<String, Long> chattimes = new HashMap<String, Long>();// for tracking the speed of chat
 
-    public ChatFilter(final SteelSecurity instance, final Violations viol) {
+    public ChatFilter(final SteelSecurity instance, final ViolationsManager viol) {
 	super("ChatFilter", true, instance);// true only if its a listener, false if it isnt
 	vio = viol;
     }

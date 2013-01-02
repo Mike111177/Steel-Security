@@ -10,8 +10,8 @@ import net.othercraft.steelsecurity.antihack.other.derp.UpsideDown;
 import net.othercraft.steelsecurity.commands.GameModeCmdCatch;
 import net.othercraft.steelsecurity.commands.Sts;
 import net.othercraft.steelsecurity.commands.Vanish;
-import net.othercraft.steelsecurity.data.Violations;
 import net.othercraft.steelsecurity.data.logging.ChatLogger;
+import net.othercraft.steelsecurity.data.violations.ViolationsManager;
 import net.othercraft.steelsecurity.hooks.Spout;
 import net.othercraft.steelsecurity.listeners.BlockBlacklist;
 import net.othercraft.steelsecurity.listeners.ChatFilter;
@@ -50,7 +50,7 @@ public class SteelSecurity extends JavaPlugin {
     private static BlockBlacklist blockBlacklist;
     public static SpectateManager spectateManager;
     private static Vanish vanishManager;
-    private static Violations vio;
+    private static ViolationsManager vio;
     private static UpsideDown upd;
     private static ExtraConfigManager anticm;
     private static ExtraConfigManager data;
@@ -73,7 +73,7 @@ public class SteelSecurity extends JavaPlugin {
     public void onEnable() {
 	versionName = getDescription().getVersion().split("-")[0];
 	currentVersion = Double.valueOf(versionName.replaceFirst("\\.", ""));
-	sch.scheduleAsyncRepeatingTask(this, new Runnable() {
+	sch.runTaskTimerAsynchronously(this, new Runnable() {
 	    @Override
 	    public void run() {
 		try {
@@ -138,7 +138,7 @@ public class SteelSecurity extends JavaPlugin {
 	pcl.checkAll();
 	spectateManager.registerAll();
 	vanishManager.registerAll();
-	vio.engageAll();
+	ViolationsManager.engageAll();
     }
 
     public final double updateCheck(final double currentVersion) {
@@ -171,7 +171,7 @@ public class SteelSecurity extends JavaPlugin {
     }
 
     private void registerListeners() {// register listeners here
-	vio = new Violations(this);
+	vio = new ViolationsManager(this);
 	chatFilter = new ChatFilter(this, vio);
 	joinMessage = new JoinMessage(this);
 	loginLimiter = new LoginLimiter(this);
